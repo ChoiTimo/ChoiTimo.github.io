@@ -1,0 +1,1417 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartWAN 통합 BANT & Lead Scoring 분석기</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            margin-bottom: 20px;
+        }
+
+        .analysis-mode {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .mode-btn {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: 2px solid transparent;
+            padding: 12px 25px;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .mode-btn.active,
+        .mode-btn:hover {
+            background: white;
+            color: #1e40af;
+            border-color: white;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 0;
+            min-height: 800px;
+        }
+
+        .input-section {
+            padding: 40px;
+            background: #f8fafc;
+            overflow-y: auto;
+            max-height: 800px;
+        }
+
+        .results-section {
+            padding: 40px;
+            background: white;
+            border-left: 1px solid #e2e8f0;
+            position: sticky;
+            top: 0;
+            max-height: 800px;
+            overflow-y: auto;
+        }
+
+        .mode-content {
+            display: none;
+        }
+
+        .mode-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section-title {
+            font-size: 1.4rem;
+            color: #1e293b;
+            margin-bottom: 25px;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        .section-title::before {
+            margin-right: 10px;
+            font-size: 1.2em;
+        }
+
+        /* Customer Info Section */
+        .customer-info {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            border-left: 5px solid #10b981;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+
+        .info-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px 15px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        /* BANT Checklist Styles */
+        .bant-section {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            border-left: 5px solid #3b82f6;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+
+        .bant-header {
+            margin-bottom: 20px;
+        }
+
+        .bant-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #1e40af;
+            margin-bottom: 5px;
+        }
+
+        .bant-subtitle {
+            color: #64748b;
+            font-size: 0.95rem;
+        }
+
+        .checklist-group {
+            margin-bottom: 25px;
+        }
+
+        .group-title {
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 15px;
+            font-size: 1rem;
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: flex-start;
+            padding: 12px 15px;
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .checklist-item:hover {
+            border-color: #3b82f6;
+            transform: translateY(-1px);
+        }
+
+        .checklist-item.checked {
+            border-color: #10b981;
+            background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+        }
+
+        .checklist-item input[type="checkbox"] {
+            margin-right: 12px;
+            margin-top: 2px;
+            transform: scale(1.2);
+        }
+
+        .checklist-item label {
+            cursor: pointer;
+            line-height: 1.4;
+            margin: 0;
+            font-weight: 500;
+        }
+
+        .section-summary {
+            text-align: center;
+            padding: 15px;
+            background: linear-gradient(135deg, #eff6ff, #dbeafe);
+            border-radius: 10px;
+            border: 2px solid #3b82f6;
+        }
+
+        .summary-score {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #1e40af;
+        }
+
+        /* Lead Scoring Styles */
+        .scoring-section {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            border-left: 5px solid #f59e0b;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+
+        .slider-group {
+            margin-bottom: 25px;
+        }
+
+        .slider-label {
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .slider-score {
+            background: #667eea;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 0.9rem;
+            min-width: 60px;
+            text-align: center;
+        }
+
+        .slider {
+            width: 100%;
+            height: 8px;
+            border-radius: 5px;
+            background: #e2e8f0;
+            outline: none;
+            transition: all 0.3s ease;
+            margin: 10px 0;
+        }
+
+        .slider::-webkit-slider-thumb {
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #667eea;
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(102, 126, 234, 0.3);
+        }
+
+        .slider::-moz-range-thumb {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #667eea;
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 2px 6px rgba(102, 126, 234, 0.3);
+        }
+
+        .slider-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            color: #64748b;
+            margin-top: 5px;
+        }
+
+        .checkbox-group {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        /* Results Section Styles */
+        .result-summary {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        .result-value {
+            font-size: 3rem;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        .result-grade {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            opacity: 0.9;
+        }
+
+        .result-cards {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .result-card {
+            background: #f8fafc;
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 4px solid #3b82f6;
+        }
+
+        .result-card.excellent {
+            border-left-color: #10b981;
+            background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+        }
+
+        .result-card.good {
+            border-left-color: #3b82f6;
+            background: linear-gradient(135deg, #eff6ff, #dbeafe);
+        }
+
+        .result-card.warning {
+            border-left-color: #f59e0b;
+            background: linear-gradient(135deg, #fffbeb, #fef3c7);
+        }
+
+        .result-card.poor {
+            border-left-color: #ef4444;
+            background: linear-gradient(135deg, #fef2f2, #fee2e2);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .card-title {
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        .card-score {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #1e40af;
+        }
+
+        .card-status {
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .status-excellent {
+            background: #10b981;
+            color: white;
+        }
+
+        .status-good {
+            background: #3b82f6;
+            color: white;
+        }
+
+        .status-warning {
+            background: #f59e0b;
+            color: white;
+        }
+
+        .status-poor {
+            background: #ef4444;
+            color: white;
+        }
+
+        .recommendations {
+            background: #f0fdf4;
+            border: 2px solid #16a34a;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .rec-title {
+            color: #15803d;
+            font-weight: 700;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+
+        .rec-list {
+            list-style: none;
+            margin: 0;
+        }
+
+        .rec-list li {
+            color: #166534;
+            margin-bottom: 8px;
+            padding-left: 20px;
+            position: relative;
+            line-height: 1.4;
+        }
+
+        .rec-list li::before {
+            content: "▶";
+            position: absolute;
+            left: 0;
+            color: #16a34a;
+            font-size: 0.8em;
+        }
+
+        .action-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .action-btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .action-primary {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+        }
+
+        .action-secondary {
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            color: white;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .calculate-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+            box-shadow: 0 5px 15px rgba(16, 185, 129, 0.3);
+        }
+
+        .calculate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(16, 185, 129, 0.4);
+        }
+
+        .empty-state {
+            text-align: center;
+            color: #64748b;
+            padding: 50px 20px;
+        }
+
+        .empty-state-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @media (max-width: 1200px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .results-section {
+                border-left: none;
+                border-top: 1px solid #e2e8f0;
+                position: static;
+                max-height: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 0;
+                border-radius: 0;
+            }
+            
+            .input-section,
+            .results-section {
+                padding: 20px;
+            }
+            
+            .info-row {
+                grid-template-columns: 1fr;
+            }
+
+            .analysis-mode {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .action-buttons {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎯 SmartWAN 통합 BANT & Lead Scoring 분석기</h1>
+            <p>체계적인 BANT 검증과 정량적 Lead Scoring을 통한 종합 고객 분석</p>
+            
+            <div class="analysis-mode">
+                <button class="mode-btn active" onclick="switchMode('bant')">📋 BANT 검증</button>
+                <button class="mode-btn" onclick="switchMode('scoring')">📊 Lead Scoring</button>
+                <button class="mode-btn" onclick="switchMode('unified')">🎯 통합 분석</button>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="input-section">
+                <!-- 공통 고객 정보 -->
+                <div class="customer-info">
+                    <h2 style="color: #1e293b; margin-bottom: 20px; font-size: 1.2rem;">🏢 고객 기본 정보</h2>
+                    
+                    <div class="info-row">
+                        <div class="form-group">
+                            <label for="company-name">회사명 *</label>
+                            <input type="text" id="company-name" placeholder="예: 삼성전자">
+                        </div>
+                        <div class="form-group">
+                            <label for="contact-name">담당자명 *</label>
+                            <input type="text" id="contact-name" placeholder="예: 김영업">
+                        </div>
+                        <div class="form-group">
+                            <label for="contact-title">직책</label>
+                            <input type="text" id="contact-title" placeholder="예: IT본부장">
+                        </div>
+                    </div>
+
+                    <div class="info-row">
+                        <div class="form-group">
+                            <label for="industry">업종</label>
+                            <select id="industry" onchange="updateAnalysis()">
+                                <option value="">업종 선택</option>
+                                <option value="manufacturing" data-score="10">제조업 (반도체/전자/자동차)</option>
+                                <option value="finance" data-score="8">금융업 (은행/증권/보험)</option>
+                                <option value="enterprise" data-score="9">기업서비스 (통신/물류/유통)</option>
+                                <option value="public" data-score="6">공공/준공공기관</option>
+                                <option value="other" data-score="5">기타</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="company-size">기업 규모</label>
+                            <select id="company-size" onchange="updateAnalysis()">
+                                <option value="">기업 규모 선택</option>
+                                <option value="global" data-score="10">글로벌 대기업 (매출 1조원 이상)</option>
+                                <option value="large" data-score="8">대기업 (매출 3천억~1조원)</option>
+                                <option value="medium" data-score="6">중견기업 (매출 1천억~3천억원)</option>
+                                <option value="small" data-score="4">중소기업 (매출 1천억원 이하)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="evaluation-date">평가일</label>
+                            <input type="date" id="evaluation-date">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- BANT 모드 -->
+                <div class="mode-content active" id="bant-mode">
+                    <!-- Budget Section -->
+                    <div class="bant-section">
+                        <div class="bant-header">
+                            <div class="bant-title">💰 B - Budget (예산)</div>
+                            <div class="bant-subtitle">고객의 예산 확보 상태와 승인 프로세스를 확인합니다</div>
+                        </div>
+                        
+                        <div class="checklist-group">
+                            <div class="group-title">💵 예산 규모 및 확보 상태</div>
+                            
+                            <div class="checklist-item">
+                                <input type="checkbox" id="b1" onchange="updateBANTScore('budget')">
+                                <label for="b1">구체적인 예산 범위를 확인했다 (예: 5억~10억원)</label>
+                            </div>
+                            
+                            <div class="checklist-item">
+                                <input type="checkbox" id="b2" onchange="updateBANTScore('budget')">
+                                <label for="b2">이미 예산이 확보되어 있거나 확보 계획이 구체적이다</label>
+                            </div>
+                            
+                            <div class="checklist-item">
+                                <input type="checkbox" id="b3" onchange="updateBANTScore('budget')">
+                                <label for="b3">ROI나 비용 절감에 대한 관심을 보였다</label>
+                            </div>
+                            
+                            <div class="checklist-item">
+                                <input type="checkbox" id="b4" onchange="updateBANTScore('budget')">
+                                <label for="b4">예산 승인 프로세스와 일정을 파악했다</label>
+                            </div>
+                        </div>
+
+                        <div class="checklist-group">
+                            <div class="group-title">📊 투자 의사결정 기준</div>
+                            
+                            <div class="checklist-item">
+                                <input type="checkbox" id="b5" onchange="updateBANTScore('budget')">
+                                <label for="b5">비용 대비 효과에 대한 구체적인 KPI나 목표가 있다</label>
+                            </div>
+                            
+                            <div class="checklist-item">
+                                <input type="checkbox" id="b6" onchange="updateBANTScore('budget')">
+                                <label for="b6">경쟁사 견적이나 대안과 비교 검토 중이다</label>
+                            </div>
+                            
+                            <div class="checklist-item">
+                                <input type="checkbox" id="b7" onchange="updateBANTScore('budget')">
+                                <label for="b7">투자 승인을 위한 내부 문서나 제안서 작성을 고려 중이다</label>
+                            </div>
+                            
+                            <div class="checklist-item">
+                                <input type="checkbox" id="b8" onchange="updateBANTScore('budget')">
+                                <label for="b8">TCO(Total Cost of Ownership) 관점에서 접근하고 있다</label>
+                            </div>
+                        </div>
+
+                        <div class="section-summary">
+                            <div class="summary-score" id="budget-score">0/8</div>
+                            <div>Budget 적격도</div>
+                        </div>
+                    </div>
+
+                    <!-- Authority Section -->
+                    <div class="bant-section">
+                        <div class="bant-header">
+                            <div class="bant-title">👔 A - Authority (의사결정권)</div>
+                            <div class="bant-subtitle">의사결정 구조와 핵심 관련자들을 파악합니다</div>
+                        </div>
+                        
+                        <div class="checklist-group">
+                            <div class="group-title">🎯 의사결정권자 식별</div>
+                            
+                            <div class="checklist-item">
+                                <input type="checkbox" id="a1" onchange="updateBANTScore('authority')">
+                                <label for="a1">최종 의사결정권자가 누구인지 확인했다</label>
+                            </div>
+                            
+                            <div class="checklist-item">
+                                <input type="checkbox" id="a2" onchange="updateBANTScore('authority')">
+                                <label for="a2">담당자가 의사결정에 영향력을 가지고 있다</label>
+                            </div>
+                            
+                            <div class="checklist-item">
+                                <input type="checkbox" id="a3" onchange="updateBANTScore('authority')">
+                                <label for="a3">구매 프로세스에 관련된 부서들을 파악했다 (IT, 구매, 재무 등)</label>
+                            </div>
+                            
+                            <div class="checklist-item">
+                                <input type="checkbox" id="a4" onchange="updateBANTScore('authority')">
+                                <label for="a4">의사결정권자와의 접촉 기회를 확보했거나 계획이 있다</label>
+                            </div>
+                        </div>
+
+                        <div class="checklist-group">
+                            <div class="group-title">⚖️ 승인 프로세스</div>
+                            
+                            <div class="checklist-item">
+                                <input type="checkbox" id="a5" onchange="updateBANTScore('authority')">
+                                <label for="a5">구매 의사결정 프로세스와 단계를 이해했다</label>
+                            </div>
+                            
+                            <div class="checklist-item">
+                                <input type="checkbox" id="a6" onchange="updateBANTScore('authority')">
+                                <label for="a6">각 단계별 관련자와 승인 권한을 파악했다</label>
+                            </div>
+                            
+                            <div class="checklist-item">
+                                <input type="checkbox" id="a7" onchange="updateBANTScore('authority')">
+                                <label for="a7">내부 챔피언이나 지지자를 확보했다</label>
+                            </div>
+                            
+                            <div class="checklist-item">
+                                <input type="checkbox" id="a8" onchange="updateBANTScore('authority')">
+                                <label for="a8">구매 결정 시 필요한 내부 문서나 승인서류를 파악했다</label>
+                            </div>
+                        </div>
+
+                        <div class="section-summary">
+                            <div class="summary-score" id="authority-score">0/8</div>
+                            <div>Authority 적격도</div>
+                        </div>
+                    </div>
+
+                    <!-- Need Section -->
+                    <div class="bant-section">
+                        <div class="bant-header">
+                            <div class="bant-title">🎯 N - Need (니즈)</div>
+                            <div class="bant-subtitle">고객의 필요성과 해결 의지를 확인합니다</div>
+                        </div>
+                        
+                        <div class="checklist-group">
+                            <div class="group-title">🔥 Pain Point 심각성</div>
+                            
+                            <div class="checklist-item">
+                                <input type="checkbox" id="n1" onchange="updateBANTScore('need')">
+                                <label for="n1">현재 네트워크 문제로 인한 구체적인 비즈니스 임팩트를 확인했다</label>
+                            </div>
+                            
+                            <div class="checklist-item">
+                                <input type="checkbox" id="n2" onchange="updateBANTScore('need')">
+                                <label for="n2">문제 해결의 우선순위가 높다고 명시했다</label>
+                            </div>
+                            
+                            <div class="checklist-item">
+                                <input type="checkbox" id="n3" onchange="updateBANTScore('need')">
+                                <label for="n3">현재 상황이 지속될 경우의 리스크를 인지하고 있다</label>
+                            </div>
+                            
+                            <div class="checklist-item">
+                                <input type="checkbox" id="n4" onchange="updateBANTScore('need')">
+                                <label for="n4">해외 법인/지사와의 네트워크 문제를 언급했다</label>
+                            </div>
+                        </div>
+
+                        <div class="checklist-group">
+                            <div class="group-title">⚡ 해결 의지 및 기대효과</div>
+                            
+                            <div class="checklist-item">
+                                <input type="checkbox" id="n5" onchange="updateBANTScore('need')">
+                                <label for="n5">SmartWAN으로 해결할 수 있는 문제들에 관심을 보였다</label>
+                            </div>
+                            
+                            <div class="checklist-item">
+                                <input type="checkbox" id="n6" onchange="updateBANTScore('need')">
+                                <label for="n6">구체적인 성과 목표나 개선 기대치를 제시했다</label>
+                            </div>
+                            
+                            <div class="checklist-item">
+                                <input type="checkbox" id="n7" onchange="updateBANTScore('need')">
+                                <label for="n7">현재 솔루션의 한계점을 명확히 인식하고 있다</label>
+                            </div>
+                            
+                            <div class="checklist-item">
+                                <input type="checkbox" id="n8" onchange="updateBANTScore('need')">
+                                <label for="n8">보안, 성능, 비용 등 복합적 가치에 관심을 보였다</label>
+                            </div>
+                        </div>
+
+                        <div class="section-summary">
+                            <div class="summary-score" id="need-score">0/8</div>
+                            <div>Need 적격도</div>
+                        </div>
+                    </div>
+
+                    <!-- Timeline Section -->
+                    <div class="bant-section">
+                        <div class="bant-header">
+                            <div class="bant-title">⏰ T - Timeline (구매시기)</div>
+                            <div class="bant-subtitle">구매 일정과 프로젝트 타임라인을 확인합니다</div>
+                        </div>
+                        
+                        <div class="checklist-group">
+                            <div class="group-title">📅 구매 일정</div>
+                            
+                            <div class="checklist-item">
+                                <input type="checkbox" id="t1" onchange="updateBANTScore('timeline')">
+                                <label for="t1">구체적인 구매 희망 시기를 제시했다 (예: Q2 내)</label>
+                            </div>
+                            
+                            <div class="checklist-item">
+                                <input type="checkbox" id="t2" onchange="updateBANTScore('timeline')">
+                                <label for="t2">프로젝트나 시스템 교체의 마감일이 정해져 있다</label>
+                            </div>
+                            
+                            <div class="checklist-item">
+                                <input type="checkbox" id="t3" onchange="updateBANTScore('timeline')">
+                                <label for="t3">빠른 도입이 필요한 비즈니스 상황이 있다</label>
+                            </div>
+                            
+                            <div class="checklist-item">
+                                <input type="checkbox" id="t4" onchange="updateBANTScore('timeline')">
+                                <label for="t4">기존 계약 만료나 갱신 시점이 임박했다</label>
+                            </div>
+                        </div>
+
+                        <div class="checklist-group">
+                            <div class="group-title">🚀 프로젝트 진행 계획</div>
+                            
+                            <div class="checklist-item">
+                                <input type="checkbox" id="t5" onchange="updateBANTScore('timeline')">
+                                <label for="t5">내부 프로젝트 팀이 구성되어 있거나 계획 중이다</label>
+                            </div>
+                            
+                            <div class="checklist-item">
+                                <input type="checkbox" id="t6" onchange="updateBANTScore('timeline')">
+                                <label for="t6">도입 일정에 맞춘 단계별 계획을 수립했다</label>
+                            </div>
+                            
+                            <div class="checklist-item">
+                                <input type="checkbox" id="t7" onchange="updateBANTScore('timeline')">
+                                <label for="t7">PoC나 파일럿 프로젝트에 대한 관심을 보였다</label>
+                            </div>
+                            
+                            <div class="checklist-item">
+                                <input type="checkbox" id="t8" onchange="updateBANTScore('timeline')">
+                                <label for="t8">다른 대안들과의 비교 검토 일정이 정해져 있다</label>
+                            </div>
+                        </div>
+
+                        <div class="section-summary">
+                            <div class="summary-score" id="timeline-score">0/8</div>
+                            <div>Timeline 적격도</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Lead Scoring 모드 -->
+                <div class="mode-content" id="scoring-mode">
+                    <!-- BANT 평가 -->
+                    <div class="scoring-section">
+                        <h2 class="section-title">💎 BANT 평가</h2>
+                        
+                        <div class="slider-group">
+                            <div class="slider-label">
+                                <span><strong>B</strong>udget (예산 확보도)</span>
+                                <span class="slider-score" id="budget-slider-score">5</span>
+                            </div>
+                            <input type="range" min="1" max="10" value="5" class="slider" id="budget-slider" onchange="updateSliderScore('budget')">
+                            <div class="slider-labels">
+                                <span>예산 없음 (1)</span>
+                                <span>충분한 예산 (10)</span>
+                            </div>
+                        </div>
+
+                        <div class="slider-group">
+                            <div class="slider-label">
+                                <span><strong>A</strong>uthority (의사결정권)</span>
+                                <span class="slider-score" id="authority-slider-score">5</span>
+                            </div>
+                            <input type="range" min="1" max="10" value="5" class="slider" id="authority-slider" onchange="updateSliderScore('authority')">
+                            <div class="slider-labels">
+                                <span>결정권 없음 (1)</span>
+                                <span>최종 결정권자 (10)</span>
+                            </div>
+                        </div>
+
+                        <div class="slider-group">
+                            <div class="slider-label">
+                                <span><strong>N</strong>eed (필요성/니즈)</span>
+                                <span class="slider-score" id="need-slider-score">5</span>
+                            </div>
+                            <input type="range" min="1" max="10" value="5" class="slider" id="need-slider" onchange="updateSliderScore('need')">
+                            <div class="slider-labels">
+                                <span>니즈 없음 (1)</span>
+                                <span>절실한 니즈 (10)</span>
+                            </div>
+                        </div>
+
+                        <div class="slider-group">
+                            <div class="slider-label">
+                                <span><strong>T</strong>imeline (구매 시기)</span>
+                                <span class="slider-score" id="timeline-slider-score">5</span>
+                            </div>
+                            <input type="range" min="1" max="10" value="5" class="slider" id="timeline-slider" onchange="updateSliderScore('timeline')">
+                            <div class="slider-labels">
+                                <span>시기 미정 (1)</span>
+                                <span>즉시 구매 (10)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Pain Points -->
+                    <div class="scoring-section">
+                        <h2 class="section-title">🎯 Pain Points 식별</h2>
+                        <p style="color: #64748b; margin-bottom: 15px;">현재 고객이 겪고 있는 주요 문제점들을 선택하세요</p>
+                        
+                        <div class="checkbox-group" id="painPoints">
+                            <div class="checklist-item">
+                                <input type="checkbox" id="slow_network" value="8" onchange="updatePainPoints()">
+                                <label for="slow_network">🐌 해외 법인과의 네트워크 속도 지연 (높은 우선순위)</label>
+                            </div>
+                            <div class="checklist-item">
+                                <input type="checkbox" id="vpn_security" value="9" onchange="updatePainPoints()">
+                                <label for="vpn_security">🔓 VPN 보안 취약점 우려 (매우 높은 우선순위)</label>
+                            </div>
+                            <div class="checklist-item">
+                                <input type="checkbox" id="high_cost" value="7" onchange="updatePainPoints()">
+                                <label for="high_cost">💰 네트워크 운영비 부담</label>
+                            </div>
+                            <div class="checklist-item">
+                                <input type="checkbox" id="complex_manage" value="6" onchange="updatePainPoints()">
+                                <label for="complex_manage">🔧 복잡한 멀티벤더 솔루션 관리</label>
+                            </div>
+                            <div class="checklist-item">
+                                <input type="checkbox" id="compliance" value="9" onchange="updatePainPoints()">
+                                <label for="compliance">📋 보안 규제 대응 (ZTNA 의무화 등)</label>
+                            </div>
+                            <div class="checklist-item">
+                                <input type="checkbox" id="remote_work" value="7" onchange="updatePainPoints()">
+                                <label for="remote_work">🏠 원격근무 보안 관리 어려움</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 경쟁 환경 -->
+                    <div class="scoring-section">
+                        <h2 class="section-title">⚔️ 경쟁 환경 평가</h2>
+                        
+                        <div class="form-group">
+                            <label for="competition">주요 경쟁사</label>
+                            <select id="competition" onchange="updateAnalysis()">
+                                <option value="" data-score="8">경쟁사 없음/미정</option>
+                                <option value="cisco" data-score="4">Cisco (강력한 경쟁)</option>
+                                <option value="fortinet" data-score="6">Fortinet (중간 경쟁)</option>
+                                <option value="paloalto" data-score="3">Palo Alto (매우 강력한 경쟁)</option>
+                                <option value="cato" data-score="7">Cato Networks (중간 경쟁)</option>
+                                <option value="local" data-score="8">국내 업체 (약한 경쟁)</option>
+                            </select>
+                        </div>
+
+                        <div class="slider-group">
+                            <div class="slider-label">
+                                <span>경쟁 상황 우위도</span>
+                                <span class="slider-score" id="competitive-slider-score">5</span>
+                            </div>
+                            <input type="range" min="1" max="10" value="5" class="slider" id="competitive-slider" onchange="updateSliderScore('competitive')">
+                            <div class="slider-labels">
+                                <span>매우 불리 (1)</span>
+                                <span>압도적 우위 (10)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 관계성 평가 -->
+                    <div class="scoring-section">
+                        <h2 class="section-title">🤝 관계성 평가</h2>
+                        
+                        <div class="slider-group">
+                            <div class="slider-label">
+                                <span>담당자와의 관계 깊이</span>
+                                <span class="slider-score" id="relationship-slider-score">5</span>
+                            </div>
+                            <input type="range" min="1" max="10" value="5" class="slider" id="relationship-slider" onchange="updateSliderScore('relationship')">
+                            <div class="slider-labels">
+                                <span>처음 만남 (1)</span>
+                                <span>매우 친밀 (10)</span>
+                            </div>
+                        </div>
+
+                        <div class="slider-group">
+                            <div class="slider-label">
+                                <span>내부 챔피언 확보</span>
+                                <span class="slider-score" id="champion-slider-score">5</span>
+                            </div>
+                            <input type="range" min="1" max="10" value="5" class="slider" id="champion-slider" onchange="updateSliderScore('champion')">
+                            <div class="slider-labels">
+                                <span>챔피언 없음 (1)</span>
+                                <span>강력한 챔피언 (10)</span>
+                            </div>
+                        </div>
+
+                        <div class="info-row">
+                            <div class="form-group">
+                                <label for="last-contact">마지막 접촉일</label>
+                                <input type="date" id="last-contact" onchange="updateAnalysis()">
+                            </div>
+                            <div class="form-group">
+                                <label for="meetings-count">총 미팅 횟수</label>
+                                <input type="number" id="meetings-count" min="0" max="50" placeholder="0" onchange="updateAnalysis()">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 통합 분석 모드 -->
+                <div class="mode-content" id="unified-mode">
+                    <div style="text-align: center; padding: 50px 20px; background: #f0fdf4; border-radius: 15px; border: 2px solid #16a34a;">
+                        <div style="font-size: 3rem; margin-bottom: 20px;">🎯</div>
+                        <h3 style="color: #15803d; margin-bottom: 15px;">통합 분석 모드</h3>
+                        <p style="color: #166534;">BANT 검증과 Lead Scoring 결과를 종합하여 최종 고객 등급과 액션 플랜을 제시합니다.</p>
+                        <p style="color: #166534; margin-top: 10px; font-size: 0.9rem;">먼저 BANT 검증 또는 Lead Scoring을 완료해주세요.</p>
+                    </div>
+                </div>
+
+                <button class="calculate-btn" onclick="calculateFinalScore()">
+                    🎯 종합 분석 수행하기
+                </button>
+            </div>
+
+            <div class="results-section">
+                <h2 class="section-title">📈 분석 결과</h2>
+                
+                <div id="no-results" class="empty-state">
+                    <div class="empty-state-icon">📊</div>
+                    <h3>분석 결과 대기</h3>
+                    <p>좌측에서 정보를 입력하고<br>분석을 수행하세요.</p>
+                </div>
+
+                <div id="results-content" class="hidden">
+                    <div class="result-summary">
+                        <h3>종합 점수</h3>
+                        <div class="result-value" id="final-score">0</div>
+                        <div class="result-grade" id="final-grade">분석 대기</div>
+                    </div>
+
+                    <div class="result-cards">
+                        <div class="result-card" id="bant-result-card">
+                            <div class="card-header">
+                                <div class="card-title">📋 BANT 검증</div>
+                                <div class="card-status" id="bant-result-status">대기</div>
+                            </div>
+                            <div class="card-score" id="bant-result-score">0/32</div>
+                        </div>
+
+                        <div class="result-card" id="lead-result-card">
+                            <div class="card-header">
+                                <div class="card-title">📊 Lead Score</div>
+                                <div class="card-status" id="lead-result-status">대기</div>
+                            </div>
+                            <div class="card-score" id="lead-result-score">0/100</div>
+                        </div>
+                    </div>
+
+                    <div class="recommendations" id="final-recommendations">
+                        <div class="rec-title">🎯 추천 액션 플랜</div>
+                        <ul class="rec-list" id="final-rec-list">
+                            <li>분석을 완료하면 맞춤 권장사항이 표시됩니다.</li>
+                        </ul>
+                    </div>
+
+                    <div class="action-buttons">
+                        <button class="action-btn action-primary" onclick="generateDetailedReport()">
+                            📄 상세 보고서
+                        </button>
+                        <button class="action-btn action-secondary" onclick="exportToNextPhase()">
+                            ⏭️ 다음 단계로
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentMode = 'bant';
+        let bantScores = { budget: 0, authority: 0, need: 0, timeline: 0 };
+        let leadScores = {
+            industry: 0,
+            companySize: 0,
+            budget: 5,
+            authority: 5,
+            need: 5,
+            timeline: 5,
+            painPoints: 0,
+            competition: 0,
+            competitive: 5,
+            relationship: 5,
+            champion: 5,
+            lastContact: 0,
+            meetings: 0
+        };
+
+        // 모드 전환
+        function switchMode(mode) {
+            currentMode = mode;
+            
+            // 버튼 활성화
+            document.querySelectorAll('.mode-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            // 컨텐츠 전환
+            document.querySelectorAll('.mode-content').forEach(content => content.classList.remove('active'));
+            document.getElementById(mode + '-mode').classList.add('active');
+        }
+
+        // BANT 점수 업데이트
+        function updateBANTScore(section) {
+            const checkboxes = document.querySelectorAll(`#${section}-section input[type="checkbox"]:checked`);
+            const score = checkboxes.length;
+            bantScores[section] = score;
+            
+            document.getElementById(section + '-score').textContent = `${score}/8`;
+            
+            // 실시간 계산
+            if (currentMode === 'bant' || currentMode === 'unified') {
+                calculateFinalScore();
+            }
+        }
+
+        // 슬라이더 점수 업데이트
+        function updateSliderScore(type) {
+            const slider = document.getElementById(type + '-slider');
+            const scoreDisplay = document.getElementById(type + '-slider-score');
+            const value = slider.value;
+            
+            scoreDisplay.textContent = value;
+            leadScores[type] = parseInt(value);
+            
+            // 실시간 계산
+            if (currentMode === 'scoring' || currentMode === 'unified') {
+                calculateFinalScore();
+            }
+        }
+
+        // Pain Points 업데이트
+        function updatePainPoints() {
+            let painScore = 0;
+            document.querySelectorAll('#painPoints input[type="checkbox"]:checked').forEach(checkbox => {
+                painScore += parseInt(checkbox.value);
+                checkbox.closest('.checklist-item').classList.add('checked');
+            });
+            
+            document.querySelectorAll('#painPoints input[type="checkbox"]:not(:checked)').forEach(checkbox => {
+                checkbox.closest('.checklist-item').classList.remove('checked');
+            });
+            
+            leadScores.painPoints = Math.min(painScore, 40);
+            
+            if (currentMode === 'scoring' || currentMode === 'unified') {
+                calculateFinalScore();
+            }
+        }
+
+        // 일반 업데이트
+        function updateAnalysis() {
+            // Industry
+            const industry = document.getElementById('industry');
+            if (industry.selectedIndex > 0) {
+                leadScores.industry = parseInt(industry.options[industry.selectedIndex].dataset.score);
+            }
+            
+            // Company Size
+            const companySize = document.getElementById('company-size');
+            if (companySize.selectedIndex > 0) {
+                leadScores.companySize = parseInt(companySize.options[companySize.selectedIndex].dataset.score);
+            }
+            
+            // Competition
+            const competition = document.getElementById('competition');
+            if (competition.selectedIndex >= 0) {
+                leadScores.competition = parseInt(competition.options[competition.selectedIndex].dataset.score) || 0;
+            }
+            
+            // Last Contact
+            const lastContact = document.getElementById('last-contact');
+            if (lastContact.value) {
+                const contactDate = new Date(lastContact.value);
+                const now = new Date();
+                const daysDiff = Math.floor((now - contactDate) / (1000 * 60 * 60 * 24));
+                
+                if (daysDiff <= 7) leadScores.lastContact = 10;
+                else if (daysDiff <= 30) leadScores.lastContact = 8;
+                else if (daysDiff <= 90) leadScores.lastContact = 6;
+                else if (daysDiff <= 180) leadScores.lastContact = 4;
+                else leadScores.lastContact = 2;
+            }
+            
+            // Meetings Count
+            const meetings = document.getElementById('meetings-count');
+            if (meetings.value) {
+                const count = parseInt(meetings.value);
+                if (count >= 5) leadScores.meetings = 10;
+                else if (count >= 3) leadScores.meetings = 8;
+                else if (count >= 2) leadScores.meetings = 6;
+                else if (count >= 1) leadScores.meetings = 4;
+                else leadScores.meetings = 2;
+            }
+            
+            if (currentMode === 'scoring' || currentMode === 'unified') {
+                calculateFinalScore();
+            }
+        }
+
+        // 최종 점수 계산
+        function calculateFinalScore() {
+            const bantTotal = Object.values(bantScores).reduce((a, b) => a + b, 0);
+            
+            // Lead Score 계산
+            const fitScore = Math.round((leadScores.industry + leadScores.companySize) * 0.9);
+            const bantLeadScore = Math.round((leadScores.budget + leadScores.authority + leadScores.need + leadScores.timeline) * 0.7);
+            const painPointScore = Math.round(leadScores.painPoints * 0.5);
+            const competitiveScore = Math.round((leadScores.competition + leadScores.competitive) * 0.8);
+            const relationshipScore = Math.round((leadScores.relationship + leadScores.champion + leadScores.lastContact/2 + leadScores.meetings/2) * 0.45);
+            
+            const leadTotal = fitScore + bantLeadScore + painPointScore + competitiveScore + relationshipScore;
+
+            displayResults(bantTotal, leadTotal);
+        }
+
+        function displayResults(bantScore, leadScore) {
+            document.getElementById('no-results').classList.add('hidden');
+            document.getElementById('results-content').classList.remove('hidden');
+            
+            // 모드별 최종 점수 계산
+            let finalScore, finalGrade, finalClass;
+            
+            if (currentMode === 'bant') {
+                finalScore = Math.round((bantScore / 32) * 100);
+                if (bantScore >= 24) {
+                    finalGrade = 'BANT 적격';
+                    finalClass = 'excellent';
+                } else if (bantScore >= 16) {
+                    finalGrade = 'BANT 부분적격';
+                    finalClass = 'good';
+                } else {
+                    finalGrade = 'BANT 미달';
+                    finalClass = 'poor';
+                }
+            } else if (currentMode === 'scoring') {
+                finalScore = leadScore;
+                if (leadScore >= 80) {
+                    finalGrade = 'A급 - Hot Lead';
+                    finalClass = 'excellent';
+                } else if (leadScore >= 60) {
+                    finalGrade = 'B급 - Warm Lead';
+                    finalClass = 'good';
+                } else if (leadScore >= 40) {
+                    finalGrade = 'C급 - Cold Lead';
+                    finalClass = 'warning';
+                } else {
+                    finalGrade = 'D급 - Poor Lead';
+                    finalClass = 'poor';
+                }
+            } else {
+                // 통합 분석
+                finalScore = Math.round((bantScore * 1.5 + leadScore * 0.8));
+                if (finalScore >= 90) {
+                    finalGrade = 'S급 - 최우선 고객';
+                    finalClass = 'excellent';
+                } else if (finalScore >= 70) {
+                    finalGrade = 'A급 - 우수 고객';
+                    finalClass = 'good';
+                } else if (finalScore >= 50) {
+                    finalGrade = 'B급 - 일반 고객';
+                    finalClass = 'warning';
+                } else {
+                    finalGrade = 'C급 - 저우선순위';
+                    finalClass = 'poor';
+                }
+            }
+            
+            document.getElementById('final-score').textContent = finalScore;
+            document.getElementById('final-grade').textContent = finalGrade;
+            
+            // 결과 카드 업데이트
+            updateResultCard('bant-result', bantScore, 32);
+            updateResultCard('lead-result', leadScore, 100);
+            
+            // 추천사항 생성
+            generateFinalRecommendations(finalScore, finalClass);
+        }
+
+        function updateResultCard(cardId, score, maxScore) {
+            const card = document.getElementById(cardId + '-card');
+            const status = document.getElementById(cardId + '-status');
+            const scoreDisplay = document.getElementById(cardId + '-score');
+            
+            scoreDisplay.textContent = `${score}/${maxScore}`;
+            
+            const percentage = (score / maxScore) * 100;
+            
+            if (percentage >= 75) {
+                card.className = 'result-card excellent';
+                status.className = 'card-status status-excellent';
+                status.textContent = '우수';
+            } else if (percentage >= 50) {
+                card.className = 'result-card good';
+                status.className = 'card-status status-good';
+                status.textContent = '양호';
+            } else if (percentage >= 25) {
+                card.className = 'result-card warning';
+                status.className = 'card-status status-warning';
+                status.textContent = '보통';
+            } else {
+                card.className = 'result-card poor';
+                status.className = 'card-status status-poor';
+                status.textContent = '미흡';
+            }
+        }
+
+        function generateFinalRecommendations(score, gradeClass) {
+            const recList = document.getElementById('final-rec-list');
+            let recommendations = [];
+            
+            if (gradeClass === 'excellent') {
+                recommendations = [
+                    '즉시 고위급 미팅 일정 확정 및 의사결정권자 직접 접촉',
+                    'C-level 맞춤 ROI 분석서 및 기술 제안서 작성',
+                    'PoC 제안 및 기술 데모 일정 수립',
+                    '최우선 리소스 배정 및 전담팀 구성',
+                    '경쟁사 대응 전략 수립 및 차별화 포인트 강화'
+                ];
+            } else if (gradeClass === 'good') {
+                recommendations = [
+                    '1-2주 내 후속 미팅 제안 및 관계자 확대',
+                    '업종별 레퍼런스 사례 공유 및 벤치마킹',
+                    '부족한 BANT 영역에 대한 추가 정보 수집',
+                    'ROI 분석을 통한 구체적 가치 제안',
+                    '기술팀과 협력한 솔루션 워크샵 개최'
+                ];
+            } else if (gradeClass === 'warning') {
+                recommendations = [
+                    '관계 구축 중심의 장기 접근 전략 수립',
+                    '정기적 정보 제공 및 업계 동향 공유',
+                    'Pain Point 심화 분석 및 니즈 개발',
+                    '챔피언 발굴 및 내부 지지자 확보',
+                    '분기별 상황 변화 모니터링'
+                ];
+            } else {
+                recommendations = [
+                    '최소한의 관계 유지 활동만 수행',
+                    '6개월~1년 후 재평가 일정 설정',
+                    '시장 상황 변화 시 재접근 고려',
+                    '다른 우선순위 고객에 리소스 집중',
+                    '간헐적 정보 제공으로 관계 유지'
+                ];
+            }
+            
+            recList.innerHTML = recommendations.map(rec => `<li>${rec}</li>`).join('');
+        }
+
+        function generateDetailedReport() {
+            alert('상세 분석 보고서를 생성합니다.\n실제 구현 시 PDF 형태로 다운로드 가능합니다.');
+        }
+
+        function exportToNextPhase() {
+            alert('분석 결과를 다음 단계 도구로 전송합니다.\n(Value Engineering & Positioning 단계)');
+        }
+
+        // 초기화
+        window.onload = function() {
+            document.getElementById('evaluation-date').value = new Date().toISOString().split('T')[0];
+            
+            // 슬라이더 초기값 설정
+            ['budget', 'authority', 'need', 'timeline', 'competitive', 'relationship', 'champion'].forEach(slider => {
+                updateSliderScore(slider);
+            });
+        };
+    </script>
+</body>
+</html>

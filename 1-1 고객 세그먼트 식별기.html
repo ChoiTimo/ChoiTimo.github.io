@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartWAN 고객 세그먼트 식별기</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .section {
+            margin-bottom: 40px;
+            padding: 30px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            border-left: 5px solid #667eea;
+        }
+
+        .section h2 {
+            color: #2d3748;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+            display: flex;
+            align-items: center;
+        }
+
+        .section h2::before {
+            content: "🎯";
+            margin-right: 10px;
+            font-size: 1.2em;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #4a5568;
+        }
+
+        .form-group select,
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .form-group select:focus,
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .checkbox-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .checkbox-item:hover {
+            border-color: #667eea;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.1);
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            width: auto;
+            margin-right: 12px;
+            transform: scale(1.2);
+        }
+
+        .checkbox-item.checked {
+            border-color: #667eea;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .analyze-btn {
+            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 10px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: block;
+            margin: 40px auto;
+            box-shadow: 0 5px 15px rgba(72, 187, 120, 0.3);
+        }
+
+        .analyze-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(72, 187, 120, 0.4);
+        }
+
+        .results {
+            margin-top: 40px;
+            padding: 30px;
+            background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+            border-radius: 15px;
+            border: 2px solid #e2e8f0;
+            display: none;
+        }
+
+        .results.show {
+            display: block;
+            animation: slideIn 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .segment-card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border-left: 5px solid #48bb78;
+        }
+
+        .segment-title {
+            font-size: 1.4em;
+            font-weight: 700;
+            color: #2d3748;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        .priority-badge {
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            font-weight: 600;
+            margin-left: 15px;
+        }
+
+        .tier1 {
+            background: #48bb78;
+            color: white;
+        }
+
+        .tier2 {
+            background: #ed8936;
+            color: white;
+        }
+
+        .tier3 {
+            background: #a0aec0;
+            color: white;
+        }
+
+        .approach-strategy {
+            background: #ebf8ff;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 15px;
+            border-left: 4px solid #3182ce;
+        }
+
+        .value-props {
+            background: #f0fff4;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 15px;
+            border-left: 4px solid #48bb78;
+        }
+
+        .persona-match {
+            background: #fef5e7;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 15px;
+            border-left: 4px solid #ed8936;
+        }
+
+        .recommended-questions {
+            background: #f7fafc;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 15px;
+            border-left: 4px solid #667eea;
+        }
+
+        .recommended-questions ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .recommended-questions li {
+            padding: 8px 0;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .recommended-questions li::before {
+            content: "💬";
+            position: absolute;
+            left: 0;
+        }
+
+        .metric {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            margin: 5px;
+            font-weight: 600;
+            font-size: 0.9em;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 0;
+                border-radius: 0;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+            
+            .checkbox-group {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎯 SmartWAN 고객 세그먼트 식별기</h1>
+            <p>5분만에 고객 유형을 파악하고 맞춤 접근 전략을 확인하세요</p>
+        </div>
+
+        <div class="content">
+            <!-- 1. 기본 정보 -->
+            <div class="section">
+                <h2>기본 고객 정보</h2>
+                
+                <div class="form-group">
+                    <label for="company">회사명</label>
+                    <input type="text" id="company" placeholder="예: 삼성전자, SK텔레콤">
+                </div>
+
+                <div class="form-group">
+                    <label for="industry">업종</label>
+                    <select id="industry">
+                        <option value="">업종을 선택하세요</option>
+                        <option value="manufacturing">🏭 제조업 (반도체/전자/자동차/화학)</option>
+                        <option value="financial">🏦 금융업 (은행/증권/보험/핀테크)</option>
+                        <option value="enterprise">🏢 기업서비스 (통신/물류/건설/컨설팅)</option>
+                        <option value="public">🏛️ 공공/준공공 (정부/지자체/공기업/교육)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="size">기업 규모</label>
+                    <select id="size">
+                        <option value="">규모를 선택하세요</option>
+                        <option value="global">🌍 글로벌 대기업 (매출 1조원 이상, 해외법인 10개 이상)</option>
+                        <option value="midmarket">🏢 중견기업 (매출 1,000억~1조원, 해외법인 1~9개)</option>
+                        <option value="smb">🏪 중소기업 (매출 100~1,000억원, 국내 중심)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="maturity">IT 성숙도</label>
+                    <select id="maturity">
+                        <option value="">IT 성숙도를 선택하세요</option>
+                        <option value="leader">🚀 디지털 선도기업 (클라우드 퍼스트, DevOps 문화, CISO 조직)</option>
+                        <option value="follower">⚡ 디지털 추격기업 (디지털 전환 진행 중, 하이브리드 IT)</option>
+                        <option value="conservative">🐢 보수적 기업 (온프레미스 중심, 레거시 시스템 비중 높음)</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- 2. Pain Point 식별 -->
+            <div class="section">
+                <h2>주요 Pain Point 식별</h2>
+                <p style="margin-bottom: 20px; color: #718096;">현재 고객이 겪고 있는 문제점들을 모두 선택해주세요. (복수 선택 가능)</p>
+                
+                <div class="checkbox-group" id="painPoints">
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="slow_network" value="slow_network">
+                        <label for="slow_network">🐌 해외 법인과의 네트워크 속도 지연</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="vpn_security" value="vpn_security">
+                        <label for="vpn_security">🔓 VPN 보안 취약점 우려</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="high_cost" value="high_cost">
+                        <label for="high_cost">💰 네트워크 운영비 부담</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="complex_manage" value="complex_manage">
+                        <label for="complex_manage">🔧 복잡한 멀티벤더 솔루션 관리</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="compliance" value="compliance">
+                        <label for="compliance">📋 보안 규제 대응 (ZTNA 의무화 등)</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="remote_work" value="remote_work">
+                        <label for="remote_work">🏠 원격근무 보안 관리 어려움</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="video_quality" value="video_quality">
+                        <label for="video_quality">📹 글로벌 화상회의 품질 문제</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="data_transfer" value="data_transfer">
+                        <label for="data_transfer">📊 대용량 데이터 전송 지연</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. 의사결정자 정보 -->
+            <div class="section">
+                <h2>의사결정자 정보</h2>
+                
+                <div class="form-group">
+                    <label for="decision_maker">주요 의사결정자 직책</label>
+                    <select id="decision_maker">
+                        <option value="">의사결정자를 선택하세요</option>
+                        <option value="cio">👔 CIO/CDO/IT본부장 (디지털 전환 책임자)</option>
+                        <option value="ciso">🔒 CISO/보안팀장 (정보보호 책임자)</option>
+                        <option value="it_manager">💻 IT팀장/네트워크 관리자 (기술 실무진)</option>
+                        <option value="cfo">💰 CFO/재무팀장 (예산 승인자)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="budget_range">예상 IT 예산 규모 (연간)</label>
+                    <select id="budget_range">
+                        <option value="">예산 규모를 선택하세요</option>
+                        <option value="high">💎 100억원 이상</option>
+                        <option value="medium">💰 10억~100억원</option>
+                        <option value="low">💵 1억~10억원</option>
+                        <option value="minimal">🪙 1억원 미만</option>
+                    </select>
+                </div>
+            </div>
+
+            <button class="analyze-btn" onclick="analyzeCustomer()">
+                🎯 고객 세그먼트 분석하기
+            </button>
+
+            <!-- 분석 결과 -->
+            <div class="results" id="results">
+                <div id="segmentResult"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 체크박스 시각적 피드백
+        document.querySelectorAll('.checkbox-item input[type="checkbox"]').forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                const item = this.closest('.checkbox-item');
+                if (this.checked) {
+                    item.classList.add('checked');
+                } else {
+                    item.classList.remove('checked');
+                }
+            });
+        });
+
+        function analyzeCustomer() {
+            const company = document.getElementById('company').value;
+            const industry = document.getElementById('industry').value;
+            const size = document.getElementById('size').value;
+            const maturity = document.getElementById('maturity').value;
+            const decisionMaker = document.getElementById('decision_maker').value;
+            const budgetRange = document.getElementById('budget_range').value;
+
+            // Pain Points 수집
+            const painPoints = [];
+            document.querySelectorAll('#painPoints input[type="checkbox"]:checked').forEach(checkbox => {
+                painPoints.push(checkbox.value);
+            });
+
+            if (!industry || !size || !maturity) {
+                alert('기본 정보를 모두 입력해주세요.');
+                return;
+            }
+
+            // 세그먼트 분석 로직
+            const segmentData = determineSegment(industry, size, maturity, painPoints, decisionMaker, budgetRange);
+            displayResults(company, segmentData, painPoints, decisionMaker);
+        }
+
+        function determineSegment(industry, size, maturity, painPoints, decisionMaker, budgetRange) {
+            let tier = 3;
+            let segmentName = '';
+            let priority = '';
+            let approachStrategy = '';
+            let valueProps = [];
+            let personaMatch = '';
+            let questions = [];
+
+            // Tier 1 세그먼트 판정
+            if ((industry === 'manufacturing' && size === 'global' && maturity === 'leader') ||
+                (industry === 'financial' && (size === 'global' || size === 'midmarket') && maturity === 'follower') ||
+                (industry === 'enterprise' && maturity === 'leader')) {
+                tier = 1;
+                priority = 'Tier 1 - 최우선 공략 세그먼트';
+            }
+            // Tier 2 세그먼트 판정
+            else if ((industry === 'manufacturing' && size === 'midmarket' && maturity === 'conservative') ||
+                     (industry === 'public' && maturity === 'conservative') ||
+                     (industry === 'enterprise' && size === 'global' && maturity === 'follower')) {
+                tier = 2;
+                priority = 'Tier 2 - 2차 공략 세그먼트';
+            }
+            else {
+                tier = 3;
+                priority = 'Tier 3 - 장기 육성 세그먼트';
+            }
+
+            // 업종별 세부 전략
+            switch(industry) {
+                case 'manufacturing':
+                    segmentName = '🏭 제조업';
+                    approachStrategy = '해외 공장과의 대용량 데이터 전송 지연 해결과 글로벌 화상회의 품질 개선에 집중. 생산성 향상 ROI를 정량적으로 제시하고 PoC 검증을 통한 개선 효과 입증.';
+                    valueProps = [
+                        '🚀 해외 공장 네트워크 속도 개선 (PoC 진행 평균 300% 이상)',
+                        '💰 해외 네트워크 관리 비용 평균 30% 절감',
+                        '📊 실시간 글로벌 데이터 동기화',
+                        '🏭 제조업 특화 레퍼런스 다수 보유'
+                    ];
+                    questions = [
+                        '해외 공장과의 데이터 동기화에서 가장 큰 어려움은?',
+                        '글로벌 화상회의 품질 문제로 인한 업무 지연이 있나요?',
+                        '현재 핸드캐리로 데이터를 전송하는 비용은?',
+                        '생산 데이터의 실시간 모니터링이 필요한가요?'
+                    ];
+                    break;
+
+                case 'financial':
+                    segmentName = '🏦 금융업';
+                    approachStrategy = '금융 규제 강화(전자금융법, 개인정보보호법) 대응과 VPN 보안 취약점 해결에 집중. 제로트러스트 CC인증과 컴플라이언스 대응 방안을 핵심으로 제시.';
+                    valueProps = [
+                        '🔒 국내 최초 ZTNA CC인증 보안',
+                        '📋 금융 규제 완벽 대응',
+                        '🚀 해외 법인 네트워크 성능 개선 (PoC 진행 평균 300% 이상)',
+                        '🛡️ VPN 대비 99% 해킹 리스크 감소'
+                    ];
+                    questions = [
+                        '현재 VPN 보안에 대한 우려사항이 있나요?',
+                        '제로트러스트 도입 계획이나 요구사항이 있나요?',
+                        '해외 법인과의 금융 데이터 전송 보안은?',
+                        '금융 규제 대응을 위한 보안 강화 필요성은?'
+                    ];
+                    break;
+
+                case 'enterprise':
+                    segmentName = '🏢 기업서비스';
+                    approachStrategy = '통신/IT 업계의 높은 기술 이해도를 활용한 기술적 우수성 중심 접근. 레퍼런스 효과 극대화와 파트너십 기회 모색.';
+                    valueProps = [
+                        '🌐 AI 기반 자동 네트워크 최적화',
+                        '📊 실시간 글로벌 네트워크 모니터링',
+                        '⚡ 99.9% 가용성 보장',
+                        '🤝 기술 파트너십 기회'
+                    ];
+                    questions = [
+                        '현재 네트워크 모니터링 솔루션의 한계는?',
+                        '글로벌 서비스 제공 시 네트워크 품질 이슈는?',
+                        '24/7 네트워크 운영 부담은 어느 정도인가요?',
+                        '기술 파트너십에 대한 관심이 있나요?'
+                    ];
+                    break;
+
+                case 'public':
+                    segmentName = '🏛️ 공공/준공공';
+                    approachStrategy = '보안과 안정성을 최우선으로 하는 공공부문 특성을 고려. 정부 정책(제로트러스트 의무화) 대응과 예산 대비 효과성 강조.';
+                    valueProps = [
+                        '🔒 정부 보안 정책 완벽 대응',
+                        '💰 예산 대비 최고 효율성',
+                        '🛡️ 국산 솔루션 신뢰성',
+                        '📋 공공부문 레퍼런스 보유'
+                    ];
+                    questions = [
+                        '제로트러스트 도입 의무화 준비 상황은?',
+                        '현재 네트워크 보안 예산 규모는?',
+                        '해외 출장/파견 시 보안 접속 방안은?',
+                        '국산 솔루션 선호 정책이 있나요?'
+                    ];
+                    break;
+            }
+
+            // 의사결정자별 페르소나 매칭
+            switch(decisionMaker) {
+                case 'cio':
+                    personaMatch = '👔 CIO 페르소나: 디지털 전환 성과 창출 압박과 IT비용 최적화 딜레마를 겪고 있습니다. 비즈니스 임팩트 중심의 ROI 계산서와 경쟁사 벤치마킹 자료가 필요합니다.';
+                    break;
+                case 'ciso':
+                    personaMatch = '🔒 CISO 페르소나: VPN 취약점과 제로트러스트 도입 압박을 받고 있습니다. 보안 인증서, 컴플라이언스 대응 방안, 보안 아키텍처 자료가 필요합니다.';
+                    break;
+                case 'it_manager':
+                    personaMatch = '💻 IT 운영팀 페르소나: 네트워크 장애와 복잡한 멀티벤더 관리로 스트레스를 받고 있습니다. 기술적 상세 스펙, 운영 편의성, 기술지원 프로세스 설명이 필요합니다.';
+                    break;
+                case 'cfo':
+                    personaMatch = '💰 CFO 페르소나: 투자 대비 효과를 정량적으로 검증하고 싶어합니다. TCO 분석, ROI 계산, 비용 절감 효과 증명이 필요합니다.';
+                    break;
+            }
+
+            return {
+                tier, segmentName, priority, approachStrategy, valueProps, personaMatch, questions
+            };
+        }
+
+        function displayResults(company, segmentData, painPoints, decisionMaker) {
+            const resultsDiv = document.getElementById('results');
+            const segmentResultDiv = document.getElementById('segmentResult');
+
+            let painPointText = '';
+            const painPointMap = {
+                'slow_network': '해외 법인 네트워크 지연',
+                'vpn_security': 'VPN 보안 취약점',
+                'high_cost': '네트워크 운영비 부담',
+                'complex_manage': '복잡한 솔루션 관리',
+                'compliance': '보안 규제 대응',
+                'remote_work': '원격근무 보안',
+                'video_quality': '화상회의 품질',
+                'data_transfer': '대용량 데이터 전송'
+            };
+
+            painPoints.forEach(point => {
+                painPointText += `<span class="metric">${painPointMap[point]}</span>`;
+            });
+
+            segmentResultDiv.innerHTML = `
+                <div class="segment-card">
+                    <div class="segment-title">
+                        ${segmentData.segmentName} 세그먼트 분석 결과
+                        <span class="priority-badge tier${segmentData.tier}">${segmentData.priority}</span>
+                    </div>
+                    
+                    <p><strong>고객명:</strong> ${company || '입력된 고객'}</p>
+                    <p><strong>식별된 Pain Points:</strong></p>
+                    <div style="margin: 10px 0;">${painPointText}</div>
+
+                    <div class="approach-strategy">
+                        <h3>🎯 권장 접근 전략</h3>
+                        <p>${segmentData.approachStrategy}</p>
+                    </div>
+
+                    <div class="value-props">
+                        <h3>💎 핵심 가치 제안</h3>
+                        <ul>
+                            ${segmentData.valueProps.map(prop => `<li>${prop}</li>`).join('')}
+                        </ul>
+                    </div>
+
+                    <div class="persona-match">
+                        <h3>👤 타겟 페르소나 분석</h3>
+                        <p>${segmentData.personaMatch}</p>
+                    </div>
+
+                    <div class="recommended-questions">
+                        <h3>💬 추천 질문 스크립트</h3>
+                        <ul>
+                            ${segmentData.questions.map(q => `<li>${q}</li>`).join('')}
+                        </ul>
+                    </div>
+
+                    <div style="margin-top: 20px; padding: 15px; background: #e6fffa; border-radius: 10px; border-left: 4px solid #38b2ac;">
+                        <h3>📋 다음 단계 액션 플랜</h3>
+                        <ol>
+                            <li><strong>ROI 계산:</strong> 고객 맞춤 ROI 분석서 작성</li>
+                            <li><strong>레퍼런스 공유:</strong> 동일 업종 성공 사례 제시</li>
+                            <li><strong>데모 준비:</strong> Pain Point 해결 중심 데모 시나리오</li>
+                            <li><strong>제안서 작성:</strong> 세그먼트별 맞춤 제안서 템플릿 활용</li>
+                        </ol>
+                    </div>
+                </div>
+            `;
+
+            resultsDiv.classList.add('show');
+            resultsDiv.scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
