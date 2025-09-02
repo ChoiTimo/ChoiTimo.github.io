@@ -383,8 +383,8 @@
                 <div class="nav-phase active" data-target="overview">개요</div>
                 <div class="nav-phase" data-target="phase1">1단계: 잠재고객</div>
                 <div class="nav-phase" data-target="phase2">2단계: 가치 평가</div>
-                <div class="nav-phase" data-target="phase3">3단계: 관계 관리</div>
-                <div class="nav-phase" data-target="phase4">4단계: 제안 & 협상</div>
+                <div class="nav-phase" data-target="phase3">3단계: 제안 & 협상</div>
+                <div class="nav-phase" data-target="phase4">4단계: 관계 관리</div>
                 <div class="nav-phase" data-target="phase5">5단계: 파이프라인</div>
             </div>
         </div>
@@ -405,12 +405,12 @@
                         <button class="quick-btn" onclick="scrollToSection('phase1')">📊 BANT & Lead Scoring</button>
                         <button class="quick-btn" onclick="scrollToSection('phase2')">💰 ROI 계산기</button>
                         <button class="quick-btn" onclick="scrollToSection('phase2')">⚔️ 경쟁사 배틀카드</button>
-                        <button class="quick-btn" onclick="scrollToSection('phase3')">👥 관계 매핑</button>
-                        <button class="quick-btn" onclick="scrollToSection('phase3')">📋 팔로업 추적</button>
-                        <button class="quick-btn" onclick="scrollToSection('phase4')">🤝 협상 플레이북</button>
+                        <button class="quick-btn" onclick="scrollToSection('phase3')">🤝 협상 플레이북</button>
+                        <button class="quick-btn" onclick="scrollToSection('phase3')">💰 ZTNA 가격 계산기</button>
+                        <button class="quick-btn" onclick="scrollToSection('phase4')">👥 관계 매핑</button>
+                        <button class="quick-btn" onclick="scrollToSection('phase4')">📋 팔로업 추적</button>
                         <button class="quick-btn" onclick="scrollToSection('phase5')">📊 Win/Loss 분석</button>
                         <button class="quick-btn" onclick="scrollToSection('phase5')">📈 계정 성장 계획</button>
-                        <button class="quick-btn" onclick="scrollToSection('phase5')">💰 ZTNA 가격 계산기</button>
                     </div>
                 </div>
 
@@ -557,11 +557,56 @@
                 </div>
             </div>
 
-            <!-- 3단계: 관계 및 이해관계자 관리 -->
+            <!-- 3단계: 제안 및 협상 -->
             <div class="phase-container" id="phase3">
                 <div class="phase-header">
-                    <div class="phase-title">👥 3단계: 관계 및 이해관계자 관리</div>
-                    <div class="phase-title-en">Phase 3: Relationship & Stakeholder Management</div>
+                    <div class="phase-title">💼 3단계: 제안 및 협상</div>
+                    <div class="phase-title-en">Phase 3: Proposal & Negotiation</div>
+                    <div class="phase-description">효과적인 제안서를 작성하고 성공적인 협상을 통해 계약을 성사시킵니다.</div>
+                </div>
+
+                <div class="tools-grid">
+                    <div class="tool-card existing">
+                        <div class="tool-status status-existing">✅ 기존 도구</div>
+                        <div class="tool-title">
+                            <span class="tool-icon">🤝</span>
+                            협상 플레이북
+                        </div>
+                        <div class="tool-title-en">Negotiation Playbook</div>
+                        <div class="tool-description">다양한 협상 상황별 전략과 대응 방법을 체계화한 실무 가이드</div>
+                        <ul class="tool-features">
+                            <li>상황별 협상 전략</li>
+                            <li>가격 협상 대응 스크립트</li>
+                            <li>계약 조건 체크리스트</li>
+                            <li>성사 후 관리 가이드</li>
+                        </ul>
+                        <button class="launch-btn" onclick="window.open('https://choitimo.github.io/4-3%20negotiation_playbook.html', '_blank')">도구 실행</button>
+                    </div>
+
+                    <div class="tool-card existing">
+                        <div class="tool-status status-existing">✅ 기존 도구</div>
+                        <div class="tool-title">
+                            <span class="tool-icon">💰</span>
+                            ZTNA 가격 계산기
+                        </div>
+                        <div class="tool-title-en">ZTNA Pricing Calculator</div>
+                        <div class="tool-description">고객 규모와 요구사항에 맞는 ZTNA 솔루션의 최적 가격을 산출하고 견적서를 생성</div>
+                        <ul class="tool-features">
+                            <li>사용자 수 기반 가격 산정</li>
+                            <li>기능별 옵션 선택 및 계산</li>
+                            <li>경쟁사 대비 가격 비교</li>
+                            <li>맞춤형 견적서 생성 및 출력</li>
+                        </ul>
+                        <button class="launch-btn" onclick="window.open('https://choitimo.github.io/ztna-pricing-calculator.html', '_blank')">도구 실행</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4단계: 관계 및 이해관계자 관리 -->
+            <div class="phase-container" id="phase4">
+                <div class="phase-header">
+                    <div class="phase-title">👥 4단계: 관계 및 이해관계자 관리</div>
+                    <div class="phase-title-en">Phase 4: Relationship & Stakeholder Management</div>
                     <div class="phase-description">핵심 의사결정자들과의 관계를 체계적으로 구축하고 관리합니다.</div>
                 </div>
 
@@ -598,34 +643,6 @@
                             <li>진행 상황 대시보드</li>
                         </ul>
                         <button class="launch-btn" onclick="window.open('https://choitimo.github.io/3-3%20smartwan_followup_tracker%20(1).html', '_blank')">도구 실행</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 4단계: 제안 및 협상 -->
-            <div class="phase-container" id="phase4">
-                <div class="phase-header">
-                    <div class="phase-title">💼 4단계: 제안 및 협상</div>
-                    <div class="phase-title-en">Phase 4: Proposal & Negotiation</div>
-                    <div class="phase-description">효과적인 제안서를 작성하고 성공적인 협상을 통해 계약을 성사시킵니다.</div>
-                </div>
-
-                <div class="tools-grid">
-                    <div class="tool-card existing">
-                        <div class="tool-status status-existing">✅ 기존 도구</div>
-                        <div class="tool-title">
-                            <span class="tool-icon">🤝</span>
-                            협상 플레이북
-                        </div>
-                        <div class="tool-title-en">Negotiation Playbook</div>
-                        <div class="tool-description">다양한 협상 상황별 전략과 대응 방법을 체계화한 실무 가이드</div>
-                        <ul class="tool-features">
-                            <li>상황별 협상 전략</li>
-                            <li>가격 협상 대응 스크립트</li>
-                            <li>계약 조건 체크리스트</li>
-                            <li>성사 후 관리 가이드</li>
-                        </ul>
-                        <button class="launch-btn" onclick="window.open('https://choitimo.github.io/4-3%20negotiation_playbook.html', '_blank')">도구 실행</button>
                     </div>
                 </div>
             </div>
@@ -671,23 +688,6 @@
                             <li>수익 예측 모델링</li>
                         </ul>
                         <button class="launch-btn" onclick="window.open('https://choitimo.github.io/5-3%20account_growth_planner.html', '_blank')">도구 실행</button>
-                    </div>
-
-                    <div class="tool-card existing">
-                        <div class="tool-status status-existing">✅ 기존 도구</div>
-                        <div class="tool-title">
-                            <span class="tool-icon">💰</span>
-                            ZTNA 가격 계산기
-                        </div>
-                        <div class="tool-title-en">ZTNA Pricing Calculator</div>
-                        <div class="tool-description">고객 규모와 요구사항에 맞는 ZTNA 솔루션의 최적 가격을 산출하고 견적서를 생성</div>
-                        <ul class="tool-features">
-                            <li>사용자 수 기반 가격 산정</li>
-                            <li>기능별 옵션 선택 및 계산</li>
-                            <li>경쟁사 대비 가격 비교</li>
-                            <li>맞춤형 견적서 생성 및 출력</li>
-                        </ul>
-                        <button class="launch-btn" onclick="window.open('https://choitimo.github.io/ztna-pricing-calculator.html', '_blank')">도구 실행</button>
                     </div>
                 </div>
             </div>
