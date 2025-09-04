@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartWAN ROI Calculator v5</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0;
+            min-height: 600px;
+        }
+
+        .input-section {
+            padding: 40px;
+            background: #f8fcfc;
+            border-right: 1px solid #e2e8f0;
+            overflow-y: auto;
+            max-height: 1000px;
+        }
+
+        .results-section {
+            padding: 40px;
+            background: white;
+            overflow-y: auto;
+            max-height: 1000px;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            color: #1e293b;
+            margin-bottom: 30px;
+            border-bottom: 3px solid #3b82f6;
+            padding-bottom: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 8px;
+        }
+        
+        .form-group .unit {
+            font-weight: 400;
+            font-size: 0.9rem;
+            color: #64748b;
+        }
+
+        .form-group select,
+        .form-group input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-group select:focus,
+        .form-group input:focus {
+            outline: none;
+            border-color: #3b82f6;
+        }
+
+        .input-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .calculate-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+            margin-top: 20px;
+        }
+
+        .calculate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(5, 150, 105, 0.3);
+        }
+
+        .roi-summary {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .roi-summary h3 {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+        }
+
+        .roi-value {
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .roi-period {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .metric-card {
+            background: #f1f5f9;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #3b82f6;
+        }
+        
+        .metric-card.productivity { border-left-color: #f59e0b; }
+        .metric-card.operational { border-left-color: #ef4444; }
+        .metric-card.security { border-left-color: #38b2ac; }
+        .metric-card.cost { border-left-color: #10b981; }
+
+        .metric-card h4 {
+            color: #1e293b;
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .metric-card p {
+            font-size: 0.8rem;
+            color: #64748b;
+            line-height: 1.4;
+            margin-top: 5px;
+        }
+
+        .metric-value {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #059669;
+        }
+
+        .metric-unit {
+            font-size: 0.9rem;
+            color: #64748b;
+            margin-left: 5px;
+        }
+
+        .chart-container {
+            background: #f8fcfc;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+
+        .chart-title {
+            text-align: center;
+            color: #1e293b;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .bar-chart {
+            display: flex;
+            align-items: end;
+            height: 200px;
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .bar {
+            flex: 1;
+            background: linear-gradient(to top, #3b82f6, #60a5fa);
+            border-radius: 5px 5px 0 0;
+            position: relative;
+            min-height: 20px;
+        }
+
+        .bar.current {
+            background: linear-gradient(to top, #ef4444, #f87171);
+        }
+
+        .bar-label {
+            position: absolute;
+            bottom: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #374151;
+            white-space: nowrap;
+        }
+
+        .bar-value {
+            position: absolute;
+            top: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.8rem;
+            font-weight: bold;
+            color: #1e293b;
+        }
+
+        .benefits-list {
+            background: #fef3c7;
+            border: 2px solid #fbbf24;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .benefits-list h4 {
+            color: #92400e;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+
+        .benefits-list ul {
+            list-style: none;
+        }
+
+        .benefits-list li {
+            color: #78350f;
+            margin-bottom: 8px;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .benefits-list li::before {
+            content: "✔";
+            position: absolute;
+            left: 0;
+            color: #059669;
+            font-weight: bold;
+        }
+        
+        .additional-section {
+            margin-top: 30px;
+        }
+        
+        .additional-section h3 {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: #4a5568;
+        }
+        
+        .process-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            font-size: 0.9em;
+        }
+
+        .process-table th, .process-table td {
+            border: 1px solid #e2e8f0;
+            padding: 12px;
+            text-align: center;
+        }
+
+        .process-table th {
+            background: #e2e8f0;
+            color: #4a5568;
+            font-weight: 600;
+        }
+        
+        .explanation-box {
+            background: #e8f5e8;
+            border: 2px solid #c8e6c9;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 15px;
+        }
+        
+        .explanation-box h5 {
+            color: #2e7d32;
+            margin-bottom: 8px;
+        }
+        
+        .explanation-box p {
+            font-size: 0.8rem;
+            color: #388e3c;
+            line-height: 1.4;
+        }
+
+        .warning-note {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 15px;
+            font-size: 0.85rem;
+            color: #856404;
+        }
+        
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+
+            .input-section {
+                border-right: none;
+                border-bottom: 1px solid #e2e8f0;
+            }
+
+            .input-group {
+                grid-template-columns: 1fr;
+            }
+
+            .metrics-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 SmartWAN ROI Calculator v5</h1>
+            <p>네트워크 투자 수익률을 정확하게 분석하세요</p>
+        </div>
+
+        <div class="main-content">
+            <div class="input-section">
+                <h2 class="section-title">📊 기본 정보 입력</h2>
+                
+                <div class="form-group">
+                    <label for="industry">업종 <span class="unit">(업종 선택 시 샘플 데이터가 자동 입력됩니다)</span></label>
+                    <select id="industry">
+                        <option value="">업종을 선택하세요</option>
+                        <option value="manufacturing">제조업 (반도체/전자/자동차)</option>
+                        <option value="finance">금융업 (은행/증권/보험)</option>
+                        <option value="enterprise">기업서비스 (통신/물류/유통)</option>
+                        <option value="public">공공/준공공기관</option>
+                        <option value="other">기타</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="company-size">기업 규모</label>
+                    <select id="company-size">
+                        <option value="">기업 규모를 선택하세요</option>
+                        <option value="large">대기업 (매출 1조원 이상)</option>
+                        <option value="medium">중견기업 (매출 1,000억~1조원)</option>
+                        <option value="small">중소기업 (매출 1,000억원 이하)</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <div class="form-group">
+                        <label for="locations">해외 법인 수</label>
+                        <input type="number" id="locations" min="1" max="100" placeholder="예: 5">
+                    </div>
+                    <div class="form-group">
+                        <label for="employees">전체 임직원 수</label>
+                        <input type="number" id="employees" min="10" max="100000" placeholder="예: 1000">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="overseas-employees">해외 법인 임직원 수 <span class="unit">(네트워크 영향 직원)</span></label>
+                    <input type="number" id="overseas-employees" min="0" placeholder="예: 300">
+                </div>
+                
+                <h2 class="section-title additional-section">💰 상세 비용 및 리스크 입력</h2>
+
+                <h3 style="margin: 30px 0 20px 0; color: #1e293b;">1. 현재 네트워크 관련 비용</h3>
+
+                <div class="input-group">
+                    <div class="form-group">
+                        <label for="current-cost">월 네트워크 회선/운영비 <span class="unit">(만원)</span></label>
+                        <input type="number" id="current-cost" min="1" placeholder="예: 500">
+                    </div>
+                    <div class="form-group">
+                        <label for="admin-salary">네트워크 관리자 연봉 <span class="unit">(만원)</span></label>
+                        <input type="number" id="admin-salary" min="1" placeholder="예: 5000">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="downtime-cost">네트워크 장애 시 시간당 손실 <span class="unit">(만원)</span></label>
+                    <input type="number" id="downtime-cost" min="0" placeholder="예: 1000">
+                </div>
+                <div class="form-group">
+                    <label for="downtime-hours">연간 예상 장애 시간 <span class="unit">(시간)</span></label>
+                    <input type="number" id="downtime-hours" min="0" placeholder="예: 24">
+                </div>
+
+                <h3 style="margin: 30px 0 20px 0; color: #1e293b;">2. 생산성 저하 및 비효율 관련</h3>
+                <div class="form-group">
+                    <label for="lost-time-per-employee">네트워크 지연으로 인한 직원당 주당 손실 시간 <span class="unit">(시간)</span></label>
+                    <input type="number" id="lost-time-per-employee" min="0" step="0.5" placeholder="예: 2">
+                </div>
+                
+                <div class="form-group">
+                    <label for="it-troubleshoot-hours">해외 법인 네트워크 장애 해결에 투입되는 월평균 관리자 시간 <span class="unit">(시간)</span></label>
+                    <input type="number" id="it-troubleshoot-hours" min="0" placeholder="예: 40">
+                </div>
+
+                <h3 style="margin: 30px 0 20px 0; color: #1e293b;">3. 보안 및 운영 리스크 관련</h3>
+                <div class="form-group">
+                    <label for="security-breach-cost">보안 사고 발생 시 예상 손실 비용 <span class="unit">(만원)</span></label>
+                    <input type="number" id="security-breach-cost" min="0" placeholder="예: 50000">
+                </div>
+                <div class="form-group">
+                    <label for="breach-probability">현재 연간 보안 사고 발생 확률 <span class="unit">(%)</span></label>
+                    <input type="number" id="breach-probability" min="0" max="100" placeholder="예: 10">
+                </div>
+                <div class="form-group">
+                    <label for="breach-probability-reduction">SmartWAN 도입 시 보안 사고 확률 감소율 <span class="unit">(%)</span></label>
+                    <input type="number" id="breach-probability-reduction" min="0" max="100" placeholder="예: 90">
+                </div>
+                
+                <button class="calculate-btn" onclick="calculateROI()">💡 ROI 계산하기</button>
+            </div>
+
+            <div class="results-section">
+                <h2 class="section-title">📈 투자 수익률 분석</h2>
+                
+                <div id="results" class="hidden">
+                    <div class="roi-summary">
+                        <h3>SmartWAN 도입 효과</h3>
+                        <div class="roi-value" id="roi-percentage">0%</div>
+                        <div class="roi-period">3년 투자 수익률</div>
+                    </div>
+
+                    <div class="metrics-grid">
+                        <div class="metric-card">
+                            <h4>연간 총 절감액</h4>
+                            <div class="metric-value" id="annual-savings">0<span class="metric-unit">만원</span></div>
+                        </div>
+                        <div class="metric-card">
+                            <h4>투자 회수 기간</h4>
+                            <div class="metric-value" id="payback-period">0<span class="metric-unit">개월</span></div>
+                        </div>
+                        <div class="metric-card">
+                            <h4>네트워크 속도 개선</h4>
+                            <div class="metric-value" id="performance-improvement">0<span class="metric-unit">배</span></div>
+                        </div>
+                        <div class="metric-card">
+                            <h4>보안 리스크 감소</h4>
+                            <div class="metric-value" id="security-risk-reduction">0<span class="metric-unit">%</span></div>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 30px;">
+                        <h3 style="color: #1e293b;">투자 회수 과정</h3>
+                        <p class="result-description">
+                            SmartWAN 도입으로 예상되는 3년간의 투자 비용과 절감액 비교입니다.
+                        </p>
+                        <table class="process-table">
+                            <thead>
+                                <tr>
+                                    <th>구분</th>
+                                    <th>1년차</th>
+                                    <th>2년차</th>
+                                    <th>3년차</th>
+                                    <th>총합</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>투자 비용 <span class="unit">(만원)</span></td>
+                                    <td id="investment-year1">0</td>
+                                    <td id="investment-year2">0</td>
+                                    <td id="investment-year3">0</td>
+                                    <td id="investment-total">0</td>
+                                </tr>
+                                <tr>
+                                    <td>절감액 <span class="unit">(만원)</span></td>
+                                    <td id="savings-year1">0</td>
+                                    <td id="savings-year2">0</td>
+                                    <td id="savings-year3">0</td>
+                                    <td id="savings-total">0</td>
+                                </tr>
+                                <tr style="background: #f0f9ff;">
+                                    <td><strong>순 효익</strong> <span class="unit">(만원)</span></td>
+                                    <td id="net-year1">0</td>
+                                    <td id="net-year2">0</td>
+                                    <td id="net-year3">0</td>
+                                    <td id="net-total">0</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="explanation-box">
+                            <h5>ROI 계산 방법</h5>
+                            <p><strong>투자 수익률(ROI):</strong> (3년간 총 절감액 - 3년간 총 투자 비용) ÷ 3년간 총 투자 비용 × 100%</p>
+                            <p><strong>투자 회수 기간:</strong> 총 투자 비용 ÷ 월 평균 절감액</p>
+                        </div>
+                    </div>
+                    
+                    <h3 style="margin: 30px 0 20px 0; color: #1e293b;">상세 절감 효과</h3>
+                    <div class="metrics-grid">
+                        <div class="metric-card productivity">
+                            <h4>💡 생산성 향상 효과</h4>
+                            <p>네트워크 지연 감소로 인한 업무 효율성 증대</p>
+                            <div class="metric-value" id="productivity-savings">0<span class="metric-unit">만원/년</span></div>
+                        </div>
+                        <div class="metric-card operational">
+                            <h4>⚙️ 운영 효율화 효과</h4>
+                            <p>장애 처리 시간 단축 및 관리 자동화</p>
+                            <div class="metric-value" id="operational-savings">0<span class="metric-unit">만원/년</span></div>
+                        </div>
+                        <div class="metric-card security">
+                            <h4>🛡️ 보안 리스크 감소 효과</h4>
+                            <p>예상 보안 사고 손실 비용 절감</p>
+                            <div class="metric-value" id="risk-savings">0<span class="metric-unit">만원/년</span></div>
+                        </div>
+                        <div class="metric-card cost">
+                            <h4>💰 네트워크 비용 절감</h4>
+                            <p>효율적인 대역폭 관리 및 최적화</p>
+                            <div class="metric-value" id="network-cost-savings">0<span class="metric-unit">만원/년</span></div>
+                        </div>
+                    </div>
+                    
+                    <div class="chart-container">
+                        <div class="chart-title">3년 총 비용 비교 (단위: 억원)</div>
+                        <div class="bar-chart">
+                            <div class="bar current" id="current-bar">
+                                <div class="bar-label">현재 솔루션</div>
+                                <div class="bar-value" id="current-total">0</div>
+                            </div>
+                            <div class="bar" id="smartwan-bar">
+                                <div class="bar-label">SmartWAN</div>
+                                <div class="bar-value" id="smartwan-total">0</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="benefits-list">
+                        <h4>🎯 맞춤형 개선 효과</h4>
+                        <ul id="industry-benefits">
+                            <li>네트워크 성능 대폭 향상</li>
+                            <li>운영 복잡성 감소</li>
+                            <li>보안 강화 (ZTNA 적용)</li>
+                        </ul>
+                    </div>
+
+                    <div class="warning-note">
+                        ⚠️ <strong>참고:</strong> 본 계산은 업계 평균값과 일반적인 가정을 기반으로 한 예상치입니다. 
+                        실제 ROI는 기업별 상황에 따라 달라질 수 있으며, 정확한 분석을 위해서는 상세한 컨설팅이 필요합니다.
+                    </div>
+                </div>
+
+                <div id="no-results">
+                    <div style="text-align: center; color: #64748b; padding: 50px;">
+                        <div style="font-size: 4rem; margin-bottom: 20px;">📊</div>
+                        <h3>ROI 분석 결과</h3>
+                        <p>좌측 정보를 입력하고 계산 버튼을 클릭하세요.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function calculateROI() {
+            // 1. 입력값 가져오기
+            const industry = document.getElementById('industry').value;
+            const companySize = document.getElementById('company-size').value;
+            const locations = parseInt(document.getElementById('locations').value) || 0;
+            const employees = parseInt(document.getElementById('employees').value) || 0;
+            const overseasEmployees = parseInt(document.getElementById('overseas-employees').value) || Math.round(employees * 0.2); // 기본값: 전체의 20%
+            const currentCost = parseInt(document.getElementById('current-cost').value) || 0;
+            const adminSalary = parseInt(document.getElementById('admin-salary').value) || 0;
+            const downtimeCost = parseInt(document.getElementById('downtime-cost').value) || 0;
+            const downtimeHours = parseInt(document.getElementById('downtime-hours').value) || 24;
+            const lostTimePerEmployee = parseFloat(document.getElementById('lost-time-per-employee').value) || 0;
+            const itTroubleshootHours = parseInt(document.getElementById('it-troubleshoot-hours').value) || 0;
+            const securityBreachCost = parseInt(document.getElementById('security-breach-cost').value) || 0;
+            const breachProbability = parseInt(document.getElementById('breach-probability').value) || 10;
+            const breachReduction = parseInt(document.getElementById('breach-probability-reduction').value) || 0;
+
+            // 입력값 검증
+            if (!industry || !companySize || employees === 0 || currentCost === 0) {
+                alert('필수 정보를 모두 입력해주세요.');
+                return;
+            }
+
+            // 2. 계수 및 상수 설정
+            const industryMultipliers = {
+                'manufacturing': { speed: 10, efficiency: 0.35, security: 0.90, cost_reduction: 0.25 },
+                'finance': { speed: 8, efficiency: 0.30, security: 0.95, cost_reduction: 0.20 },
+                'enterprise': { speed: 7, efficiency: 0.32, security: 0.85, cost_reduction: 0.22 },
+                'public': { speed: 5, efficiency: 0.25, security: 0.90, cost_reduction: 0.18 },
+                'other': { speed: 6, efficiency: 0.28, security: 0.85, cost_reduction: 0.20 }
+            };
+            
+            const sizeMultipliers = {
+                'large': 1.2,
+                'medium': 1.1,
+                'small': 1.0
+            };
+            
+            const multiplier = industryMultipliers[industry];
+            const sizeMultiplier = sizeMultipliers[companySize];
+
+            // 3. SmartWAN 관련 비용 계산 (만원 단위)
+            // 직원당 월 5천원, 법인당 월 100만원으로 현실적 조정
+            const smartwanLicenseCostMonthly = (employees * 0.5) + (locations * 100);
+            const smartwanInitialCost = smartwanLicenseCostMonthly * 3; // 초기 설치비 (3개월분)
+            const smartwanAnnualOperatingCost = smartwanLicenseCostMonthly * 12;
+
+            // 4. 절감 효과 계산 (연간, 만원 단위)
+            
+            // 4-1. 생산성 향상 절감
+            // 영향받는 직원(해외 법인)의 평균 시급 계산 (연봉 4000만원 기준)
+            const avgEmployeeSalary = 4000; // 만원
+            const avgHourlyRate = avgEmployeeSalary / 12 / 160; // 월 160시간 기준, 약 2.08만원/시간
+            
+            // 주당 손실 시간 × 52주 × 영향받는 직원 수 × 시급 × 개선율(50%)
+            const productivitySavings = overseasEmployees * lostTimePerEmployee * 52 * avgHourlyRate * 0.5;
+            
+            // 4-2. 운영 효율화 절감
+            // 관리자 시급 계산
+            const adminHourlyRate = adminSalary / 12 / 160;
+            // 월 절감 시간 × 12개월 × 시급 × 효율성 계수
+            const operationalSavings = itTroubleshootHours * 12 * adminHourlyRate * multiplier.efficiency;
+            
+            // 4-3. 다운타임 감소 절감
+            const downtimeSavings = downtimeCost * downtimeHours * 0.7; // 70% 감소 가정
+            
+            // 4-4. 보안 리스크 감소 절감
+            // 연간 예상 손실 = 보안 사고 비용 × 발생 확률
+            const currentRiskCost = securityBreachCost * (breachProbability / 100);
+            const newRiskCost = securityBreachCost * (breachProbability * (1 - breachReduction/100) / 100);
+            const riskSavings = currentRiskCost - newRiskCost;
+            
+            // 4-5. 네트워크 비용 절감
+            const networkCostSavings = currentCost * 12 * multiplier.cost_reduction;
+
+            // 5. 총 절감액 및 ROI 계산
+            const totalAnnualSavings = productivitySavings + operationalSavings + downtimeSavings + riskSavings + networkCostSavings;
+            
+            // 첫해 투자비용 (초기 설치 + 운영비)
+            const firstYearInvestment = smartwanInitialCost + smartwanAnnualOperatingCost;
+            const annualInvestment = smartwanAnnualOperatingCost;
+            
+            // 3년간 총 비용과 절감액
+            const threeYearInvestment = firstYearInvestment + (annualInvestment * 2);
+            const threeYearSavings = totalAnnualSavings * 3;
+            const netBenefit = threeYearSavings - threeYearInvestment;
+            
+            // ROI 계산
+            const roiPercentage = threeYearInvestment > 0 ? Math.round((netBenefit / threeYearInvestment) * 100) : 0;
+            
+            // 투자 회수 기간 (개월)
+            const monthlyNetSavings = (totalAnnualSavings - annualInvestment) / 12;
+            let paybackMonths = monthlyNetSavings > 0 ? Math.round(firstYearInvestment / monthlyNetSavings) : 999;
+            
+            // 6. 결과 표시
+            document.getElementById('results').classList.remove('hidden');
+            document.getElementById('no-results').classList.add('hidden');
+
+            // 주요 지표 표시
+            document.getElementById('roi-percentage').textContent = roiPercentage.toLocaleString('ko-KR') + '%';
+            document.getElementById('annual-savings').innerHTML = Math.round(totalAnnualSavings).toLocaleString('ko-KR') + '<span class="metric-unit">만원</span>';
+            document.getElementById('payback-period').innerHTML = (paybackMonths > 100 ? '100+' : paybackMonths.toLocaleString('ko-KR')) + '<span class="metric-unit">개월</span>';
+            document.getElementById('performance-improvement').innerHTML = multiplier.speed.toLocaleString('ko-KR') + '<span class="metric-unit">배</span>';
+            document.getElementById('security-risk-reduction').innerHTML = breachReduction.toLocaleString('ko-KR') + '<span class="metric-unit">%</span>';
+            
+            // 상세 절감 효과 표시
+            document.getElementById('productivity-savings').innerHTML = Math.round(productivitySavings).toLocaleString('ko-KR') + '<span class="metric-unit">만원/년</span>';
+            document.getElementById('operational-savings').innerHTML = Math.round(operationalSavings + downtimeSavings).toLocaleString('ko-KR') + '<span class="metric-unit">만원/년</span>';
+            document.getElementById('risk-savings').innerHTML = Math.round(riskSavings).toLocaleString('ko-KR') + '<span class="metric-unit">만원/년</span>';
+            document.getElementById('network-cost-savings').innerHTML = Math.round(networkCostSavings).toLocaleString('ko-KR') + '<span class="metric-unit">만원/년</span>';
+            
+            // 7. 연도별 투자/절감액 표시
+            document.getElementById('investment-year1').textContent = Math.round(firstYearInvestment).toLocaleString('ko-KR');
+            document.getElementById('investment-year2').textContent = Math.round(annualInvestment).toLocaleString('ko-KR');
+            document.getElementById('investment-year3').textContent = Math.round(annualInvestment).toLocaleString('ko-KR');
+            document.getElementById('investment-total').textContent = Math.round(threeYearInvestment).toLocaleString('ko-KR');
+            
+            document.getElementById('savings-year1').textContent = Math.round(totalAnnualSavings).toLocaleString('ko-KR');
+            document.getElementById('savings-year2').textContent = Math.round(totalAnnualSavings).toLocaleString('ko-KR');
+            document.getElementById('savings-year3').textContent = Math.round(totalAnnualSavings).toLocaleString('ko-KR');
+            document.getElementById('savings-total').textContent = Math.round(threeYearSavings).toLocaleString('ko-KR');
+            
+            // 순 효익 표시
+            const netYear1 = totalAnnualSavings - firstYearInvestment;
+            const netYear2 = totalAnnualSavings - annualInvestment;
+            const netYear3 = totalAnnualSavings - annualInvestment;
+            
+            document.getElementById('net-year1').textContent = Math.round(netYear1).toLocaleString('ko-KR');
+            document.getElementById('net-year2').textContent = Math.round(netYear2).toLocaleString('ko-KR');
+            document.getElementById('net-year3').textContent = Math.round(netYear3).toLocaleString('ko-KR');
+            document.getElementById('net-total').textContent = Math.round(netBenefit).toLocaleString('ko-KR');
+
+            // 8. 차트 업데이트
+            // 현재 3년 총 비용: 네트워크 비용 + 다운타임 비용
+            const currentThreeYearCost = (currentCost * 12 * 3) + (downtimeCost * downtimeHours * 3);
+            const currentTotal = Math.round(currentThreeYearCost / 10000); // 억원 단위
+            
+            // SmartWAN 3년 총 비용: 투자비용
+            const smartwanTotal = Math.round(threeYearInvestment / 10000); // 억원 단위
+            
+            document.getElementById('current-total').textContent = currentTotal.toLocaleString('ko-KR');
+            document.getElementById('smartwan-total').textContent = smartwanTotal.toLocaleString('ko-KR');
+
+            const maxValue = Math.max(currentTotal, smartwanTotal);
+            if (maxValue > 0) {
+                document.getElementById('current-bar').style.height = (currentTotal / maxValue * 100) + '%';
+                document.getElementById('smartwan-bar').style.height = (smartwanTotal / maxValue * 100) + '%';
+            }
+
+            // 9. 업종별 혜택 업데이트
+            updateIndustryBenefits(industry);
+        }
+
+        function updateIndustryBenefits(industry) {
+            const benefits = {
+                'manufacturing': [
+                    '해외 공장과의 대용량 데이터 전송 속도 10배 향상',
+                    '생산 라인 모니터링 실시간성 확보',
+                    '글로벌 SCM 시스템 응답 시간 개선',
+                    '해외 법인 IT 운영 비용 25% 절감'
+                ],
+                'finance': [
+                    '금융 규제 대응 (전자금융법, 개인정보보호법)',
+                    'Zero Trust 보안 아키텍처 구현',
+                    '해외 지점 실시간 거래 처리 성능 향상',
+                    '컴플라이언스 관리 비용 20% 절감'
+                ],
+                'enterprise': [
+                    '전국 지점/대리점 네트워크 통합 관리',
+                    '클라우드 애플리케이션 성능 7배 향상',
+                    'SD-WAN 기반 유연한 네트워크 구성',
+                    '24/7 무중단 서비스 보장'
+                ],
+                'public': [
+                    '안정적이고 보안성 높은 네트워크 구축',
+                    '예산 절감 및 효율적 자원 활용',
+                    '대민 서비스 품질 향상',
+                    '재해 복구 시스템 강화'
+                ],
+                'other': [
+                    '네트워크 성능 6배 향상',
+                    '운영 자동화로 관리 부담 감소',
+                    '보안 위협 대응 능력 강화',
+                    'TCO 20% 절감'
+                ]
+            };
+
+            const benefitsList = document.getElementById('industry-benefits');
+            benefitsList.innerHTML = '';
+            
+            if (benefits[industry]) {
+                benefits[industry].forEach(benefit => {
+                    const li = document.createElement('li');
+                    li.textContent = benefit;
+                    benefitsList.appendChild(li);
+                });
+            }
+        }
+        
+        // 업종 선택 시 샘플 데이터 자동 입력
+        document.getElementById('industry').addEventListener('change', function() {
+            const industry = this.value;
+            const sampleData = {
+                'manufacturing': { 
+                    cost: 500, salary: 5000, downtime: 1000, downtimeHours: 24, 
+                    lostTime: 2, troubleshoot: 40, breachCost: 50000, 
+                    breachProbability: 10, breachReduction: 90, 
+                    employees: 1500, overseasEmployees: 300, locations: 5 
+                },
+                'finance': { 
+                    cost: 800, salary: 6000, downtime: 2000, downtimeHours: 12,
+                    lostTime: 1.5, troubleshoot: 30, breachCost: 100000, 
+                    breachProbability: 15, breachReduction: 95, 
+                    employees: 2500, overseasEmployees: 500, locations: 10 
+                },
+                'enterprise': { 
+                    cost: 700, salary: 5500, downtime: 1500, downtimeHours: 20,
+                    lostTime: 2.5, troubleshoot: 50, breachCost: 70000, 
+                    breachProbability: 12, breachReduction: 85, 
+                    employees: 2000, overseasEmployees: 400, locations: 8 
+                },
+                'public': { 
+                    cost: 400, salary: 4500, downtime: 800, downtimeHours: 16,
+                    lostTime: 1, troubleshoot: 20, breachCost: 30000, 
+                    breachProbability: 8, breachReduction: 90, 
+                    employees: 1000, overseasEmployees: 150, locations: 3 
+                },
+                'other': { 
+                    cost: 500, salary: 5000, downtime: 1000, downtimeHours: 24,
+                    lostTime: 2, troubleshoot: 40, breachCost: 50000, 
+                    breachProbability: 10, breachReduction: 90, 
+                    employees: 1000, overseasEmployees: 200, locations: 5 
+                }
+            };
+
+            if (sampleData[industry]) {
+                const data = sampleData[industry];
+                document.getElementById('current-cost').value = data.cost;
+                document.getElementById('admin-salary').value = data.salary;
+                document.getElementById('downtime-cost').value = data.downtime;
+                document.getElementById('downtime-hours').value = data.downtimeHours;
+                document.getElementById('lost-time-per-employee').value = data.lostTime;
+                document.getElementById('it-troubleshoot-hours').value = data.troubleshoot;
+                document.getElementById('security-breach-cost').value = data.breachCost;
+                document.getElementById('breach-probability').value = data.breachProbability;
+                document.getElementById('breach-probability-reduction').value = data.breachReduction;
+                document.getElementById('employees').value = data.employees;
+                document.getElementById('overseas-employees').value = data.overseasEmployees;
+                document.getElementById('locations').value = data.locations;
+                
+                // 기업 규모도 자동 선택
+                if (data.employees >= 1000) {
+                    document.getElementById('company-size').value = 'large';
+                } else if (data.employees >= 300) {
+                    document.getElementById('company-size').value = 'medium';
+                } else {
+                    document.getElementById('company-size').value = 'small';
+                }
+                
+                alert('업종별 샘플 데이터가 입력되었습니다! 계산 버튼을 클릭해주세요.');
+            }
+        });
+
+        // 전체 직원 수 변경 시 해외 직원 수 자동 제안
+        document.getElementById('employees').addEventListener('change', function() {
+            const totalEmployees = parseInt(this.value) || 0;
+            const overseasField = document.getElementById('overseas-employees');
+            if (!overseasField.value) {
+                overseasField.placeholder = `예: ${Math.round(totalEmployees * 0.2)}`;
+            }
+        });
+    </script>
+</body>
+</html>

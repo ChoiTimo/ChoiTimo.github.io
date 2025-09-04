@@ -1,0 +1,1014 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartWAN BANT & Lead Scoring 분석기</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            margin-bottom: 20px;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 0;
+            min-height: 800px;
+        }
+
+        .input-section {
+            padding: 40px;
+            background: #f8fafc;
+            overflow-y: auto;
+            max-height: 1200px;
+        }
+
+        .results-section {
+            padding: 40px;
+            background: white;
+            border-left: 1px solid #e2e8f0;
+            position: sticky;
+            top: 0;
+            max-height: 1200px;
+            overflow-y: auto;
+        }
+
+        .section-title {
+            font-size: 1.4rem;
+            color: #1e293b;
+            margin-bottom: 25px;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        .customer-info, .bant-section, .scoring-section {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            border-left: 5px solid #10b981;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+
+        .info-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px 15px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .bant-section {
+            border-left-color: #3b82f6;
+        }
+        
+        .bant-header {
+            margin-bottom: 20px;
+        }
+
+        .bant-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #1e40af;
+            margin-bottom: 5px;
+        }
+
+        .bant-subtitle {
+            color: #64748b;
+            font-size: 0.95rem;
+        }
+
+        .checklist-group {
+            margin-bottom: 25px;
+        }
+
+        .group-title {
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 15px;
+            font-size: 1rem;
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: flex-start;
+            padding: 12px 15px;
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .checklist-item:hover {
+            border-color: #3b82f6;
+            transform: translateY(-1px);
+        }
+
+        .checklist-item.checked {
+            border-color: #10b981;
+            background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+        }
+
+        .checklist-item input[type="checkbox"] {
+            margin-right: 12px;
+            margin-top: 2px;
+            transform: scale(1.2);
+            cursor: pointer;
+        }
+
+        .checklist-item label {
+            cursor: pointer;
+            line-height: 1.4;
+            margin: 0;
+            font-weight: 500;
+        }
+
+        .scoring-section {
+            border-left-color: #f59e0b;
+        }
+
+        .slider-group {
+            margin-bottom: 25px;
+        }
+
+        .slider-label {
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .slider-score {
+            background: #667eea;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 0.9rem;
+            min-width: 60px;
+            text-align: center;
+        }
+
+        .slider {
+            width: 100%;
+            height: 8px;
+            border-radius: 5px;
+            background: #e2e8f0;
+            outline: none;
+            transition: all 0.3s ease;
+            margin: 10px 0;
+        }
+
+        .slider::-webkit-slider-thumb {
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #667eea;
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(102, 126, 234, 0.3);
+        }
+
+        .slider::-moz-range-thumb {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #667eea;
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 2px 6px rgba(102, 126, 234, 0.3);
+        }
+
+        .slider-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            color: #64748b;
+            margin-top: 5px;
+        }
+
+        .calculate-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+            box-shadow: 0 5px 15px rgba(16, 185, 129, 0.3);
+        }
+
+        .calculate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(16, 185, 129, 0.4);
+        }
+        
+        .result-summary {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+        
+        .result-value {
+            font-size: 3rem;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        
+        .result-grade {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            opacity: 0.9;
+        }
+        
+        .result-cards {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        
+        .result-card {
+            background: #f8fafc;
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 4px solid #3b82f6;
+        }
+        
+        .result-card.excellent {
+            border-left-color: #10b981;
+            background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+        }
+        
+        .result-card.good {
+            border-left-color: #3b82f6;
+            background: linear-gradient(135deg, #eff6ff, #dbeafe);
+        }
+        
+        .result-card.warning {
+            border-left-color: #f59e0b;
+            background: linear-gradient(135deg, #fffbeb, #fef3c7);
+        }
+        
+        .result-card.poor {
+            border-left-color: #ef4444;
+            background: linear-gradient(135deg, #fef2f2, #fee2e2);
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .card-title {
+            font-weight: 600;
+            color: #1e293b;
+        }
+        
+        .card-score {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #1e40af;
+        }
+        
+        .card-status {
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .status-excellent {
+            background: #10b981;
+            color: white;
+        }
+        
+        .status-good {
+            background: #3b82f6;
+            color: white;
+        }
+        
+        .status-warning {
+            background: #f59e0b;
+            color: white;
+        }
+        
+        .status-poor {
+            background: #ef4444;
+            color: white;
+        }
+        
+        .recommendations {
+            background: #f0fdf4;
+            border: 2px solid #16a34a;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .rec-title {
+            color: #15803d;
+            font-weight: 700;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+        
+        .rec-list {
+            list-style: none;
+            margin: 0;
+        }
+        
+        .rec-list li {
+            color: #166534;
+            margin-bottom: 8px;
+            padding-left: 20px;
+            position: relative;
+            line-height: 1.4;
+        }
+        
+        .rec-list li::before {
+            content: "▶";
+            position: absolute;
+            left: 0;
+            color: #16a34a;
+            font-size: 0.8em;
+        }
+        
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .action-btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            background: #059669;
+            color: white;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .empty-state {
+            text-align: center;
+            color: #64748b;
+            padding: 50px 20px;
+        }
+        
+        .empty-state-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        @media (max-width: 1200px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .results-section {
+                border-left: none;
+                border-top: 1px solid #e2e8f0;
+                position: static;
+                max-height: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 0;
+                border-radius: 0;
+            }
+            
+            .input-section,
+            .results-section {
+                padding: 20px;
+            }
+            
+            .info-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎯 SmartWAN BANT & Lead Scoring 분석기</h1>
+            <p>체계적인 BANT 검증과 정량적 Lead Scoring을 통한 종합 고객 분석</p>
+        </div>
+
+        <div class="main-content">
+            <div class="input-section">
+                <div class="customer-info">
+                    <h2 style="color: #1e293b; margin-bottom: 20px; font-size: 1.2rem;">🏢 고객 기본 정보</h2>
+                    
+                    <div class="info-row">
+                        <div class="form-group">
+                            <label for="company-name">회사명 *</label>
+                            <input type="text" id="company-name" placeholder="예: 삼성전자">
+                        </div>
+                        <div class="form-group">
+                            <label for="contact-name">담당자명 *</label>
+                            <input type="text" id="contact-name" placeholder="예: 김영업">
+                        </div>
+                        <div class="form-group">
+                            <label for="contact-title">직책</label>
+                            <input type="text" id="contact-title" placeholder="예: IT본부장">
+                        </div>
+                    </div>
+
+                    <div class="info-row">
+                        <div class="form-group">
+                            <label for="industry">업종</label>
+                            <select id="industry">
+                                <option value="">업종 선택</option>
+                                <option value="manufacturing">제조업</option>
+                                <option value="finance">금융업</option>
+                                <option value="enterprise">기업서비스</option>
+                                <option value="public">공공기관</option>
+                                <option value="other">기타</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="company-size">기업 규모</label>
+                            <select id="company-size">
+                                <option value="">기업 규모 선택</option>
+                                <option value="global">글로벌 대기업</option>
+                                <option value="large">대기업</option>
+                                <option value="medium">중견기업</option>
+                                <option value="small">중소기업</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="evaluation-date">평가일</label>
+                            <input type="date" id="evaluation-date">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- BANT 평가 섹션 -->
+                <div class="bant-section">
+                    <div class="bant-header">
+                        <div class="bant-title">💰 B - Budget (예산)</div>
+                        <div class="bant-subtitle">예산 확보 상태 확인</div>
+                    </div>
+                    
+                    <div class="checklist-group">
+                        <div class="checklist-item">
+                            <input type="checkbox" id="b1" data-score="5">
+                            <label for="b1">예산 규모가 확정되었다</label>
+                        </div>
+                        <div class="checklist-item">
+                            <input type="checkbox" id="b2" data-score="5">
+                            <label for="b2">예산이 이미 확보되었다</label>
+                        </div>
+                        <div class="checklist-item">
+                            <input type="checkbox" id="b3" data-score="5">
+                            <label for="b3">예산 승인 프로세스가 명확하다</label>
+                        </div>
+                        <div class="checklist-item">
+                            <input type="checkbox" id="b4" data-score="5">
+                            <label for="b4">예상 ROI가 계산되었다</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bant-section">
+                    <div class="bant-header">
+                        <div class="bant-title">👔 A - Authority (권한)</div>
+                        <div class="bant-subtitle">의사결정 구조 파악</div>
+                    </div>
+                    
+                    <div class="checklist-group">
+                        <div class="checklist-item">
+                            <input type="checkbox" id="a1" data-score="5">
+                            <label for="a1">최종 의사결정권자를 알고 있다</label>
+                        </div>
+                        <div class="checklist-item">
+                            <input type="checkbox" id="a2" data-score="5">
+                            <label for="a2">담당자가 구매에 영향력이 있다</label>
+                        </div>
+                        <div class="checklist-item">
+                            <input type="checkbox" id="a3" data-score="5">
+                            <label for="a3">내부 챔피언이 확보되었다</label>
+                        </div>
+                        <div class="checklist-item">
+                            <input type="checkbox" id="a4" data-score="5">
+                            <label for="a4">의사결정 프로세스가 파악되었다</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bant-section">
+                    <div class="bant-header">
+                        <div class="bant-title">🎯 N - Need (필요성)</div>
+                        <div class="bant-subtitle">고객의 니즈 확인</div>
+                    </div>
+                    
+                    <div class="checklist-group">
+                        <div class="checklist-item">
+                            <input type="checkbox" id="n1" data-score="5">
+                            <label for="n1">현재 문제로 인한 손실이 측정되었다</label>
+                        </div>
+                        <div class="checklist-item">
+                            <input type="checkbox" id="n2" data-score="5">
+                            <label for="n2">문제 해결이 최우선 과제다</label>
+                        </div>
+                        <div class="checklist-item">
+                            <input type="checkbox" id="n3" data-score="5">
+                            <label for="n3">기대 효과가 구체적으로 정의되었다</label>
+                        </div>
+                        <div class="checklist-item">
+                            <input type="checkbox" id="n4" data-score="5">
+                            <label for="n4">대안 솔루션과 비교 검토 중이다</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bant-section">
+                    <div class="bant-header">
+                        <div class="bant-title">⏰ T - Timeline (시기)</div>
+                        <div class="bant-subtitle">구매 일정 확인</div>
+                    </div>
+                    
+                    <div class="checklist-group">
+                        <div class="checklist-item">
+                            <input type="checkbox" id="t1" data-score="5">
+                            <label for="t1">구매 목표 시기가 확정되었다</label>
+                        </div>
+                        <div class="checklist-item">
+                            <input type="checkbox" id="t2" data-score="5">
+                            <label for="t2">프로젝트 마감일이 정해졌다</label>
+                        </div>
+                        <div class="checklist-item">
+                            <input type="checkbox" id="t3" data-score="5">
+                            <label for="t3">긴급한 비즈니스 요구사항이 있다</label>
+                        </div>
+                        <div class="checklist-item">
+                            <input type="checkbox" id="t4" data-score="5">
+                            <label for="t4">PoC 일정이 확정되었다</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 추가 평가 요소 -->
+                <div class="scoring-section">
+                    <h2 class="section-title">🎯 Pain Points</h2>
+                    
+                    <div class="checkbox-group">
+                        <div class="checklist-item" data-score="3">
+                            <input type="checkbox" id="p1">
+                            <label for="p1">해외 법인 네트워크 속도 문제</label>
+                        </div>
+                        <div class="checklist-item" data-score="3">
+                            <input type="checkbox" id="p2">
+                            <label for="p2">VPN 보안 취약점</label>
+                        </div>
+                        <div class="checklist-item" data-score="3">
+                            <input type="checkbox" id="p3">
+                            <label for="p3">높은 네트워크 운영비</label>
+                        </div>
+                        <div class="checklist-item" data-score="3">
+                            <input type="checkbox" id="p4">
+                            <label for="p4">복잡한 멀티벤더 관리</label>
+                        </div>
+                        <div class="checklist-item" data-score="3">
+                            <input type="checkbox" id="p5">
+                            <label for="p5">보안 규제 대응 필요</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="scoring-section">
+                    <h2 class="section-title">⚔️ 경쟁 환경</h2>
+                    
+                    <div class="form-group">
+                        <label for="competition">주요 경쟁사</label>
+                        <select id="competition">
+                            <option value="none" data-score="5">경쟁사 없음</option>
+                            <option value="weak" data-score="4">약한 경쟁사</option>
+                            <option value="moderate" data-score="3">중간 수준 경쟁</option>
+                            <option value="strong" data-score="2">강력한 경쟁사</option>
+                            <option value="dominant" data-score="1">지배적 경쟁사</option>
+                        </select>
+                    </div>
+
+                    <div class="slider-group">
+                        <div class="slider-label">
+                            <span>우리의 경쟁 우위</span>
+                            <span class="slider-score" id="competitive-slider-score">5/10</span>
+                        </div>
+                        <input type="range" min="0" max="10" value="5" class="slider" id="competitive-slider" onchange="updateSliderScore('competitive')">
+                        <div class="slider-labels">
+                            <span>매우 불리</span>
+                            <span>압도적 우위</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="scoring-section">
+                    <h2 class="section-title">🤝 관계성</h2>
+                    
+                    <div class="slider-group">
+                        <div class="slider-label">
+                            <span>담당자와의 관계</span>
+                            <span class="slider-score" id="relationship-slider-score">5/10</span>
+                        </div>
+                        <input type="range" min="0" max="10" value="5" class="slider" id="relationship-slider" onchange="updateSliderScore('relationship')">
+                        <div class="slider-labels">
+                            <span>처음 만남</span>
+                            <span>매우 친밀</span>
+                        </div>
+                    </div>
+
+                    <div class="info-row">
+                        <div class="form-group">
+                            <label for="meetings-count">총 미팅 횟수</label>
+                            <select id="meetings-count">
+                                <option value="0">0회</option>
+                                <option value="1">1회</option>
+                                <option value="2">2회</option>
+                                <option value="3">3-4회</option>
+                                <option value="5">5회 이상</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="last-contact">마지막 접촉 시기</label>
+                            <select id="last-contact">
+                                <option value="7">1주일 이내</option>
+                                <option value="14">2주일 이내</option>
+                                <option value="30">1개월 이내</option>
+                                <option value="90">3개월 이내</option>
+                                <option value="180">3개월 이상</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="calculate-btn" onclick="calculateFinalScore()">
+                    🎯 종합 분석 수행하기
+                </button>
+            </div>
+
+            <div class="results-section">
+                <h2 class="section-title">📈 분석 결과</h2>
+                
+                <div id="no-results" class="empty-state">
+                    <div class="empty-state-icon">📊</div>
+                    <h3>분석 결과 대기</h3>
+                    <p>좌측에서 정보를 입력하고<br>분석을 수행하세요.</p>
+                </div>
+
+                <div id="results-content" class="hidden">
+                    <div class="result-summary">
+                        <h3>종합 점수</h3>
+                        <div class="result-value" id="final-score">0</div>
+                        <div class="result-grade" id="final-grade">분석 대기</div>
+                    </div>
+
+                    <div class="result-cards">
+                        <div class="result-card" id="bant-result-card">
+                            <div class="card-header">
+                                <div class="card-title">📋 BANT 점수</div>
+                                <div class="card-status" id="bant-result-status">대기</div>
+                            </div>
+                            <div class="card-score" id="bant-result-score">0/80</div>
+                        </div>
+
+                        <div class="result-card" id="other-result-card">
+                            <div class="card-header">
+                                <div class="card-title">📊 부가 요소</div>
+                                <div class="card-status" id="other-result-status">대기</div>
+                            </div>
+                            <div class="card-score" id="other-result-score">0/40</div>
+                        </div>
+                    </div>
+
+                    <div class="recommendations">
+                        <div class="rec-title">🎯 추천 액션 플랜</div>
+                        <ul class="rec-list" id="final-rec-list">
+                            <li>분석을 완료하면 맞춤 권장사항이 표시됩니다.</li>
+                        </ul>
+                    </div>
+
+                    <div class="action-buttons">
+                        <button class="action-btn" onclick="printReport()">
+                            🖨️ 리포트 출력
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 체크박스 상태 관리
+        document.querySelectorAll('.checklist-item').forEach(item => {
+            const checkbox = item.querySelector('input[type="checkbox"]');
+            if (checkbox) {
+                item.addEventListener('click', function(e) {
+                    if (e.target !== checkbox) {
+                        checkbox.checked = !checkbox.checked;
+                    }
+                    this.classList.toggle('checked', checkbox.checked);
+                });
+                
+                checkbox.addEventListener('change', function() {
+                    item.classList.toggle('checked', this.checked);
+                });
+            }
+        });
+
+        // 슬라이더 점수 업데이트
+        function updateSliderScore(type) {
+            const slider = document.getElementById(type + '-slider');
+            const scoreDisplay = document.getElementById(type + '-slider-score');
+            const value = slider.value;
+            scoreDisplay.textContent = `${value}/${slider.max}`;
+        }
+
+        // 최종 점수 계산
+        function calculateFinalScore() {
+            // 필수 입력값 검증
+            const companyName = document.getElementById('company-name').value;
+            const contactName = document.getElementById('contact-name').value;
+            if (!companyName || !contactName) {
+                alert('회사명과 담당자명은 필수 입력 항목입니다.');
+                return;
+            }
+
+            // 기본 점수 (모든 리드는 최소 30점)
+            let baseScore = 30;
+
+            // BANT 점수 계산 (최대 80점)
+            let bantScore = 0;
+            const bantItems = document.querySelectorAll('.bant-section input[type="checkbox"]:checked');
+            bantItems.forEach(item => {
+                bantScore += parseInt(item.dataset.score) || 0;
+            });
+
+            // Pain Points 점수 (최대 15점)
+            let painScore = 0;
+            const painItems = document.querySelectorAll('#p1:checked, #p2:checked, #p3:checked, #p4:checked, #p5:checked');
+            painItems.forEach(item => {
+                painScore += parseInt(item.parentElement.dataset.score) || 0;
+            });
+
+            // 경쟁 환경 점수 (최대 15점)
+            const competitionSelect = document.getElementById('competition');
+            const competitionScore = parseInt(competitionSelect.options[competitionSelect.selectedIndex].dataset.score) || 0;
+            const competitiveScore = parseInt(document.getElementById('competitive-slider').value);
+            const totalCompetitionScore = competitionScore + competitiveScore;
+
+            // 관계성 점수 (최대 10점)
+            const relationshipScore = parseInt(document.getElementById('relationship-slider').value);
+            
+            // 미팅 횟수 점수
+            const meetingsSelect = document.getElementById('meetings-count');
+            const meetingsScore = parseInt(meetingsSelect.value) || 0;
+            
+            // 마지막 접촉 점수
+            const lastContactSelect = document.getElementById('last-contact');
+            const lastContactValue = parseInt(lastContactSelect.value);
+            let contactScore = 0;
+            if (lastContactValue <= 7) contactScore = 5;
+            else if (lastContactValue <= 14) contactScore = 4;
+            else if (lastContactValue <= 30) contactScore = 3;
+            else if (lastContactValue <= 90) contactScore = 2;
+            else contactScore = 1;
+
+            // 기업 규모와 업종 보너스 (최대 10점)
+            let sizeBonus = 0;
+            const companySize = document.getElementById('company-size').value;
+            if (companySize === 'global') sizeBonus = 5;
+            else if (companySize === 'large') sizeBonus = 4;
+            else if (companySize === 'medium') sizeBonus = 3;
+            else if (companySize === 'small') sizeBonus = 2;
+
+            let industryBonus = 0;
+            const industry = document.getElementById('industry').value;
+            if (industry === 'manufacturing') industryBonus = 5;
+            else if (industry === 'finance') industryBonus = 4;
+            else if (industry === 'enterprise') industryBonus = 4;
+            else if (industry === 'public') industryBonus = 3;
+            else if (industry === 'other') industryBonus = 2;
+
+            // 부가 요소 총점 계산
+            const otherScore = painScore + totalCompetitionScore + relationshipScore + meetingsScore + contactScore + sizeBonus + industryBonus;
+
+            // 최종 점수 계산 (기본 30점 + BANT + 부가요소)
+            const finalScore = Math.min(100, baseScore + Math.round(bantScore * 0.8) + Math.round(otherScore * 0.5));
+
+            displayResults(bantScore, otherScore, finalScore);
+        }
+
+        function displayResults(bantScore, otherScore, finalScore) {
+            document.getElementById('no-results').classList.add('hidden');
+            document.getElementById('results-content').classList.remove('hidden');
+            
+            // 등급 결정
+            let finalGrade, finalClass;
+            if (finalScore >= 85) {
+                finalGrade = 'S급 - 최우선 고객';
+                finalClass = 'excellent';
+            } else if (finalScore >= 70) {
+                finalGrade = 'A급 - 우수 고객';
+                finalClass = 'good';
+            } else if (finalScore >= 55) {
+                finalGrade = 'B급 - 일반 고객';
+                finalClass = 'warning';
+            } else {
+                finalGrade = 'C급 - 장기 육성';
+                finalClass = 'poor';
+            }
+            
+            document.getElementById('final-score').textContent = finalScore;
+            document.getElementById('final-grade').textContent = finalGrade;
+            
+            // BANT 결과 카드
+            updateResultCard('bant-result', bantScore, 80);
+            
+            // 부가 요소 결과 카드
+            updateResultCard('other-result', otherScore, 40);
+            
+            // 추천사항 생성
+            generateRecommendations(finalScore, bantScore);
+        }
+
+        function updateResultCard(cardId, score, maxScore) {
+            const card = document.getElementById(cardId + '-card');
+            const status = document.getElementById(cardId + '-status');
+            const scoreDisplay = document.getElementById(cardId + '-score');
+            
+            scoreDisplay.textContent = `${score}/${maxScore}`;
+            
+            const percentage = (score / maxScore) * 100;
+            
+            if (percentage >= 75) {
+                card.className = 'result-card excellent';
+                status.className = 'card-status status-excellent';
+                status.textContent = '우수';
+            } else if (percentage >= 50) {
+                card.className = 'result-card good';
+                status.className = 'card-status status-good';
+                status.textContent = '양호';
+            } else if (percentage >= 25) {
+                card.className = 'result-card warning';
+                status.className = 'card-status status-warning';
+                status.textContent = '보통';
+            } else {
+                card.className = 'result-card poor';
+                status.className = 'card-status status-poor';
+                status.textContent = '미흡';
+            }
+        }
+
+        function generateRecommendations(finalScore, bantScore) {
+            const recList = document.getElementById('final-rec-list');
+            let recommendations = [];
+            
+            if (finalScore >= 85) {
+                recommendations = [
+                    '즉시 의사결정권자 미팅 추진',
+                    'PoC 또는 데모 일정 확정',
+                    '맞춤형 제안서 작성 및 제출',
+                    '계약 조건 협상 준비',
+                    '경쟁사 대응 전략 수립'
+                ];
+            } else if (finalScore >= 70) {
+                recommendations = [
+                    '2주 내 후속 미팅 설정',
+                    'ROI 분석 자료 준비',
+                    '레퍼런스 사례 공유',
+                    '기술 워크샵 제안',
+                    '내부 챔피언 확보 노력'
+                ];
+            } else if (finalScore >= 55) {
+                recommendations = [
+                    '정기적 팔로우업 체계 구축',
+                    '니즈 구체화를 위한 추가 미팅',
+                    '산업별 인사이트 제공',
+                    '장기 관계 구축 전략 수립',
+                    '분기별 상황 점검'
+                ];
+            } else {
+                recommendations = [
+                    '월간 뉴스레터 발송',
+                    '웨비나 초청',
+                    '6개월 후 재평가',
+                    '마케팅 자료 정기 제공',
+                    '최소 리소스로 관계 유지'
+                ];
+            }
+            
+            recList.innerHTML = recommendations.map(rec => `<li>${rec}</li>`).join('');
+        }
+
+        function printReport() {
+            window.print();
+        }
+
+        // 초기화
+        window.onload = function() {
+            document.getElementById('evaluation-date').value = new Date().toISOString().split('T')[0];
+            document.querySelectorAll('.slider').forEach(slider => {
+                updateSliderScore(slider.id.replace('-slider', ''));
+            });
+        };
+    </script>
+</body>
+</html>

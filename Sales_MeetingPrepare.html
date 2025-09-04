@@ -1,0 +1,1070 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartWAN 실무형 Meeting 준비 Toolkit</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .header p {
+            font-size: 1rem;
+            opacity: 0.9;
+            margin-bottom: 15px;
+        }
+
+        .timer-indicator {
+            background: rgba(255,255,255,0.2);
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0;
+            min-height: 800px;
+        }
+
+        .prep-section {
+            padding: 30px;
+            background: #f8fafc;
+            border-right: 1px solid #e2e8f0;
+            overflow-y: auto;
+            max-height: 800px;
+        }
+
+        .guide-section {
+            padding: 30px;
+            background: white;
+        }
+
+        .section-title {
+            font-size: 1.3rem;
+            color: #1e293b;
+            margin-bottom: 20px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .input-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-left: 4px solid #10b981;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .card-title {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #374151;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .form-field {
+            margin-bottom: 15px;
+        }
+
+        .form-field label {
+            display: block;
+            font-weight: 600;
+            color: #4b5563;
+            margin-bottom: 6px;
+            font-size: 0.9rem;
+        }
+
+        .form-field input,
+        .form-field select,
+        .form-field textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            transition: all 0.2s ease;
+        }
+
+        .form-field input:focus,
+        .form-field select:focus,
+        .form-field textarea:focus {
+            outline: none;
+            border-color: #10b981;
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+        }
+
+        .meeting-type-selector {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .type-option {
+            padding: 12px 15px;
+            background: #f8fafc;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: center;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .type-option:hover {
+            border-color: #10b981;
+            background: #f0fdf4;
+        }
+
+        .type-option.selected {
+            border-color: #10b981;
+            background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+            color: #15803d;
+        }
+
+        .participant-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .participant-item {
+            display: flex;
+            align-items: center;
+            padding: 8px 12px;
+            background: #f8fafc;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            font-size: 0.85rem;
+        }
+
+        .participant-role {
+            background: #e0f2fe;
+            color: #0c4a6e;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            margin-left: 8px;
+        }
+
+        .add-participant {
+            background: #10b981;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: all 0.2s ease;
+        }
+
+        .add-participant:hover {
+            background: #059669;
+        }
+
+        .generate-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 15px;
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+        }
+
+        .generate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4);
+        }
+
+        .guide-content {
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 20px;
+            min-height: 500px;
+        }
+
+        .no-guide {
+            text-align: center;
+            color: #64748b;
+            padding: 80px 20px;
+        }
+
+        .no-guide-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            opacity: 0.5;
+        }
+
+        .meeting-guide {
+            display: none;
+        }
+
+        .meeting-guide.show {
+            display: block;
+            animation: slideIn 0.4s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .guide-header {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .guide-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .guide-subtitle {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .guide-block {
+            background: white;
+            border-radius: 10px;
+            padding: 18px;
+            margin-bottom: 15px;
+            border-left: 4px solid #e5e7eb;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+
+        .guide-block.objectives {
+            border-left-color: #3b82f6;
+            background: linear-gradient(135deg, #eff6ff, #dbeafe);
+        }
+
+        .guide-block.questions {
+            border-left-color: #f59e0b;
+            background: linear-gradient(135deg, #fffbeb, #fef3c7);
+        }
+
+        .guide-block.objections {
+            border-left-color: #ef4444;
+            background: linear-gradient(135deg, #fef2f2, #fee2e2);
+        }
+
+        .guide-block.checklist {
+            border-left-color: #10b981;
+            background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+        }
+
+        .block-header {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .block-content {
+            font-size: 0.9rem;
+            line-height: 1.5;
+            color: #374151;
+        }
+
+        .question-list {
+            list-style: none;
+            margin: 10px 0;
+        }
+
+        .question-list li {
+            padding: 8px 0;
+            padding-left: 20px;
+            position: relative;
+            border-bottom: 1px solid #f1f5f9;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .question-list li:hover {
+            background: rgba(16, 185, 129, 0.05);
+            border-radius: 4px;
+        }
+
+        .question-list li::before {
+            content: "💬";
+            position: absolute;
+            left: 0;
+            font-size: 0.8em;
+        }
+
+        .objection-item {
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 6px;
+            padding: 10px;
+            margin: 8px 0;
+        }
+
+        .objection-title {
+            font-weight: 600;
+            color: #dc2626;
+            margin-bottom: 4px;
+            font-size: 0.85rem;
+        }
+
+        .objection-response {
+            color: #374151;
+            font-size: 0.8rem;
+            line-height: 1.4;
+        }
+
+        .checklist-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 6px;
+            margin-top: 10px;
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            padding: 6px 0;
+            font-size: 0.85rem;
+        }
+
+        .checklist-item input {
+            margin-right: 8px;
+            transform: scale(1.1);
+        }
+
+        .meeting-timer {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #10b981;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            z-index: 1000;
+            display: none;
+        }
+
+        .meeting-timer.show {
+            display: block;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .action-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 0.9rem;
+        }
+
+        .action-primary {
+            background: #3b82f6;
+            color: white;
+        }
+
+        .action-secondary {
+            background: #f1f5f9;
+            color: #374151;
+            border: 2px solid #d1d5db;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-1px);
+        }
+
+        .quick-templates {
+            background: #fef3c7;
+            border: 2px solid #f59e0b;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .template-buttons {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+
+        .template-btn {
+            background: #f59e0b;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .template-btn:hover {
+            background: #d97706;
+        }
+
+        @media (max-width: 968px) {
+            .content {
+                grid-template-columns: 1fr;
+            }
+            
+            .prep-section {
+                border-right: none;
+                border-bottom: 1px solid #e2e8f0;
+                max-height: none;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .meeting-type-selector {
+                grid-template-columns: 1fr;
+            }
+
+            .container {
+                margin: 0;
+                border-radius: 0;
+            }
+
+            .meeting-timer {
+                position: relative;
+                top: auto;
+                right: auto;
+                margin: 10px;
+                display: inline-block;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎯 실무형 Meeting 준비 Toolkit</h1>
+            <p>5분 투자로 완벽한 미팅 준비 완성</p>
+            <div class="timer-indicator">⏰ 평균 준비시간: 5분</div>
+        </div>
+
+        <div class="content">
+            <div class="prep-section">
+                <!-- 빠른 템플릿 -->
+                <div class="quick-templates">
+                    <h4 style="color: #92400e; margin-bottom: 8px;">⚡ 빠른 시작</h4>
+                    <div class="template-buttons">
+                        <button class="template-btn" onclick="loadTemplate('first')">첫 미팅</button>
+                        <button class="template-btn" onclick="loadTemplate('technical')">기술 미팅</button>
+                        <button class="template-btn" onclick="loadTemplate('proposal')">제안 미팅</button>
+                        <button class="template-btn" onclick="loadTemplate('closing')">클로징</button>
+                    </div>
+                </div>
+
+                <!-- 1. 미팅 기본 정보 -->
+                <div class="input-card">
+                    <div class="card-title">📅 미팅 기본 정보</div>
+                    
+                    <div class="form-row">
+                        <div class="form-field">
+                            <label>고객사</label>
+                            <input type="text" id="company" placeholder="예: 삼성전자">
+                        </div>
+                        <div class="form-field">
+                            <label>미팅 시간</label>
+                            <select id="duration">
+                                <option value="">선택</option>
+                                <option value="30">30분</option>
+                                <option value="60">60분</option>
+                                <option value="90">90분</option>
+                                <option value="120">120분</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-field">
+                        <label>미팅 유형</label>
+                        <div class="meeting-type-selector">
+                            <div class="type-option" onclick="selectMeetingType(this, 'first')" data-type="first">
+                                🤝 첫 미팅
+                            </div>
+                            <div class="type-option" onclick="selectMeetingType(this, 'technical')" data-type="technical">
+                                🔧 기술 미팅
+                            </div>
+                            <div class="type-option" onclick="selectMeetingType(this, 'proposal')" data-type="proposal">
+                                📋 제안 미팅
+                            </div>
+                            <div class="type-option" onclick="selectMeetingType(this, 'closing')" data-type="closing">
+                                🏆 클로징 미팅
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-field">
+                        <label>미팅 목표</label>
+                        <textarea id="objectives" rows="2" placeholder="이번 미팅에서 달성하고 싶은 구체적인 목표를 입력하세요"></textarea>
+                    </div>
+                </div>
+
+                <!-- 2. 참석자 정보 -->
+                <div class="input-card">
+                    <div class="card-title">👥 참석자 정보</div>
+                    
+                    <div class="form-row">
+                        <div class="form-field">
+                            <label>참석자 이름</label>
+                            <input type="text" id="participant-name" placeholder="예: 김영업">
+                        </div>
+                        <div class="form-field">
+                            <label>직책/역할</label>
+                            <select id="participant-role">
+                                <option value="">선택</option>
+                                <option value="decision-maker">의사결정권자</option>
+                                <option value="influencer">영향력자</option>
+                                <option value="user">실사용자</option>
+                                <option value="gatekeeper">관문지기</option>
+                                <option value="technical">기술담당자</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <button class="add-participant" onclick="addParticipant()">+ 참석자 추가</button>
+
+                    <div class="participant-list" id="participant-list">
+                        <!-- 동적으로 추가됨 -->
+                    </div>
+                </div>
+
+                <!-- 3. 고객 상황 -->
+                <div class="input-card">
+                    <div class="card-title">🎯 고객 현재 상황</div>
+                    
+                    <div class="form-field">
+                        <label>주요 Pain Point</label>
+                        <select id="main-pain">
+                            <option value="">선택</option>
+                            <option value="speed">네트워크 속도 지연</option>
+                            <option value="security">보안 취약점</option>
+                            <option value="cost">높은 운영비</option>
+                            <option value="management">관리 복잡성</option>
+                            <option value="compliance">규제 대응</option>
+                        </select>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-field">
+                            <label>현재 사용 솔루션</label>
+                            <input type="text" id="current-solution" placeholder="예: Cisco VPN">
+                        </div>
+                        <div class="form-field">
+                            <label>구매 예정 시기</label>
+                            <select id="timeline">
+                                <option value="">선택</option>
+                                <option value="immediate">1개월 내</option>
+                                <option value="short">2-3개월</option>
+                                <option value="medium">3-6개월</option>
+                                <option value="long">6개월 이상</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-field">
+                        <label>이전 미팅에서 나온 주요 이슈</label>
+                        <textarea id="previous-issues" rows="2" placeholder="이전에 논의된 중요한 포인트나 고객의 우려사항을 입력하세요"></textarea>
+                    </div>
+                </div>
+
+                <button class="generate-btn" onclick="generateMeetingGuide()">
+                    🎯 맞춤 미팅 가이드 생성
+                </button>
+            </div>
+
+            <div class="guide-section">
+                <div class="section-title">📋 미팅 실행 가이드</div>
+                
+                <div class="guide-content">
+                    <div class="no-guide" id="no-guide">
+                        <div class="no-guide-icon">🎯</div>
+                        <h3>미팅 가이드 생성 대기</h3>
+                        <p>좌측에서 미팅 정보를 입력하고<br>가이드 생성 버튼을 클릭하세요.</p>
+                        <p style="font-size: 0.85rem; margin-top: 8px; color: #9ca3af;">
+                            미팅 유형에 맞는 맞춤 가이드가<br>자동으로 생성됩니다.
+                        </p>
+                    </div>
+
+                    <div class="meeting-guide" id="meeting-guide">
+                        <!-- 동적으로 생성됨 -->
+                    </div>
+
+                    <div class="action-buttons" id="action-buttons" style="display: none;">
+                        <button class="action-btn action-primary" onclick="printGuide()">
+                            🖨️ 가이드 인쇄
+                        </button>
+                        <button class="action-btn action-primary" onclick="shareGuide()">
+                            📤 팀원 공유
+                        </button>
+                        <button class="action-btn action-secondary" onclick="generateNewGuide()">
+                            🔄 다시 생성
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="meeting-timer" id="meeting-timer">
+            미팅까지 <span id="time-remaining">--:--</span> 남음
+        </div>
+    </div>
+
+    <script>
+        let currentMeetingType = '';
+        let participants = [];
+
+        // 빠른 템플릿 로드
+        function loadTemplate(type) {
+            const templates = {
+                'first': {
+                    company: 'ABC기업',
+                    duration: '60',
+                    objectives: '고객 현황 파악 및 SmartWAN 솔루션 소개',
+                    participants: [
+                        {name: '김부장', role: 'decision-maker'},
+                        {name: '이과장', role: 'technical'}
+                    ],
+                    pain: 'speed',
+                    currentSolution: '기존 VPN',
+                    timeline: 'medium'
+                },
+                'technical': {
+                    company: 'XYZ기업',
+                    duration: '90',
+                    objectives: '기술적 요구사항 확인 및 솔루션 적합성 검증',
+                    participants: [
+                        {name: '박팀장', role: 'technical'},
+                        {name: '최과장', role: 'user'}
+                    ],
+                    pain: 'security',
+                    currentSolution: 'Cisco VPN',
+                    timeline: 'short'
+                },
+                'proposal': {
+                    company: 'DEF기업',
+                    duration: '90',
+                    objectives: '공식 제안서 발표 및 계약 조건 논의',
+                    participants: [
+                        {name: '정상무', role: 'decision-maker'},
+                        {name: '한부장', role: 'influencer'}
+                    ],
+                    pain: 'cost',
+                    currentSolution: 'Fortinet',
+                    timeline: 'immediate'
+                },
+                'closing': {
+                    company: 'GHI기업',
+                    duration: '60',
+                    objectives: '최종 계약 조건 확정 및 서명',
+                    participants: [
+                        {name: '조대표', role: 'decision-maker'},
+                        {name: '윤부장', role: 'influencer'}
+                    ],
+                    pain: 'management',
+                    currentSolution: 'Multi-vendor',
+                    timeline: 'immediate'
+                }
+            };
+
+            const template = templates[type];
+            if (template) {
+                document.getElementById('company').value = template.company;
+                document.getElementById('duration').value = template.duration;
+                document.getElementById('objectives').value = template.objectives;
+                document.getElementById('main-pain').value = template.pain;
+                document.getElementById('current-solution').value = template.currentSolution;
+                document.getElementById('timeline').value = template.timeline;
+
+                // 미팅 타입 선택
+                selectMeetingType(document.querySelector(`[data-type="${type}"]`), type);
+
+                // 참석자 추가
+                participants = [];
+                document.getElementById('participant-list').innerHTML = '';
+                template.participants.forEach(p => {
+                    participants.push(p);
+                    addParticipantToList(p.name, p.role);
+                });
+
+                alert(`${type === 'first' ? '첫 미팅' : type === 'technical' ? '기술 미팅' : type === 'proposal' ? '제안 미팅' : '클로징'} 템플릿이 로드되었습니다!`);
+            }
+        }
+
+        // 미팅 유형 선택
+        function selectMeetingType(element, type) {
+            document.querySelectorAll('.type-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            element.classList.add('selected');
+            currentMeetingType = type;
+        }
+
+        // 참석자 추가
+        function addParticipant() {
+            const name = document.getElementById('participant-name').value;
+            const role = document.getElementById('participant-role').value;
+
+            if (!name || !role) {
+                alert('참석자 이름과 역할을 모두 입력해주세요.');
+                return;
+            }
+
+            participants.push({name, role});
+            addParticipantToList(name, role);
+
+            // 입력 필드 초기화
+            document.getElementById('participant-name').value = '';
+            document.getElementById('participant-role').value = '';
+        }
+
+        function addParticipantToList(name, role) {
+            const roleLabels = {
+                'decision-maker': '의사결정권자',
+                'influencer': '영향력자',
+                'user': '실사용자',
+                'gatekeeper': '관문지기',
+                'technical': '기술담당자'
+            };
+
+            const participantList = document.getElementById('participant-list');
+            const participantDiv = document.createElement('div');
+            participantDiv.className = 'participant-item';
+            participantDiv.innerHTML = `
+                <span>${name}</span>
+                <span class="participant-role">${roleLabels[role]}</span>
+            `;
+            participantList.appendChild(participantDiv);
+        }
+
+        // 메인 가이드 생성
+        function generateMeetingGuide() {
+            const company = document.getElementById('company').value;
+            const duration = document.getElementById('duration').value;
+            const objectives = document.getElementById('objectives').value;
+            const mainPain = document.getElementById('main-pain').value;
+            const currentSolution = document.getElementById('current-solution').value;
+            const timeline = document.getElementById('timeline').value;
+            const previousIssues = document.getElementById('previous-issues').value;
+
+            if (!company || !currentMeetingType || participants.length === 0) {
+                alert('고객사, 미팅 유형, 참석자 정보를 모두 입력해주세요.');
+                return;
+            }
+
+            // 가이드 생성
+            const guideContent = createMeetingGuide(company, currentMeetingType, duration, objectives, participants, mainPain, currentSolution, timeline, previousIssues);
+            
+            // UI 업데이트
+            document.getElementById('no-guide').style.display = 'none';
+            document.getElementById('meeting-guide').style.display = 'block';
+            document.getElementById('meeting-guide').classList.add('show');
+            document.getElementById('action-buttons').style.display = 'flex';
+
+            document.getElementById('meeting-guide').innerHTML = guideContent;
+        }
+
+        function createMeetingGuide(company, type, duration, objectives, participants, painPoint, currentSolution, timeline, previousIssues) {
+            const meetingTypes = {
+                'first': {
+                    title: '첫 미팅 가이드',
+                    subtitle: '관계 구축과 니즈 파악이 핵심',
+                    focus: '신뢰 구축'
+                },
+                'technical': {
+                    title: '기술 미팅 가이드',
+                    subtitle: '기술적 적합성 검증',
+                    focus: '기술 검증'
+                },
+                'proposal': {
+                    title: '제안 미팅 가이드',
+                    subtitle: '공식 제안 및 가치 전달',
+                    focus: '가치 제안'
+                },
+                'closing': {
+                    title: '클로징 미팅 가이드',
+                    subtitle: '최종 의사결정 유도',
+                    focus: '의사결정'
+                }
+            };
+
+            const meetingInfo = meetingTypes[type];
+            const questions = generateQuestions(type, painPoint, participants);
+            const objections = generateObjections(type, painPoint, currentSolution);
+            const checklist = generateChecklist(type);
+
+            return `
+                <div class="guide-header">
+                    <div class="guide-title">${company} ${meetingInfo.title}</div>
+                    <div class="guide-subtitle">${meetingInfo.subtitle} • ${duration || '--'}분 예정</div>
+                </div>
+
+                <div class="guide-block objectives">
+                    <div class="block-header">
+                        <span>🎯</span>
+                        미팅 목표 & 전략
+                    </div>
+                    <div class="block-content">
+                        <p><strong>주요 목표:</strong> ${objectives || '목표를 설정해주세요'}</p>
+                        <p><strong>핵심 전략:</strong> ${meetingInfo.focus} 중심의 접근</p>
+                        <p><strong>참석자:</strong> ${participants.map(p => p.name).join(', ')} (총 ${participants.length}명)</p>
+                        ${previousIssues ? `<p><strong>이전 이슈:</strong> ${previousIssues}</p>` : ''}
+                    </div>
+                </div>
+
+                <div class="guide-block questions">
+                    <div class="block-header">
+                        <span>💬</span>
+                        추천 질문 스크립트
+                    </div>
+                    <div class="block-content">
+                        <ul class="question-list">
+                            ${questions.map(q => `<li>${q}</li>`).join('')}
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="guide-block objections">
+                    <div class="block-header">
+                        <span>⚠️</span>
+                        예상 반박 & 대응방안
+                    </div>
+                    <div class="block-content">
+                        ${objections.map(obj => `
+                            <div class="objection-item">
+                                <div class="objection-title">"${obj.question}"</div>
+                                <div class="objection-response">${obj.response}</div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+
+                <div class="guide-block checklist">
+                    <div class="block-header">
+                        <span>✅</span>
+                        미팅 체크리스트
+                    </div>
+                    <div class="block-content">
+                        <div class="checklist-grid">
+                            ${checklist.map(item => `
+                                <div class="checklist-item">
+                                    <input type="checkbox" id="check-${Math.random()}" />
+                                    <label>${item}</label>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function generateQuestions(type, painPoint, participants) {
+            const questionSets = {
+                'first': [
+                    '현재 네트워크 환경에서 가장 큰 어려움은 무엇인가요?',
+                    '해외 법인이나 지사와의 연결에서 문제를 겪고 계시나요?',
+                    '네트워크 관련 예산은 어느 정도로 계획하고 계시나요?',
+                    '기존 솔루션 교체를 검토하게 된 계기가 있나요?',
+                    '의사결정 과정은 어떻게 진행되나요?'
+                ],
+                'technical': [
+                    '현재 네트워크 아키텍처의 구체적인 구성은 어떻게 되나요?',
+                    '보안 요구사항 중 가장 중요하게 생각하는 부분은?',
+                    '기존 시스템과의 연동에서 고려해야 할 점이 있나요?',
+                    '성능 기준이나 SLA 요구사항이 있나요?',
+                    'PoC나 파일럿 테스트 계획이 있으신가요?'
+                ],
+                'proposal': [
+                    '제안된 솔루션에 대해 어떻게 생각하시나요?',
+                    'ROI 계산 결과에 대한 의견은 어떠신가요?',
+                    '구축 일정에 대한 요구사항이 있나요?',
+                    '계약 조건 중 협의가 필요한 부분이 있나요?',
+                    '최종 승인까지 어떤 절차가 남아있나요?'
+                ],
+                'closing': [
+                    '모든 요구사항이 반영되었다고 보시나요?',
+                    '마지막으로 확인하고 싶은 부분이 있나요?',
+                    '언제부터 프로젝트 시작이 가능하신가요?',
+                    '계약 체결 절차는 어떻게 진행하면 될까요?',
+                    '프로젝트 킥오프 일정을 언제로 잡으면 좋을까요?'
+                ]
+            };
+
+            return questionSets[type] || questionSets['first'];
+        }
+
+        function generateObjections(type, painPoint, currentSolution) {
+            const objections = [
+                {
+                    question: '현재 솔루션도 잘 작동하는데 굳이 바꿀 필요가 있나요?',
+                    response: '현재 솔루션의 장점은 인정합니다. 하지만 미래의 비즈니스 요구사항과 보안 위협을 고려할 때, 선제적 대응이 중요합니다. SmartWAN은 현재 문제 해결뿐만 아니라 향후 확장성까지 고려한 솔루션입니다.'
+                },
+                {
+                    question: '비용이 너무 높은 것 같은데요?',
+                    response: '초기 투자는 있지만, TCO 관점에서 보면 3년간 30% 이상의 비용 절감이 가능합니다. 또한 관리 복잡성 감소로 인한 인건비 절약과 보안 위험 감소 효과까지 고려하면 충분히 합리적인 투자입니다.'
+                },
+                {
+                    question: '구축 기간이 너무 오래 걸리지 않을까요?',
+                    response: '일반적인 네트워크 구축과 달리 SmartWAN은 클라우드 기반 서비스로 빠른 배포가 가능합니다. 기본 구성은 1-2주 내 완료되며, 단계별 구축을 통해 업무 중단 없이 진행할 수 있습니다.'
+                }
+            ];
+
+            if (type === 'closing') {
+                objections.push({
+                    question: '좀 더 검토할 시간이 필요할 것 같은데요?',
+                    response: '충분한 검토는 중요합니다. 다만 현재 시장 상황과 보안 위협 증가를 고려할 때, 빠른 도입이 경쟁 우위 확보에 중요합니다. 추가 검토가 필요한 구체적인 부분이 있다면 즉시 해결해드리겠습니다.'
+                });
+            }
+
+            return objections;
+        }
+
+        function generateChecklist(type) {
+            const checklists = {
+                'first': [
+                    '명함과 회사 소개 자료 준비',
+                    '고객사 정보 사전 조사 완료',
+                    'SmartWAN 개요 프레젠테이션 준비',
+                    '질문 리스트 숙지',
+                    '다음 미팅 일정 제안 준비'
+                ],
+                'technical': [
+                    '기술 사양서 및 아키텍처 다이어그램',
+                    '데모 환경 준비 및 테스트',
+                    '레퍼런스 사이트 연락처',
+                    '보안 인증서 및 컴플라이언스 자료',
+                    'PoC 제안서 초안'
+                ],
+                'proposal': [
+                    '맞춤형 제안서 및 ROI 계산서',
+                    '계약서 초안 및 조건',
+                    '구축 일정 및 마일스톤',
+                    '레퍼런스 고객 연락처',
+                    'Q&A 예상 질문 답안'
+                ],
+                'closing': [
+                    '최종 계약서 및 조건 확인',
+                    '프로젝트 시작 일정',
+                    '담당자 연락처 교환',
+                    '킥오프 미팅 일정',
+                    '성공 축하 준비'
+                ]
+            };
+
+            return checklists[type] || checklists['first'];
+        }
+
+        // 액션 함수들
+        function printGuide() {
+            window.print();
+        }
+
+        function shareGuide() {
+            alert('가이드를 팀원과 공유합니다.\n실제 구현 시 이메일이나 메신저로 전송 가능합니다.');
+        }
+
+        function generateNewGuide() {
+            if (confirm('새로운 가이드를 생성하시겠습니까?\n현재 가이드는 사라집니다.')) {
+                generateMeetingGuide();
+            }
+        }
+
+        // 미팅 타이머 (옵션)
+        function startMeetingTimer() {
+            const timer = document.getElementById('meeting-timer');
+            timer.classList.add('show');
+            // 실제 구현 시 실시간 타이머 로직 추가
+        }
+
+        // 초기화
+        window.onload = function() {
+            // 초기 설정
+        };
+    </script>
+</body>
+</html>

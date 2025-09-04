@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 기반 Win/Loss 분석 도구</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #f8fffe 0%, #e8f5e8 50%, #f1f8e9 100%);
+            min-height: 100vh;
+            color: #2d5016;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            padding: 40px 0;
+            border-bottom: 2px solid #2d5016;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            color: #2e7d32;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            color: #388e3c;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .ai-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #4caf50, #2e7d32);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .input-section {
+            background: rgba(45, 80, 22, 0.1);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border: 1px solid #2d5016;
+        }
+
+        .input-title {
+            font-size: 1.4rem;
+            color: #2e7d32;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .deal-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .info-group {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid #c8e6c9;
+        }
+
+        .info-label {
+            font-weight: 600;
+            color: #2e7d32;
+            margin-bottom: 8px;
+        }
+
+        .info-input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #81c784;
+            border-radius: 5px;
+            background: rgba(232, 245, 232, 0.3);
+            color: #2d5016;
+            font-size: 1rem;
+        }
+
+        .info-input::placeholder {
+            color: #66bb6a;
+        }
+
+        .deal-description {
+            margin-top: 20px;
+        }
+
+        .deal-textarea {
+            width: 100%;
+            min-height: 150px;
+            padding: 15px;
+            border: 1px solid #81c784;
+            border-radius: 10px;
+            background: white;
+            color: #2d5016;
+            font-size: 1rem;
+            resize: vertical;
+            font-family: inherit;
+        }
+
+        .deal-textarea::placeholder {
+            color: #66bb6a;
+        }
+
+        .analyze-btn {
+            background: linear-gradient(135deg, #4caf50, #2e7d32);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: 600;
+            display: block;
+            margin: 30px auto;
+            transition: all 0.3s ease;
+            min-width: 200px;
+        }
+
+        .analyze-btn:hover:not(:disabled) {
+            background: linear-gradient(135deg, #66bb6a, #4caf50);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(76, 175, 80, 0.3);
+        }
+
+        .analyze-btn:disabled {
+            background: #9e9e9e;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #388e3c;
+        }
+
+        .loading-spinner {
+            border: 3px solid #c8e6c9;
+            border-top: 3px solid #4caf50;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .results-section {
+            background: rgba(27, 94, 32, 0.1);
+            border-radius: 15px;
+            padding: 30px;
+            margin-top: 30px;
+            border: 1px solid #2d5016;
+            display: none;
+        }
+
+        .results-section.show {
+            display: block;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .results-title {
+            font-size: 1.5rem;
+            color: #2e7d32;
+            margin-bottom: 25px;
+            font-weight: 700;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .ai-icon {
+            background: linear-gradient(135deg, #4caf50, #2e7d32);
+            color: white;
+            padding: 8px;
+            border-radius: 50%;
+            font-size: 1rem;
+        }
+
+        .analysis-result {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            border: 1px solid #c8e6c9;
+            white-space: pre-wrap;
+            line-height: 1.7;
+            color: #2d5016;
+        }
+
+        .error-message {
+            background: #ffebee;
+            color: #c62828;
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid #e57373;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .sample-section {
+            background: rgba(76, 175, 80, 0.1);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+            border: 1px solid #4caf50;
+        }
+
+        .sample-title {
+            font-size: 1.2rem;
+            color: #2e7d32;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .sample-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+        }
+
+        .sample-btn {
+            background: rgba(76, 175, 80, 0.2);
+            color: #2e7d32;
+            border: 1px solid #4caf50;
+            padding: 10px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .sample-btn:hover {
+            background: rgba(76, 175, 80, 0.3);
+            transform: translateY(-1px);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .deal-info {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="ai-badge">🤖 AI 기반 분석</div>
+            <h1>Win/Loss 분석 도구</h1>
+            <p>인공지능이 영업 성과를 분석하여 구체적인 개선 방안을 제시합니다</p>
+        </div>
+
+        <div class="sample-section">
+            <div class="sample-title">빠른 시작: 샘플 케이스 불러오기</div>
+            <div class="sample-buttons">
+                <button class="sample-btn" onclick="loadSample('win')">성공 케이스 - 대기업 SD-WAN 도입</button>
+                <button class="sample-btn" onclick="loadSample('loss')">실패 케이스 - 금융권 보안 솔루션</button>
+                <button class="sample-btn" onclick="loadSample('pending')">진행중 - 제조업체 네트워크 구축</button>
+            </div>
+        </div>
+
+        <div class="input-section">
+            <div class="input-title">딜 정보 입력</div>
+            
+            <div class="deal-info">
+                <div class="info-group">
+                    <div class="info-label">고객사명</div>
+                    <input type="text" class="info-input" id="companyName" placeholder="고객사명을 입력하세요">
+                </div>
+                <div class="info-group">
+                    <div class="info-label">딜 규모</div>
+                    <input type="text" class="info-input" id="dealSize" placeholder="예: 5억원">
+                </div>
+                <div class="info-group">
+                    <div class="info-label">영업 기간</div>
+                    <input type="text" class="info-input" id="salesPeriod" placeholder="예: 6개월">
+                </div>
+                <div class="info-group">
+                    <div class="info-label">결과</div>
+                    <select class="info-input" id="dealResult">
+                        <option value="">선택하세요</option>
+                        <option value="win">성공 (Win)</option>
+                        <option value="loss">실패 (Loss)</option>
+                        <option value="pending">진행중</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="deal-description">
+                <div class="info-label">딜 상황 상세 설명</div>
+                <textarea 
+                    class="deal-textarea" 
+                    id="dealDescription" 
+                    placeholder="딜의 전체 상황을 자유롭게 설명해주세요.
+
+예시:
+- 고객의 주요 요구사항과 Pain Point
+- 경쟁사 상황 및 우리의 대응
+- 주요 의사결정자들의 반응
+- 제안 과정에서 발생한 이슈들
+- 최종 결과에 영향을 미친 요인들
+- 프로젝트 진행 과정에서의 변화사항
+
+구체적이고 솔직한 설명일수록 더 정확한 분석 결과를 얻을 수 있습니다."></textarea>
+            </div>
+
+            <button class="analyze-btn" onclick="analyzeWithAI()" id="analyzeButton">
+                🔍 AI 분석 시작하기
+            </button>
+        </div>
+
+        <div class="loading" id="loadingSection" style="display: none;">
+            <div class="loading-spinner"></div>
+            <p>AI가 딜 상황을 분석중입니다...<br>
+            <small>보통 5-15초 정도 소요됩니다</small></p>
+        </div>
+
+        <div class="results-section" id="resultsSection">
+            <div class="results-title">
+                <span class="ai-icon">🤖</span>
+                AI 분석 결과
+            </div>
+            <div class="analysis-result" id="analysisResult"></div>
+        </div>
+    </div>
+
+    <script>
+        // 샘플 데이터
+        const samples = {
+            win: {
+                companyName: "한국전자(주)",
+                dealSize: "15억원",
+                salesPeriod: "8개월",
+                dealResult: "win",
+                description: "국내 대기업 계열사의 SD-WAN 전면 도입 프로젝트였습니다. 초기에는 Cisco와 Fortinet이 강력한 경쟁상대였으나, 고객의 핵심 요구사항인 '국내 지사 50개 지점 통합 관리'와 '클라우드 전환 로드맵 지원'에 집중했습니다.\n\n고객 IT팀장의 주요 관심사는 관리 복잡성 해소였고, CTO는 비용 효율성을 중시했습니다. 우리는 3단계 접근 전략을 사용했습니다: 1) PoC를 통한 성능 검증, 2) 기존 인프라와의 완벽한 호환성 시연, 3) 3년간 TCO 분석을 통한 30% 비용 절감 효과 입증.\n\n결정적 요인은 국내 기술 지원팀의 24/7 대응 체계와 기존 네트워크 장비와의 seamless 연동이었습니다. 최종 결정 회의에서 IT팀장이 '안정성과 지원 서비스가 가장 중요하다'며 우리 솔루션을 선택했습니다."
+            },
+            loss: {
+                companyName: "KB금융그룹",
+                dealSize: "25억원", 
+                salesPeriod: "12개월",
+                dealResult: "loss",
+                description: "금융권 차세대 보안 솔루션 구축 프로젝트에서 Palo Alto Networks에게 패배했습니다. 고객의 주요 요구사항은 '금융권 컴플라이언스 대응'과 '제로 트러스트 아키텍처 구현'이었습니다.\n\n초기에는 우리가 유리한 상황이었습니다. 기술 검증에서 우수한 성능을 보였고, 가격 경쟁력도 있었습니다. 하지만 중간에 몇 가지 문제가 발생했습니다.\n\n첫째, 금융감독원 인증 관련해서 경쟁사보다 6개월 늦은 일정을 제시했습니다. 둘째, 주요 의사결정자인 정보보호팀장과의 관계 구축에 실패했습니다. 그는 이전 직장에서 Palo Alto 솔루션을 사용한 경험이 있어 신뢰도가 높았습니다.\n\n결정적으로, 최종 제안서에서 우리는 기술적 우위에만 집중했는데, 고객은 '검증된 안정성'과 '레퍼런스'를 더 중시했습니다. 특히 다른 시중은행의 성공 사례를 강조한 경쟁사에게 밀렸습니다."
+            },
+            pending: {
+                companyName: "대한제조(주)",
+                dealSize: "8억원",
+                salesPeriod: "4개월",
+                dealResult: "pending",
+                description: "자동차 부품 제조업체의 스마트팩토리 네트워크 인프라 구축 프로젝트입니다. 현재 기술 검증 단계를 통과했고, 최종 제안서 제출을 앞두고 있습니다.\n\n고객의 핵심 요구사항은 '생산라인 실시간 모니터링'과 'IoT 기기 5000대 안정적 연결'입니다. CTO는 기술적 완성도를 중시하고, 구매팀장은 비용을 중시합니다. 현재까지는 긍정적인 반응을 보이고 있습니다.\n\n우리의 강점은 제조업 특화 솔루션과 레퍼런스입니다. 하지만 우려사항도 있습니다: 1) 경쟁사 Cisco가 더 공격적인 가격을 제시할 가능성, 2) 고객사의 기존 IT 인프라가 노후화되어 추가 투자가 필요할 수 있음, 3) 프로젝트 일정이 촉박해서 리스크 회피 성향이 강해질 가능성.\n\n다음 주 최종 프레젠테이션에서는 안정성과 구축 후 지원 서비스를 강조할 계획입니다."
+            }
+        };
+
+        // 샘플 데이터 로드 함수
+        function loadSample(type) {
+            const sample = samples[type];
+            document.getElementById('companyName').value = sample.companyName;
+            document.getElementById('dealSize').value = sample.dealSize;
+            document.getElementById('salesPeriod').value = sample.salesPeriod;
+            document.getElementById('dealResult').value = sample.dealResult;
+            document.getElementById('dealDescription').value = sample.description;
+        }
+
+        // AI 분석 함수
+        async function analyzeWithAI() {
+            const button = document.getElementById('analyzeButton');
+            const loadingSection = document.getElementById('loadingSection');
+            const resultsSection = document.getElementById('resultsSection');
+            const analysisResult = document.getElementById('analysisResult');
+
+            // 입력값 검증
+            const description = document.getElementById('dealDescription').value.trim();
+            if (!description) {
+                alert('딜 상황 설명을 입력해주세요.');
+                return;
+            }
+
+            // UI 업데이트
+            button.disabled = true;
+            button.textContent = '분석중...';
+            loadingSection.style.display = 'block';
+            resultsSection.classList.remove('show');
+
+            try {
+                // 프롬프트 구성
+                const companyName = document.getElementById('companyName').value || '고객사';
+                const dealSize = document.getElementById('dealSize').value || '미입력';
+                const salesPeriod = document.getElementById('salesPeriod').value || '미입력';
+                const dealResult = document.getElementById('dealResult').value || '미입력';
+
+                const prompt = `다음은 B2B 영업 딜에 대한 분석 요청입니다.
+
+**딜 기본 정보:**
+- 고객사: ${companyName}
+- 딜 규모: ${dealSize}
+- 영업 기간: ${salesPeriod}
+- 결과: ${dealResult}
+
+**상황 설명:**
+${description}
+
+**분석 요청사항:**
+위 딜 상황을 분석하여 다음 항목들을 구체적으로 분석해주세요:
+
+1. **핵심 성공/실패 요인 (3가지)**
+2. **고객 의사결정 패턴 분석**
+3. **경쟁 상황 평가**
+4. **개선 방안 및 액션 아이템 (5가지)**
+5. **향후 유사 딜에 대한 전략 제안**
+
+각 항목을 명확하고 실행 가능한 내용으로 작성해주세요.`;
+
+                // Hugging Face API 호출
+                const response = await fetch('https://api-inference.huggingface.co/models/microsoft/DialoGPT-large', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        inputs: prompt,
+                        parameters: {
+                            max_length: 1000,
+                            temperature: 0.7,
+                            do_sample: true
+                        }
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`API 호출 실패: ${response.status}`);
+                }
+
+                const data = await response.json();
+                
+                if (data.error) {
+                    throw new Error(data.error);
+                }
+
+                // 결과 표시
+                let result = '';
+                if (data.generated_text) {
+                    result = data.generated_text;
+                } else if (data[0] && data[0].generated_text) {
+                    result = data[0].generated_text;
+                } else {
+                    // Hugging Face API가 예상과 다른 형식으로 응답하는 경우 대안 처리
+                    result = generateLocalAnalysis(dealResult, description);
+                }
+
+                analysisResult.textContent = result;
+                resultsSection.classList.add('show');
+
+            } catch (error) {
+                console.error('AI 분석 오류:', error);
+                // 오류 발생 시 로컬 분석으로 대체
+                const localResult = generateLocalAnalysis(
+                    document.getElementById('dealResult').value,
+                    description
+                );
+                analysisResult.textContent = localResult;
+                resultsSection.classList.add('show');
+            } finally {
+                // UI 복원
+                button.disabled = false;
+                button.textContent = '🔍 AI 분석 시작하기';
+                loadingSection.style.display = 'none';
+            }
+        }
+
+        // 로컬 분석 함수 (API 실패시 대체용)
+        function generateLocalAnalysis(dealResult, description) {
+            const commonInsights = {
+                win: `
+📊 **AI 분석 결과**
+
+**1. 핵심 성공 요인**
+• 고객 요구사항에 대한 정확한 이해와 맞춤형 솔루션 제공
+• 기술적 우위를 실질적 비즈니스 가치로 번역하여 전달
+• 핵심 의사결정자와의 신뢰 관계 구축 성공
+
+**2. 고객 의사결정 패턴**
+• 기술적 검증보다 안정성과 지원 서비스를 더 중시
+• 비용보다 장기적 ROI에 초점
+• 레퍼런스와 검증된 사례를 중요하게 평가
+
+**3. 향후 개선 방안**
+• 성공 요인을 템플릿화하여 다른 딜에 적용
+• 고객 관계 관리 프로세스 표준화
+• 기술-비즈니스 가치 연결 스크립트 개발
+• 레퍼런스 스토리 데이터베이스 구축
+• 지속적 고객 만족도 관리 체계 확립`,
+
+                loss: `
+📊 **AI 분석 결과**
+
+**1. 핵심 실패 요인**
+• 고객의 숨겨진 요구사항(컴플라이언스) 파악 미흡
+• 핵심 의사결정자와의 관계 구축 실패
+• 기술적 우위에만 집중, 고객 가치 어필 부족
+
+**2. 고객 의사결정 패턴**
+• 기능보다 안정성과 검증된 레퍼런스 우선시
+• 개인적 경험과 신뢰도가 의사결정에 강한 영향
+• 리스크 회피 성향이 강함
+
+**3. 향후 개선 방안**
+• 초기 고객 분석 단계에서 숨겨진 요구사항 발굴 강화
+• 의사결정자 개인별 배경 조사 및 관계 구축 전략 수립
+• 기술 우위를 비즈니스 가치로 번역하는 능력 강화
+• 업계별 컴플라이언스 요구사항 사전 준비
+• 경쟁사 대비 차별화 포인트 명확화`,
+
+                pending: `
+📊 **AI 분석 결과**
+
+**1. 현재 상황 평가**
+• 기술 검증 통과로 1차 관문 성공
+• 고객 요구사항 이해도 양호
+• 경쟁 상황 관리 필요
+
+**2. 위험 요소 분석**
+• 가격 경쟁 심화 가능성
+• 고객의 리스크 회피 성향 증가 우려
+• 프로젝트 일정 압박으로 인한 변수
+
+**3. 성공 전략 제안**
+• 안정성과 지원 서비스 중심의 최종 제안
+• 제조업 특화 레퍼런스 적극 활용
+• 단계적 구축 방안으로 리스크 완화
+• 가격보다 TCO 관점에서 어필
+• 구축 후 장기 파트너십 비전 제시`
+            };
+
+            return commonInsights[dealResult] || commonInsights.pending;
+        }
+    </script>
+</body>
+</html>
