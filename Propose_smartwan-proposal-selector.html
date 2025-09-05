@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartWAN 제안서 선택 도구</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+            max-width: 900px;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .skt-badge {
+            display: inline-block;
+            background: white;
+            color: #1e3a8a;
+            padding: 5px 15px;
+            border-radius: 15px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .step {
+            margin-bottom: 35px;
+            opacity: 0;
+            animation: fadeInUp 0.5s forwards;
+        }
+
+        .step:nth-child(1) { animation-delay: 0.1s; }
+        .step:nth-child(2) { animation-delay: 0.2s; }
+        .step:nth-child(3) { animation-delay: 0.3s; }
+        .step:nth-child(4) { animation-delay: 0.4s; }
+        .step:nth-child(5) { animation-delay: 0.5s; }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .step-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .step-number {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+
+        .step-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #2d3748;
+        }
+
+        .options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 12px;
+        }
+
+        .option {
+            padding: 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: white;
+            position: relative;
+        }
+
+        .option:hover {
+            border-color: #667eea;
+            background: #f7fafc;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.1);
+        }
+
+        .option.selected {
+            border-color: #667eea;
+            background: linear-gradient(135deg, #f0f4ff, #e6edff);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
+        }
+
+        .option.selected::after {
+            content: "✓";
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: #667eea;
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .option-title {
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 5px;
+            font-size: 1rem;
+        }
+
+        .option-desc {
+            font-size: 0.85rem;
+            color: #718096;
+            line-height: 1.4;
+        }
+
+        .result-section {
+            margin-top: 40px;
+            padding: 30px;
+            background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+            border-radius: 15px;
+            border: 2px solid #3b82f6;
+            display: none;
+        }
+
+        .result-section.show {
+            display: block;
+            animation: fadeInUp 0.5s forwards;
+        }
+
+        .result-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .result-title {
+            font-size: 1.8rem;
+            color: #1e3a8a;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .result-subtitle {
+            color: #64748b;
+            font-size: 1rem;
+        }
+
+        .proposal-card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        }
+
+        .proposal-info {
+            margin-bottom: 20px;
+        }
+
+        .proposal-name {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #1e40af;
+            margin-bottom: 10px;
+        }
+
+        .proposal-type {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .proposal-description {
+            color: #64748b;
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+
+        .proposal-features {
+            list-style: none;
+            margin-bottom: 20px;
+        }
+
+        .proposal-features li {
+            padding: 8px 0;
+            color: #4a5568;
+            display: flex;
+            align-items: center;
+        }
+
+        .proposal-features li::before {
+            content: "✓";
+            color: #10b981;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .download-btn {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(16, 185, 129, 0.3);
+            background: linear-gradient(135deg, #059669, #047857);
+        }
+
+        .reset-btn {
+            background: #64748b;
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .reset-btn:hover {
+            background: #475569;
+            transform: translateY(-2px);
+        }
+
+        .warning {
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            color: #991b1b;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        .warning-icon {
+            margin-right: 10px;
+            font-size: 1.2rem;
+        }
+
+        .info-box {
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            color: #1e40af;
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 15px;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .options {
+                grid-template-columns: 1fr;
+            }
+            
+            .content {
+                padding: 25px;
+            }
+        }
+
+        .progress-bar {
+            height: 4px;
+            background: #e2e8f0;
+            margin-bottom: 30px;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        .selection-summary {
+            background: #f8fafc;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .selection-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            color: #4a5568;
+        }
+
+        .selection-label {
+            font-weight: 600;
+            margin-right: 10px;
+            min-width: 120px;
+        }
+
+        .selection-value {
+            color: #667eea;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="skt-badge">SKT Enterprise</div>
+            <h1>📄 SmartWAN 제안서 선택 도구</h1>
+            <p>고객 상황에 최적화된 제안서를 찾아드립니다</p>
+        </div>
+
+        <div class="content">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressBar"></div>
+            </div>
+
+            <!-- Step 1: 고객 유형 -->
+            <div class="step">
+                <div class="step-header">
+                    <div class="step-number">1</div>
+                    <div class="step-title">고객 유형을 선택하세요</div>
+                </div>
+                <div class="options">
+                    <div class="option" data-step="1" data-value="iot">
+                        <div class="option-title">🏭 IoT/제조업</div>
+                        <div class="option-desc">스마트팩토리, AIoT 솔루션이 필요한 고객</div>
+                    </div>
+                    <div class="option" data-step="1" data-value="enterprise">
+                        <div class="option-title">🏢 일반 기업</div>
+                        <div class="option-desc">표준 엔터프라이즈 네트워크가 필요한 고객</div>
+                    </div>
+                    <div class="option" data-step="1" data-value="saas">
+                        <div class="option-title">☁️ SaaS/클라우드</div>
+                        <div class="option-desc">클라우드 서비스 중심의 IT 인프라를 가진 고객</div>
+                    </div>
+                    <div class="option" data-step="1" data-value="vdi">
+                        <div class="option-title">🛰️ VDI/위성</div>
+                        <div class="option-desc">VDI 환경이나 위성통신이 필요한 고객</div>
+                    </div>
+                    <div class="option" data-step="1" data-value="exhibition">
+                        <div class="option-title">🎪 전시/데모</div>
+                        <div class="option-desc">전시회나 캐주얼한 설명이 필요한 상황</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 2: 언어 선택 -->
+            <div class="step">
+                <div class="step-header">
+                    <div class="step-number">2</div>
+                    <div class="step-title">사용 언어를 선택하세요</div>
+                </div>
+                <div class="options">
+                    <div class="option" data-step="2" data-value="korean">
+                        <div class="option-title">🇰🇷 한국어</div>
+                        <div class="option-desc">국내 고객용 한국어 제안서</div>
+                    </div>
+                    <div class="option" data-step="2" data-value="english">
+                        <div class="option-title">🌍 English</div>
+                        <div class="option-desc">글로벌 고객용 영문 제안서</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 3: 프레젠테이션 목적 -->
+            <div class="step">
+                <div class="step-header">
+                    <div class="step-number">3</div>
+                    <div class="step-title">프레젠테이션 목적을 선택하세요</div>
+                </div>
+                <div class="options">
+                    <div class="option" data-step="3" data-value="initial">
+                        <div class="option-title">🎯 초기 제안</div>
+                        <div class="option-desc">첫 미팅, 솔루션 소개</div>
+                    </div>
+                    <div class="option" data-step="3" data-value="technical">
+                        <div class="option-title">🔧 기술 검토</div>
+                        <div class="option-desc">기술 담당자 대상 상세 설명</div>
+                    </div>
+                    <div class="option" data-step="3" data-value="executive">
+                        <div class="option-title">💼 경영진 보고</div>
+                        <div class="option-desc">의사결정자 대상 핵심 가치 전달</div>
+                    </div>
+                    <div class="option" data-step="3" data-value="demo">
+                        <div class="option-title">🖥️ 데모/시연</div>
+                        <div class="option-desc">실제 시연이나 POC 진행</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 4: 고객 환경 -->
+            <div class="step">
+                <div class="step-header">
+                    <div class="step-number">4</div>
+                    <div class="step-title">고객의 현재 네트워크 환경을 선택하세요</div>
+                </div>
+                <div class="options">
+                    <div class="option" data-step="4" data-value="legacy">
+                        <div class="option-title">🔌 레거시 인프라</div>
+                        <div class="option-desc">전통적인 MPLS, 전용선 중심</div>
+                    </div>
+                    <div class="option" data-step="4" data-value="hybrid">
+                        <div class="option-title">🔄 하이브리드</div>
+                        <div class="option-desc">온프레미스 + 클라우드 혼합</div>
+                    </div>
+                    <div class="option" data-step="4" data-value="cloud-first">
+                        <div class="option-title">☁️ 클라우드 우선</div>
+                        <div class="option-desc">대부분의 워크로드가 클라우드에</div>
+                    </div>
+                    <div class="option" data-step="4" data-value="distributed">
+                        <div class="option-title">🌐 분산 환경</div>
+                        <div class="option-desc">다수의 지점/원격 근무 환경</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 5: 보안 요구사항 -->
+            <div class="step">
+                <div class="step-header">
+                    <div class="step-number">5</div>
+                    <div class="step-title">주요 보안 요구사항을 선택하세요</div>
+                </div>
+                <div class="options">
+                    <div class="option" data-step="5" data-value="compliance">
+                        <div class="option-title">📋 컴플라이언스</div>
+                        <div class="option-desc">규제 준수가 중요한 금융/의료/공공</div>
+                    </div>
+                    <div class="option" data-step="5" data-value="zero-trust">
+                        <div class="option-title">🔐 제로트러스트</div>
+                        <div class="option-desc">ZTNA 기반 보안 아키텍처 구현</div>
+                    </div>
+                    <div class="option" data-step="5" data-value="standard">
+                        <div class="option-title">🛡️ 표준 보안</div>
+                        <div class="option-desc">일반적인 기업 보안 수준</div>
+                    </div>
+                    <div class="option" data-step="5" data-value="enhanced">
+                        <div class="option-title">🚨 강화 보안</div>
+                        <div class="option-desc">DDoS, 랜섬웨어 대응 강화 필요</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 결과 섹션 -->
+            <div class="result-section" id="resultSection">
+                <div class="result-header">
+                    <div class="result-title">🎯 최적의 제안서를 찾았습니다!</div>
+                    <div class="result-subtitle">고객님의 상황에 가장 적합한 SmartWAN 제안서입니다</div>
+                </div>
+
+                <div class="selection-summary" id="selectionSummary">
+                    <div class="selection-item">
+                        <span class="selection-label">고객 유형:</span>
+                        <span class="selection-value" id="summaryType">-</span>
+                    </div>
+                    <div class="selection-item">
+                        <span class="selection-label">사용 언어:</span>
+                        <span class="selection-value" id="summaryLang">-</span>
+                    </div>
+                    <div class="selection-item">
+                        <span class="selection-label">프레젠테이션 목적:</span>
+                        <span class="selection-value" id="summaryPurpose">-</span>
+                    </div>
+                    <div class="selection-item">
+                        <span class="selection-label">네트워크 환경:</span>
+                        <span class="selection-value" id="summaryEnv">-</span>
+                    </div>
+                    <div class="selection-item">
+                        <span class="selection-label">보안 요구사항:</span>
+                        <span class="selection-value" id="summarySecurity">-</span>
+                    </div>
+                </div>
+
+                <div class="proposal-card">
+                    <div class="proposal-info">
+                        <div class="proposal-name" id="proposalName">-</div>
+                        <div class="proposal-type" id="proposalType">-</div>
+                        <div class="proposal-description" id="proposalDesc">-</div>
+                        <ul class="proposal-features" id="proposalFeatures">
+                            <!-- 동적으로 추가됨 -->
+                        </ul>
+                    </div>
+
+                    <a href="#" class="download-btn" id="downloadBtn" target="_blank">
+                        📥 제안서 다운로드 (PDF)
+                    </a>
+
+                    <div class="info-box">
+                        💡 <strong>팁:</strong> 다운로드한 제안서는 고객 상황에 맞게 추가 커스터마이징이 가능합니다. 
+                        필요시 마케팅팀에 추가 자료를 요청하세요.
+                    </div>
+                </div>
+
+                <button class="reset-btn" onclick="resetSelection()">
+                    🔄 다시 선택하기
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 제안서 데이터베이스
+        const proposals = {
+            iot_korean: {
+                name: "SmartWAN IoT/AIoT 고객 전용 제안서",
+                type: "IoT/제조업 특화",
+                url: "https://choitimo.github.io/PRESO/SKT SmartWAN Introduction_nonNDA_AIoT_KR.pdf",
+                description: "스마트팩토리, AIoT 환경에 최적화된 SmartWAN 솔루션 제안서입니다. IoT 디바이스 연결성과 실시간 데이터 처리를 중점적으로 다룹니다.",
+                features: [
+                    "IoT 게이트웨이 통합 아키텍처",
+                    "실시간 데이터 처리 및 엣지 컴퓨팅",
+                    "산업용 프로토콜 지원",
+                    "스마트팩토리 구축 사례",
+                    "AIoT 플랫폼 연동 방안"
+                ]
+            },
+            enterprise_korean: {
+                name: "SmartWAN 일반 엔터프라이즈 제안서",
+                type: "표준 기업용",
+                url: "https://choitimo.github.io/PRESO/SKT SmartWAN Introduction_nonNDA_General_KR.pdf",
+                description: "일반 기업 환경에 적합한 표준 SmartWAN 솔루션 제안서입니다. 엔터프라이즈 네트워킹의 모든 측면을 포괄적으로 다룹니다.",
+                features: [
+                    "SD-WAN 기본 아키텍처",
+                    "ZTNA 보안 솔루션",
+                    "멀티클라우드 연결성",
+                    "비용 절감 효과 분석",
+                    "구축 로드맵 및 마이그레이션 전략"
+                ]
+            },
+            saas_korean: {
+                name: "SmartWAN SaaS/Cloud 고객 제안서",
+                type: "클라우드 중심",
+                url: "https://choitimo.github.io/PRESO/SKT SmartWAN Introduction_nonNDA_SaaS-Cloud_KR.pdf",
+                description: "SaaS 및 클라우드 서비스를 중심으로 하는 기업을 위한 SmartWAN 제안서입니다. 클라우드 연결성과 성능 최적화에 중점을 둡니다.",
+                features: [
+                    "멀티클라우드 액세스 최적화",
+                    "SaaS 애플리케이션 가속",
+                    "클라우드 보안 게이트웨이",
+                    "Direct Cloud Access",
+                    "클라우드 마이그레이션 지원"
+                ]
+            },
+            vdi_korean: {
+                name: "SmartWAN VDI/위성 통신 제안서",
+                type: "VDI/위성 특화",
+                url: "https://choitimo.github.io/PRESO/SKT SmartWAN Introduction_nonNDA_VDISAT_KR.pdf",
+                description: "VDI 환경과 위성 통신이 필요한 특수 환경을 위한 SmartWAN 제안서입니다. 원격지 연결과 가상화 환경 최적화를 다룹니다.",
+                features: [
+                    "VDI 성능 최적화",
+                    "위성 통신 통합",
+                    "원격지/해상 연결성",
+                    "대역폭 최적화 기술",
+                    "재해복구 및 백업 솔루션"
+                ]
+            },
+            general_english: {
+                name: "SmartWAN General Proposal (English)",
+                type: "Global Standard",
+                url: "https://choitimo.github.io/PRESO/SKT SmartWAN Introduction_nonNDA_EN.pdf",
+                description: "English version of SmartWAN solution proposal for global customers. Comprehensive coverage of enterprise networking solutions.",
+                features: [
+                    "Global SD-WAN Architecture",
+                    "Zero Trust Security Framework",
+                    "Multi-cloud Connectivity",
+                    "ROI Analysis",
+                    "Implementation Roadmap"
+                ]
+            },
+            exhibition: {
+                name: "SmartWAN 전시회/캐주얼 프레젠테이션",
+                type: "라이트 버전",
+                url: "https://choitimo.github.io/PRESO/[Disp Light][SmartWAN]_BFV20V11W_Static.pdf",
+                description: "전시회나 간단한 데모를 위한 라이트 버전 제안서입니다. 핵심 기능과 장점을 시각적으로 전달합니다.",
+                features: [
+                    "비주얼 중심 구성",
+                    "핵심 기능 요약",
+                    "간단한 아키텍처 다이어그램",
+                    "주요 고객 사례",
+                    "빠른 이해를 위한 인포그래픽"
+                ]
+            }
+        };
+
+        // 선택 상태 저장
+        let selections = {
+            customerType: null,
+            language: null,
+            purpose: null,
+            environment: null,
+            security: null
+        };
+
+        // 옵션 클릭 이벤트
+        document.querySelectorAll('.option').forEach(option => {
+            option.addEventListener('click', function() {
+                const step = this.getAttribute('data-step');
+                const value = this.getAttribute('data-value');
+                
+                // 같은 스텝의 다른 옵션들 선택 해제
+                document.querySelectorAll(`.option[data-step="${step}"]`).forEach(opt => {
+                    opt.classList.remove('selected');
+                });
+                
+                // 현재 옵션 선택
+                this.classList.add('selected');
+                
+                // 선택 값 저장
+                switch(step) {
+                    case '1': selections.customerType = value; break;
+                    case '2': selections.language = value; break;
+                    case '3': selections.purpose = value; break;
+                    case '4': selections.environment = value; break;
+                    case '5': selections.security = value; break;
+                }
+                
+                // 진행률 업데이트
+                updateProgress();
+                
+                // 모든 선택이 완료되면 결과 표시
+                if (Object.values(selections).every(val => val !== null)) {
+                    showResult();
+                }
+            });
+        });
+
+        // 진행률 업데이트
+        function updateProgress() {
+            const completed = Object.values(selections).filter(val => val !== null).length;
+            const percentage = (completed / 5) * 100;
+            document.getElementById('progressBar').style.width = percentage + '%';
+        }
+
+        // 결과 표시
+        function showResult() {
+            // 선택 요약 업데이트
+            const summaryMap = {
+                customerType: {
+                    iot: '🏭 IoT/제조업',
+                    enterprise: '🏢 일반 기업',
+                    saas: '☁️ SaaS/클라우드',
+                    vdi: '🛰️ VDI/위성',
+                    exhibition: '🎪 전시/데모'
+                },
+                language: {
+                    korean: '🇰🇷 한국어',
+                    english: '🌍 English'
+                },
+                purpose: {
+                    initial: '🎯 초기 제안',
+                    technical: '🔧 기술 검토',
+                    executive: '💼 경영진 보고',
+                    demo: '🖥️ 데모/시연'
+                },
+                environment: {
+                    legacy: '🔌 레거시 인프라',
+                    hybrid: '🔄 하이브리드',
+                    'cloud-first': '☁️ 클라우드 우선',
+                    distributed: '🌐 분산 환경'
+                },
+                security: {
+                    compliance: '📋 컴플라이언스',
+                    'zero-trust': '🔐 제로트러스트',
+                    standard: '🛡️ 표준 보안',
+                    enhanced: '🚨 강화 보안'
+                }
+            };
+
+            document.getElementById('summaryType').textContent = summaryMap.customerType[selections.customerType];
+            document.getElementById('summaryLang').textContent = summaryMap.language[selections.language];
+            document.getElementById('summaryPurpose').textContent = summaryMap.purpose[selections.purpose];
+            document.getElementById('summaryEnv').textContent = summaryMap.environment[selections.environment];
+            document.getElementById('summarySecurity').textContent = summaryMap.security[selections.security];
+
+            // 최적 제안서 선택
+            let selectedProposal;
+            
+            // 선택 로직
+            if (selections.customerType === 'exhibition' || selections.purpose === 'demo') {
+                selectedProposal = proposals.exhibition;
+            } else if (selections.language === 'english') {
+                selectedProposal = proposals.general_english;
+            } else {
+                // 한국어 제안서 선택
+                switch(selections.customerType) {
+                    case 'iot':
+                        selectedProposal = proposals.iot_korean;
+                        break;
+                    case 'saas':
+                        selectedProposal = proposals.saas_korean;
+                        break;
+                    case 'vdi':
+                        selectedProposal = proposals.vdi_korean;
+                        break;
+                    case 'enterprise':
+                    default:
+                        selectedProposal = proposals.enterprise_korean;
+                        break;
+                }
+            }
+
+            // 제안서 정보 표시
+            document.getElementById('proposalName').textContent = selectedProposal.name;
+            document.getElementById('proposalType').textContent = selectedProposal.type;
+            document.getElementById('proposalDesc').textContent = selectedProposal.description;
+            
+            // 특징 리스트 생성
+            const featuresList = document.getElementById('proposalFeatures');
+            featuresList.innerHTML = '';
+            selectedProposal.features.forEach(feature => {
+                const li = document.createElement('li');
+                li.textContent = feature;
+                featuresList.appendChild(li);
+            });
+
+            // 다운로드 링크 설정
+            document.getElementById('downloadBtn').href = selectedProposal.url;
+
+            // 결과 섹션 표시
+            document.getElementById('resultSection').classList.add('show');
+            
+            // 결과로 스크롤
+            document.getElementById('resultSection').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // 선택 초기화
+        function resetSelection() {
+            // 선택 상태 초기화
+            selections = {
+                customerType: null,
+                language: null,
+                purpose: null,
+                environment: null,
+                security: null
+            };
+            
+            // UI 초기화
+            document.querySelectorAll('.option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            
+            document.getElementById('progressBar').style.width = '0%';
+            document.getElementById('resultSection').classList.remove('show');
+            
+            // 상단으로 스크롤
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // 페이지 로드 시 애니메이션
+        window.addEventListener('load', function() {
+            document.querySelector('.container').style.animation = 'fadeInUp 0.8s forwards';
+        });
+    </script>
+</body>
+</html>
