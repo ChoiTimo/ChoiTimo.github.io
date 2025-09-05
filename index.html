@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SmartWAN SKT 영업 프레임워크 v2.0</title>
+    <title>SmartWAN SKT 영업 프레임워크 v3.07</title>
     <style>
         * {
             margin: 0;
@@ -174,36 +174,8 @@
         .tool-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-        }
-
-        .tool-card.existing {
-            border-color: #10b981;
-            background: linear-gradient(135deg, #f0fff4, #ecfdf5);
-        }
-
-        .tool-card.new {
-            border-color: #f59e0b;
-            background: linear-gradient(135deg, #fffbeb, #fef3c7);
-        }
-
-        .tool-status {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 600;
-        }
-
-        .status-existing {
-            background: #10b981;
-            color: white;
-        }
-
-        .status-new {
-            background: #f59e0b;
-            color: white;
+            border-color: #3b82f6;
+            background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
         }
 
         .tool-title {
@@ -257,22 +229,15 @@
             cursor: pointer;
             transition: all 0.3s ease;
             width: 100%;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
         }
 
         .launch-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(16, 185, 129, 0.3);
-        }
-
-        .launch-btn.disabled {
-            background: #cbd5e0;
-            cursor: not-allowed;
-            color: #718096;
-        }
-
-        .launch-btn.disabled:hover {
-            transform: none;
-            box-shadow: none;
+            background: linear-gradient(135deg, #059669, #047857);
         }
 
         .integration-flow {
@@ -481,13 +446,23 @@
         .process-dot:hover .process-tooltip {
             opacity: 1;
         }
+
+        .etc-tools-card {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            border-color: #f59e0b;
+        }
+
+        .etc-tools-card:hover {
+            background: linear-gradient(135deg, #fde68a, #fbbf24);
+            border-color: #f59e0b;
+        }
     </style>
 </head>
 <body>
     <div class="platform">
         <div class="header">
             <div class="skt-logo">SKT Enterprise</div>
-            <h1>🚀 SmartWAN SKT 영업 프레임워크 v2.0</h1>
+            <h1>🚀 SmartWAN SKT 영업 프레임워크 v3.07</h1>
             <p>SKT 내부 영업 프로세스에 최적화된 체계적 B2B 영업 플랫폼</p>
             
             <div class="framework-nav">
@@ -497,6 +472,7 @@
                 <div class="nav-phase" data-target="phase3">3단계: 제안</div>
                 <div class="nav-phase" data-target="phase4">4단계: 입찰</div>
                 <div class="nav-phase" data-target="phase5">5단계: 관리</div>
+                <div class="nav-phase" data-target="phase6">기타 참고</div>
             </div>
         </div>
 
@@ -520,6 +496,9 @@
             <div class="process-dot" data-target="phase5">
                 <div class="process-tooltip">관리</div>
             </div>
+            <div class="process-dot" data-target="phase6">
+                <div class="process-tooltip">기타</div>
+            </div>
         </div>
 
         <div class="content">
@@ -539,9 +518,10 @@
                         <button class="quick-btn" onclick="scrollToSection('phase1')">🎯 BANT & Lead Scoring</button>
                         <button class="quick-btn" onclick="scrollToSection('phase2')">⚔️ 경쟁사 배틀카드</button>
                         <button class="quick-btn" onclick="scrollToSection('phase2')">💰 ROI 계산기</button>
-                        <button class="quick-btn" onclick="scrollToSection('phase3')">🔍 제안서 생성기</button>
-                        <button class="quick-btn" onclick="scrollToSection('phase3')">💵 ZTNA 가격 계산</button>
-                        <button class="quick-btn" onclick="scrollToSection('phase4')">🤝 협상 전략 도구</button>
+                        <button class="quick-btn" onclick="window.open('https://choitimo.github.io/Propose_smartwan-proposal-selector.html', '_blank')" style="background: linear-gradient(135deg, #f59e0b, #f97316); box-shadow: 0 8px 20px rgba(249, 115, 22, 0.3);">📑 제안서 생성기 ⭐</button>
+                        <button class="quick-btn" onclick="scrollToSection('phase3')">📖 Value Story Builder</button>
+                        <button class="quick-btn" onclick="scrollToSection('phase3')">💵 ZTNA 견적 시뮬레이터</button>
+                        <button class="quick-btn" onclick="scrollToSection('phase4')">🤝 협상 플레이북</button>
                         <button class="quick-btn" onclick="scrollToSection('phase5')">📈 Win/Loss 분석</button>
                     </div>
                 </div>
@@ -588,8 +568,7 @@
                 </div>
 
                 <div class="tools-grid">
-                    <div class="tool-card existing">
-                        <div class="tool-status status-existing">✅ 기존 도구</div>
+                    <div class="tool-card">
                         <div class="tool-title">
                             <span class="tool-icon">🎯</span>
                             고객 세그먼트 식별기
@@ -602,28 +581,10 @@
                             <li>의사결정자 페르소나 분석</li>
                             <li>추천 질문 스크립트 제공</li>
                         </ul>
-                        <button class="launch-btn" onclick="window.open('https://choitimo.github.io/CustomerSegmentDef.html', '_blank')">도구 실행</button>
+                        <a class="launch-btn" href="https://choitimo.github.io/Analy_customer_segment.html" target="_blank">도구 실행</a>
                     </div>
 
-                    <div class="tool-card existing">
-                        <div class="tool-status status-existing">✅ 기존 도구</div>
-                        <div class="tool-title">
-                            <span class="tool-icon">📈</span>
-                            통합 BANT & Lead Scoring
-                        </div>
-                        <div class="tool-title-en">Unified BANT & Lead Scoring</div>
-                        <div class="tool-description">체계적인 BANT 검증과 정량적 Lead Scoring을 통한 종합 고객 분석 및 우선순위 설정</div>
-                        <ul class="tool-features">
-                            <li>32개 항목 BANT 체크리스트 검증</li>
-                            <li>100점 만점 Lead Scoring 시스템</li>
-                            <li>실시간 종합 분석 및 등급 산정</li>
-                            <li>맞춤형 액션 플랜 자동 생성</li>
-                        </ul>
-                        <button class="launch-btn" onclick="window.open('https://choitimo.github.io/1-2_3%20bant_lead_scoring_unified.html', '_blank')">도구 실행</button>
-                    </div>
-
-                    <div class="tool-card existing">
-                        <div class="tool-status status-existing">✅ 기존 도구</div>
+                    <div class="tool-card">
                         <div class="tool-title">
                             <span class="tool-icon">🗺️</span>
                             고객 관계 매퍼
@@ -636,7 +597,23 @@
                             <li>개인별 관심사 및 Pain Point</li>
                             <li>관계 구축 전략 수립</li>
                         </ul>
-                        <button class="launch-btn" onclick="window.open('https://choitimo.github.io/CustomerRelationMapper.html')">도구 실행</button>
+                        <a class="launch-btn" href="https://choitimo.github.io/Analy_CustomerRelationMapper.html" target="_blank">도구 실행</a>
+                    </div>
+
+                    <div class="tool-card">
+                        <div class="tool-title">
+                            <span class="tool-icon">📈</span>
+                            통합 BANT & Lead Scoring
+                        </div>
+                        <div class="tool-title-en">Unified BANT & Lead Scoring</div>
+                        <div class="tool-description">체계적인 BANT 검증과 정량적 Lead Scoring을 통한 종합 고객 분석 및 우선순위 설정</div>
+                        <ul class="tool-features">
+                            <li>32개 항목 BANT 체크리스트 검증</li>
+                            <li>100점 만점 Lead Scoring 시스템</li>
+                            <li>실시간 종합 분석 및 등급 산정</li>
+                            <li>맞춤형 액션 플랜 자동 생성</li>
+                        </ul>
+                        <a class="launch-btn" href="https://choitimo.github.io/Analy_bant_lead_scoring_unified.html" target="_blank">도구 실행</a>
                     </div>
                 </div>
 
@@ -677,25 +654,7 @@
                 </div>
 
                 <div class="tools-grid">
-                    <div class="tool-card existing">
-                        <div class="tool-status status-existing">✅ 기존 도구</div>
-                        <div class="tool-title">
-                            <span class="tool-icon">💰</span>
-                            ROI 계산기
-                        </div>
-                        <div class="tool-title-en">ROI Calculator</div>
-                        <div class="tool-description">고객의 투자 대비 수익률을 정확히 계산하여 구체적인 재무적 가치를 제시</div>
-                        <ul class="tool-features">
-                            <li>업종별 맞춤 ROI 계산</li>
-                            <li>3년 투자 수익률 분석</li>
-                            <li>비용 절감 효과 시각화</li>
-                            <li>경쟁사 대비 TCO 비교</li>
-                        </ul>
-                        <button class="launch-btn" onclick="window.open('https://choitimo.github.io/ROICalc.html', '_blank')">도구 실행</button>
-                    </div>
-
-                    <div class="tool-card existing">
-                        <div class="tool-status status-existing">✅ 기존 도구</div>
+                    <div class="tool-card">
                         <div class="tool-title">
                             <span class="tool-icon">⚔️</span>
                             경쟁사 배틀카드
@@ -708,24 +667,55 @@
                             <li>고객 반박 대응 스크립트</li>
                             <li>커스터마이징 기능</li>
                         </ul>
-                        <button class="launch-btn" onclick="window.open('https://choitimo.github.io/BattleCard.html', '_blank')">도구 실행</button>
+                        <a class="launch-btn" href="https://choitimo.github.io/Sales_BattleCard.html" target="_blank">도구 실행</a>
                     </div>
 
-                    <div class="tool-card new">
-                        <div class="tool-status status-new">🆕 신규 도구</div>
+                    <div class="tool-card">
                         <div class="tool-title">
-                            <span class="tool-icon">🎯</span>
+                            <span class="tool-icon">📝</span>
                             영업 스크립트 생성기
                         </div>
                         <div class="tool-title-en">Sales Script Generator</div>
-                        <div class="tool-description">고객별 맞춤형 영업 스크립트와 프레젠테이션 자료를 자동 생성</div>
+                        <div class="tool-description">고객별 맞춤형 영업 스크립트와 미팅 준비 자료를 자동 생성</div>
                         <ul class="tool-features">
                             <li>고객 프로파일 기반 스크립트 생성</li>
                             <li>단계별 대화 가이드라인</li>
                             <li>반박 처리 스크립트</li>
                             <li>성공 사례 맞춤 삽입</li>
                         </ul>
-                        <button class="launch-btn disabled" onclick="alert('개발 예정인 도구입니다.')">개발 예정</button>
+                        <a class="launch-btn" href="https://choitimo.github.io/Sales_MeetingPrepare.html" target="_blank">도구 실행</a>
+                    </div>
+
+                    <div class="tool-card">
+                        <div class="tool-title">
+                            <span class="tool-icon">💰</span>
+                            ROI 계산기
+                        </div>
+                        <div class="tool-title-en">ROI Calculator</div>
+                        <div class="tool-description">고객의 투자 대비 수익률을 정확히 계산하여 구체적인 재무적 가치를 제시</div>
+                        <ul class="tool-features">
+                            <li>업종별 맞춤 ROI 계산</li>
+                            <li>3년 투자 수익률 분석</li>
+                            <li>비용 절감 효과 시각화</li>
+                            <li>경쟁사 대비 TCO 비교</li>
+                        </ul>
+                        <a class="launch-btn" href="https://choitimo.github.io/Sales_ROICalc.html" target="_blank">도구 실행</a>
+                    </div>
+
+                    <div class="tool-card">
+                        <div class="tool-title">
+                            <span class="tool-icon">🧠</span>
+                            고객 인지편향 분석 도구
+                        </div>
+                        <div class="tool-title-en">Cognitive Bias Checker</div>
+                        <div class="tool-description">고객의 인지편향을 파악하여 효과적인 설득 전략을 수립</div>
+                        <ul class="tool-features">
+                            <li>12가지 주요 인지편향 분석</li>
+                            <li>고객 행동 패턴 파악</li>
+                            <li>맞춤형 설득 전략 제시</li>
+                            <li>상황별 대응 가이드</li>
+                        </ul>
+                        <a class="launch-btn" href="https://choitimo.github.io/Sales_cognitive_bias_checker.html" target="_blank">도구 실행</a>
                     </div>
                 </div>
             </div>
@@ -740,13 +730,45 @@
                 </div>
 
                 <div class="tools-grid">
-                    <div class="tool-card existing">
-                        <div class="tool-status status-existing">✅ 기존 도구</div>
+                    <div class="tool-card" style="grid-column: span 2; background: linear-gradient(135deg, #fff4e6, #fed7aa); border-color: #f97316;">
+                        <div class="tool-title">
+                            <span class="tool-icon">📑</span>
+                            제안서 생성기 <span style="background: #f97316; color: white; padding: 2px 8px; border-radius: 12px; font-size: 0.8rem; margin-left: 10px;">NEW</span>
+                        </div>
+                        <div class="tool-title-en">Proposal Generator</div>
+                        <div class="tool-description">고객 상황에 최적화된 SmartWAN 제안서를 자동으로 선택하고 추천하는 인텔리전트 도구</div>
+                        <ul class="tool-features">
+                            <li>5단계 맞춤형 선택 프로세스</li>
+                            <li>고객 유형별 특화 제안서 매칭</li>
+                            <li>IoT, 클라우드, VDI 등 다양한 환경 지원</li>
+                            <li>한국어/영어 버전 자동 선택</li>
+                            <li>즉시 다운로드 가능한 PDF 제공</li>
+                        </ul>
+                        <a class="launch-btn" href="https://choitimo.github.io/Propose_smartwan-proposal-selector.html" target="_blank" style="background: linear-gradient(135deg, #f97316, #ea580c);">도구 실행</a>
+                    </div>
+
+                    <div class="tool-card">
+                        <div class="tool-title">
+                            <span class="tool-icon">📖</span>
+                            실무형 Value Story Builder
+                        </div>
+                        <div class="tool-title-en">Value Story Builder</div>
+                        <div class="tool-description">고객의 비즈니스 가치를 스토리텔링 형태로 전달하는 제안서 작성 도구</div>
+                        <ul class="tool-features">
+                            <li>현황 분석 및 과제 정의</li>
+                            <li>솔루션 매핑 및 가치 제안</li>
+                            <li>구현 로드맵 설계</li>
+                            <li>성공 지표 및 ROI 산정</li>
+                        </ul>
+                        <a class="launch-btn" href="https://choitimo.github.io/Propose_simple_value_story_builder.html" target="_blank">도구 실행</a>
+                    </div>
+
+                    <div class="tool-card">
                         <div class="tool-title">
                             <span class="tool-icon">💵</span>
-                            ZTNA 가격 계산기
+                            ZTNA 견적 시뮬레이터
                         </div>
-                        <div class="tool-title-en">ZTNA Pricing Calculator</div>
+                        <div class="tool-title-en">ZTNA Pricing Simulator</div>
                         <div class="tool-description">고객 규모와 요구사항에 맞는 ZTNA 솔루션의 최적 가격을 산출하고 견적서를 생성</div>
                         <ul class="tool-features">
                             <li>사용자 수 기반 가격 산정</li>
@@ -754,24 +776,7 @@
                             <li>경쟁사 대비 가격 비교</li>
                             <li>맞춤형 견적서 생성 및 출력</li>
                         </ul>
-                        <button class="launch-btn" onclick="window.open('https://choitimo.github.io/ztna-pricing-calculator.html', '_blank')">도구 실행</button>
-                    </div>
-
-                    <div class="tool-card new">
-                        <div class="tool-status status-new">🆕 신규 도구</div>
-                        <div class="tool-title">
-                            <span class="tool-icon">📄</span>
-                            제안서 자동 생성기
-                        </div>
-                        <div class="tool-title-en">Proposal Auto Generator</div>
-                        <div class="tool-description">고객 분석 데이터를 활용하여 맞춤형 제안서를 자동으로 생성하는 도구</div>
-                        <ul class="tool-features">
-                            <li>템플릿 기반 제안서 자동 생성</li>
-                            <li>고객별 맞춤 콘텐츠 삽입</li>
-                            <li>기술 사양 및 아키텍처 다이어그램</li>
-                            <li>프레젠테이션용 슬라이드 생성</li>
-                        </ul>
-                        <button class="launch-btn disabled" onclick="alert('개발 예정인 도구입니다.')">개발 예정</button>
+                        <a class="launch-btn" href="https://choitimo.github.io/Propose_ztna-pricing-calculator.html" target="_blank">도구 실행</a>
                     </div>
                 </div>
             </div>
@@ -786,25 +791,7 @@
                 </div>
 
                 <div class="tools-grid">
-                    <div class="tool-card existing">
-                        <div class="tool-status status-existing">✅ 기존 도구</div>
-                        <div class="tool-title">
-                            <span class="tool-icon">🤝</span>
-                            협상 플레이북
-                        </div>
-                        <div class="tool-title-en">Negotiation Playbook</div>
-                        <div class="tool-description">다양한 협상 상황별 전략과 대응 방법을 체계화한 실무 가이드</div>
-                        <ul class="tool-features">
-                            <li>상황별 협상 전략</li>
-                            <li>가격 협상 대응 스크립트</li>
-                            <li>계약 조건 체크리스트</li>
-                            <li>성사 후 관리 가이드</li>
-                        </ul>
-                        <button class="launch-btn" onclick="window.open('https://choitimo.github.io/4-3%20negotiation_playbook.html', '_blank')">도구 실행</button>
-                    </div>
-
-                    <div class="tool-card new">
-                        <div class="tool-status status-new">🆕 신규 도구</div>
+                    <div class="tool-card">
                         <div class="tool-title">
                             <span class="tool-icon">🎯</span>
                             최종 프레젠테이션 코치
@@ -817,7 +804,23 @@
                             <li>핵심 메시지 전달 기법</li>
                             <li>비언어적 커뮤니케이션 가이드</li>
                         </ul>
-                        <button class="launch-btn disabled" onclick="alert('개발 예정인 도구입니다.')">개발 예정</button>
+                        <a class="launch-btn" href="https://choitimo.github.io/BIDDING_final-presentation-coach.html" target="_blank">도구 실행</a>
+                    </div>
+
+                    <div class="tool-card">
+                        <div class="tool-title">
+                            <span class="tool-icon">🤝</span>
+                            협상 플레이북
+                        </div>
+                        <div class="tool-title-en">Negotiation Playbook</div>
+                        <div class="tool-description">다양한 협상 상황별 전략과 대응 방법을 체계화한 실무 가이드</div>
+                        <ul class="tool-features">
+                            <li>상황별 협상 전략</li>
+                            <li>가격 협상 대응 스크립트</li>
+                            <li>계약 조건 체크리스트</li>
+                            <li>성사 후 관리 가이드</li>
+                        </ul>
+                        <a class="launch-btn" href="https://choitimo.github.io/BIDDING_negotiation_playbook.html" target="_blank">도구 실행</a>
                     </div>
                 </div>
             </div>
@@ -832,8 +835,7 @@
                 </div>
 
                 <div class="tools-grid">
-                    <div class="tool-card existing">
-                        <div class="tool-status status-existing">✅ 기존 도구</div>
+                    <div class="tool-card">
                         <div class="tool-title">
                             <span class="tool-icon">📈</span>
                             Win/Loss 분석 도구
@@ -846,7 +848,67 @@
                             <li>개선 포인트 도출</li>
                             <li>베스트 프랙티스 추출</li>
                         </ul>
-                        <button class="launch-btn" onclick="window.open('https://choitimo.github.io/ai_winloss_analyzer.html', '_blank')">도구 실행</button>
+                        <a class="launch-btn" href="https://choitimo.github.io/AS_ai_winloss_analyzer.html" target="_blank">도구 실행</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 기타 참고 -->
+            <div class="phase-container" id="phase6">
+                <div class="phase-header">
+                    <div class="phase-number">🔧</div>
+                    <div class="phase-title">🌟 기타 참고</div>
+                    <div class="phase-title-en">Additional Resources</div>
+                    <div class="phase-description">영업 프로세스 전반에 활용할 수 있는 추가 지원 도구들입니다.<br>고객 관리, 팔로우업, 맞춤 도구 생성 등 영업 활동 전반을 지원</div>
+                </div>
+
+                <div class="tools-grid">
+                    <div class="tool-card etc-tools-card">
+                        <div class="tool-title">
+                            <span class="tool-icon">📈</span>
+                            고객 성장 플래너
+                        </div>
+                        <div class="tool-title-en">Account Growth Planner</div>
+                        <div class="tool-description">기존 고객의 성장 잠재력을 분석하고 확장 기회를 발굴하는 전략적 계획 도구</div>
+                        <ul class="tool-features">
+                            <li>고객 성장 잠재력 분석</li>
+                            <li>업셀/크로스셀 기회 식별</li>
+                            <li>분기별 성장 전략 수립</li>
+                            <li>성과 추적 대시보드</li>
+                        </ul>
+                        <a class="launch-btn" href="https://choitimo.github.io/ETC_account_growth_planner.html" target="_blank">도구 실행</a>
+                    </div>
+
+                    <div class="tool-card etc-tools-card">
+                        <div class="tool-title">
+                            <span class="tool-icon">📞</span>
+                            팔로우업 트래커
+                        </div>
+                        <div class="tool-title-en">Follow-up Tracker</div>
+                        <div class="tool-description">고객 팔로우업을 체계적으로 관리하고 추적하여 놓치는 기회를 최소화</div>
+                        <ul class="tool-features">
+                            <li>팔로우업 일정 관리</li>
+                            <li>고객별 상호작용 이력 추적</li>
+                            <li>자동 알림 및 리마인더</li>
+                            <li>성과 측정 및 분석</li>
+                        </ul>
+                        <a class="launch-btn" href="https://choitimo.github.io/ETC_smartwan_followup_tracker.html" target="_blank">도구 실행</a>
+                    </div>
+
+                    <div class="tool-card etc-tools-card">
+                        <div class="tool-title">
+                            <span class="tool-icon">🛠️</span>
+                            툴 생성기 베타
+                        </div>
+                        <div class="tool-title-en">Tool Generator Beta</div>
+                        <div class="tool-description">특정 영업 상황에 맞는 맞춤형 도구를 즉시 생성하는 AI 기반 도구 생성기</div>
+                        <ul class="tool-features">
+                            <li>맞춤형 영업 도구 생성</li>
+                            <li>AI 기반 자동 구성</li>
+                            <li>즉시 사용 가능한 HTML 출력</li>
+                            <li>지속적 업데이트 및 개선</li>
+                        </ul>
+                        <a class="launch-btn" href="https://choitimo.github.io/ETC_smartwan-tool-generator.html" target="_blank">도구 실행</a>
                     </div>
                 </div>
             </div>
@@ -929,6 +991,11 @@
             if (e.key >= '1' && e.key <= '5') {
                 const phaseId = 'phase' + e.key;
                 scrollToSection(phaseId);
+            }
+            
+            // 6 키로 기타 참고 이동
+            if (e.key === '6') {
+                scrollToSection('phase6');
             }
             
             // 0 키로 개요 이동
