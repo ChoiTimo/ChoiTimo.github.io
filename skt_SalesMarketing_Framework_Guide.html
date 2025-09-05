@@ -1,0 +1,1360 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartWAN SKT 영업 프레임워크 v3.09</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Noto Sans KR', sans-serif;
+            background: linear-gradient(135deg, #1a1f36 0%, #2d3561 100%);
+            color: #333;
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        .presentation-container {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .slide {
+            width: 90%;
+            max-width: 1200px;
+            height: 85vh;
+            background: white;
+            border-radius: 20px;
+            padding: 60px;
+            display: none;
+            flex-direction: column;
+            box-shadow: 0 30px 80px rgba(0,0,0,0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .slide.active {
+            display: flex;
+            animation: slideIn 0.4s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Slide Header */
+        .slide-header {
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #f0f0f0;
+        }
+
+        .slide-number {
+            position: absolute;
+            top: 30px;
+            right: 40px;
+            color: #94a3b8;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        /* Typography */
+        h1 {
+            font-size: 3.5rem;
+            background: linear-gradient(135deg, #1a1f36 0%, #2d3561 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 20px;
+            font-weight: 800;
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            color: #1a1f36;
+            margin-bottom: 30px;
+            font-weight: 700;
+        }
+
+        h3 {
+            font-size: 1.8rem;
+            color: #2d3561;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .subtitle {
+            font-size: 1.4rem;
+            color: #64748b;
+            margin-bottom: 30px;
+        }
+
+        /* Navigation */
+        .nav-controls {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 15px;
+            z-index: 1000;
+            background: rgba(255,255,255,0.98);
+            padding: 12px 25px;
+            border-radius: 50px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+
+        .nav-btn {
+            background: #2d3561;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn:hover {
+            background: #1a1f36;
+            transform: translateY(-2px);
+        }
+
+        .slide-indicator {
+            color: #64748b;
+            font-size: 14px;
+            padding: 0 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        /* Title Slide */
+        .title-slide {
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+        }
+
+        .title-slide h1 {
+            font-size: 4rem;
+            margin-bottom: 30px;
+        }
+
+        .version-badge {
+            display: inline-block;
+            background: #d4af37;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        /* Content Layout */
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 40px;
+            margin-top: 40px;
+        }
+
+        .content-card {
+            background: #f8fafc;
+            padding: 30px;
+            border-radius: 15px;
+            border-left: 4px solid #d4af37;
+        }
+
+        /* Phase Colors */
+        .phase-1 { border-left-color: #3b82f6; }
+        .phase-2 { border-left-color: #10b981; }
+        .phase-3 { border-left-color: #f59e0b; }
+        .phase-4 { border-left-color: #8b5cf6; }
+        .phase-5 { border-left-color: #ef4444; }
+
+        /* Process Flow */
+        .process-flow {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 40px 0;
+            position: relative;
+        }
+
+        .process-step {
+            flex: 1;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .process-step::after {
+            content: '';
+            position: absolute;
+            top: 35px;
+            right: -50%;
+            width: 100%;
+            height: 2px;
+            background: #e2e8f0;
+            z-index: -1;
+        }
+
+        .process-step:last-child::after {
+            display: none;
+        }
+
+        .step-circle {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: white;
+            border: 3px solid #2d3561;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #2d3561;
+        }
+
+        .step-circle.active {
+            background: #2d3561;
+            color: white;
+        }
+
+        .step-title {
+            font-weight: 600;
+            color: #1a1f36;
+            font-size: 1.1rem;
+        }
+
+        /* Tool Cards */
+        .tool-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .tool-card {
+            background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
+            padding: 25px;
+            border-radius: 15px;
+            border: 2px solid #e2e8f0;
+            transition: all 0.3s ease;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border-color: #d4af37;
+        }
+
+        .tool-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+
+        .tool-name {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #1a1f36;
+            margin-bottom: 10px;
+        }
+
+        .tool-desc {
+            color: #64748b;
+            line-height: 1.5;
+            margin-bottom: 15px;
+        }
+
+        .tool-features {
+            list-style: none;
+        }
+
+        .tool-features li {
+            padding: 8px 0;
+            color: #475569;
+            position: relative;
+            padding-left: 25px;
+        }
+
+        .tool-features li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #10b981;
+            font-weight: bold;
+        }
+
+        /* Executive Summary */
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .summary-card {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            border: 2px solid #e2e8f0;
+            transition: all 0.3s ease;
+        }
+
+        .summary-card:hover {
+            transform: translateY(-5px);
+            border-color: #d4af37;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .summary-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+
+        .summary-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1a1f36;
+            margin-bottom: 10px;
+        }
+
+        .summary-label {
+            color: #64748b;
+            font-size: 0.95rem;
+        }
+
+        /* Table of Contents */
+        .toc-list {
+            list-style: none;
+            margin-top: 40px;
+        }
+
+        .toc-item {
+            background: white;
+            padding: 20px 30px;
+            margin-bottom: 15px;
+            border-radius: 10px;
+            border-left: 4px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .toc-item:hover {
+            transform: translateX(10px);
+            border-left-color: #d4af37;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .toc-number {
+            background: #2d3561;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 20px;
+            font-weight: bold;
+        }
+
+        .toc-content {
+            flex: 1;
+        }
+
+        .toc-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #1a1f36;
+            margin-bottom: 5px;
+        }
+
+        .toc-desc {
+            color: #64748b;
+            font-size: 0.95rem;
+        }
+
+        /* Features List */
+        .feature-list {
+            margin-top: 30px;
+        }
+
+        .feature-item {
+            background: linear-gradient(90deg, #f8fafc 0%, #ffffff 100%);
+            padding: 20px;
+            margin-bottom: 15px;
+            border-radius: 10px;
+            border-left: 3px solid #d4af37;
+            display: flex;
+            align-items: center;
+        }
+
+        .feature-icon {
+            font-size: 1.5rem;
+            margin-right: 20px;
+            color: #d4af37;
+        }
+
+        .feature-text {
+            flex: 1;
+            color: #475569;
+            line-height: 1.6;
+        }
+
+        /* Synergy Section */
+        .synergy-diagram {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 40px 0;
+        }
+
+        .synergy-center {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #d4af37 0%, #b8941f 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 1.2rem;
+            position: relative;
+        }
+
+        .synergy-item {
+            position: absolute;
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: white;
+            border: 3px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #2d3561;
+        }
+
+        /* Keyboard Shortcuts Info */
+        .keyboard-info {
+            position: fixed;
+            bottom: 90px;
+            right: 30px;
+            background: rgba(255,255,255,0.95);
+            padding: 10px 15px;
+            border-radius: 10px;
+            font-size: 12px;
+            color: #64748b;
+        }
+
+        /* Progress Bar */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: rgba(255,255,255,0.1);
+            z-index: 1001;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #d4af37 0%, #b8941f 100%);
+            transition: width 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="progress-bar">
+        <div class="progress-fill" id="progressBar"></div>
+    </div>
+
+    <div class="presentation-container">
+        <!-- Slide 1: Title -->
+        <div class="slide title-slide active">
+            <div class="version-badge">Version 3.09</div>
+            <h1>SmartWAN SKT 영업 프레임워크</h1>
+            <p class="subtitle">체계적 B2B 영업 프로세스 플랫폼</p>
+            <p style="color: #94a3b8; margin-top: 40px;">SK텔레콤 Enterprise | 2025</p>
+        </div>
+
+        <!-- Slide 2: Table of Contents -->
+        <div class="slide">
+            <div class="slide-number">2 / 28</div>
+            <h2>목차</h2>
+            <div class="subtitle">5단계 영업 프로세스 Overview</div>
+            
+            <ul class="toc-list">
+                <li class="toc-item">
+                    <div class="toc-number">1</div>
+                    <div class="toc-content">
+                        <div class="toc-title">분석 (Analysis)</div>
+                        <div class="toc-desc">고객 세그먼트 식별 • BANT 검증 • 관계 매핑</div>
+                    </div>
+                </li>
+                <li class="toc-item">
+                    <div class="toc-number">2</div>
+                    <div class="toc-content">
+                        <div class="toc-title">영업 (Sales)</div>
+                        <div class="toc-desc">경쟁 대응 • ROI 산정 • 가치 제안</div>
+                    </div>
+                </li>
+                <li class="toc-item">
+                    <div class="toc-number">3</div>
+                    <div class="toc-content">
+                        <div class="toc-title">제안 (Proposal)</div>
+                        <div class="toc-desc">맞춤 제안서 • 견적 산출 • Value Story</div>
+                    </div>
+                </li>
+                <li class="toc-item">
+                    <div class="toc-number">4</div>
+                    <div class="toc-content">
+                        <div class="toc-title">입찰 (Bidding)</div>
+                        <div class="toc-desc">프레젠테이션 • 협상 전략 • 계약 체결</div>
+                    </div>
+                </li>
+                <li class="toc-item">
+                    <div class="toc-number">5</div>
+                    <div class="toc-content">
+                        <div class="toc-title">관리 (Management)</div>
+                        <div class="toc-desc">성과 분석 • Win/Loss 분석 • 지속 성장</div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Slide 3: Executive Summary -->
+        <div class="slide">
+            <div class="slide-number">3 / 28</div>
+            <h2>Executive Summary</h2>
+            <div class="subtitle">핵심 가치와 기대효과</div>
+            
+            <div class="summary-grid">
+                <div class="summary-card">
+                    <div class="summary-icon">📈</div>
+                    <div class="summary-value">40%</div>
+                    <div class="summary-label">영업 생산성 향상</div>
+                </div>
+                <div class="summary-card">
+                    <div class="summary-icon">⏱️</div>
+                    <div class="summary-value">60%</div>
+                    <div class="summary-label">제안서 작성시간 단축</div>
+                </div>
+                <div class="summary-card">
+                    <div class="summary-icon">🎯</div>
+                    <div class="summary-value">25%</div>
+                    <div class="summary-label">수주율 개선</div>
+                </div>
+            </div>
+
+            <div class="feature-list">
+                <div class="feature-item">
+                    <div class="feature-icon">✓</div>
+                    <div class="feature-text">데이터 기반 고객 분석으로 정확한 타겟팅과 맞춤형 접근 전략 수립</div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">✓</div>
+                    <div class="feature-text">AI 기반 자동화 도구로 반복 작업 최소화 및 핵심 영업 활동 집중</div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">✓</div>
+                    <div class="feature-text">체계적인 프로세스 관리로 Best Practice 축적 및 지속적 개선</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 4: Framework Overview -->
+        <div class="slide">
+            <div class="slide-number">4 / 28</div>
+            <h2>전체 프로세스 플로우</h2>
+            <div class="subtitle">End-to-End 영업 프로세스 다이어그램</div>
+            
+            <div class="process-flow">
+                <div class="process-step">
+                    <div class="step-circle active">1</div>
+                    <div class="step-title">분석</div>
+                </div>
+                <div class="process-step">
+                    <div class="step-circle">2</div>
+                    <div class="step-title">영업</div>
+                </div>
+                <div class="process-step">
+                    <div class="step-circle">3</div>
+                    <div class="step-title">제안</div>
+                </div>
+                <div class="process-step">
+                    <div class="step-circle">4</div>
+                    <div class="step-title">입찰</div>
+                </div>
+                <div class="process-step">
+                    <div class="step-circle">5</div>
+                    <div class="step-title">관리</div>
+                </div>
+            </div>
+
+            <div class="content-grid">
+                <div class="content-card phase-1">
+                    <h3>Input</h3>
+                    <p>• 시장 정보 및 고객 데이터</p>
+                    <p>• 영업 기회 및 Lead 정보</p>
+                    <p>• 경쟁사 동향 및 업계 트렌드</p>
+                </div>
+                <div class="content-card phase-5">
+                    <h3>Output</h3>
+                    <p>• 수주 및 계약 체결</p>
+                    <p>• 고객 관계 강화</p>
+                    <p>• 영업 인사이트 축적</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 5: Phase Connection -->
+        <div class="slide">
+            <div class="slide-number">5 / 28</div>
+            <h2>단계별 핵심 목표와 연계성</h2>
+            <div class="subtitle">각 단계의 목표와 상호 연결 관계</div>
+            
+            <div class="tool-grid">
+                <div class="tool-card">
+                    <div class="tool-icon">🔍</div>
+                    <div class="tool-name">1단계: 분석</div>
+                    <div class="tool-desc">고객 이해와 기회 발굴</div>
+                    <ul class="tool-features">
+                        <li>고객 세그먼트 정의</li>
+                        <li>Pain Point 파악</li>
+                        <li>의사결정자 식별</li>
+                    </ul>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-icon">💼</div>
+                    <div class="tool-name">2단계: 영업</div>
+                    <div class="tool-desc">가치 전달과 관계 구축</div>
+                    <ul class="tool-features">
+                        <li>솔루션 포지셔닝</li>
+                        <li>ROI 입증</li>
+                        <li>경쟁 우위 확보</li>
+                    </ul>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-icon">📝</div>
+                    <div class="tool-name">3단계: 제안</div>
+                    <div class="tool-desc">맞춤형 솔루션 설계</div>
+                    <ul class="tool-features">
+                        <li>기술 요구사항 매칭</li>
+                        <li>가격 최적화</li>
+                        <li>구현 로드맵 수립</li>
+                    </ul>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-icon">🤝</div>
+                    <div class="tool-name">4단계: 입찰</div>
+                    <div class="tool-desc">최종 협상과 계약</div>
+                    <ul class="tool-features">
+                        <li>프레젠테이션 최적화</li>
+                        <li>조건 협상</li>
+                        <li>리스크 관리</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 6: Phase 1 Overview -->
+        <div class="slide">
+            <div class="slide-number">6 / 28</div>
+            <h2>1단계: 분석</h2>
+            <div class="subtitle">고객과 시장을 이해하는 데이터 기반 접근</div>
+            
+            <div class="content-card" style="background: linear-gradient(135deg, #eff6ff, #dbeafe); border-left-color: #3b82f6;">
+                <h3>단계 목표</h3>
+                <p style="line-height: 1.8; color: #475569;">
+                    고객의 비즈니스 환경과 니즈를 심층적으로 분석하여 최적의 영업 전략을 수립합니다.
+                    데이터 기반의 체계적인 분석을 통해 성공 가능성이 높은 기회를 선별하고,
+                    효과적인 접근 방법을 도출합니다.
+                </p>
+            </div>
+
+            <div class="feature-list">
+                <div class="feature-item">
+                    <div class="feature-icon">🎯</div>
+                    <div class="feature-text">타겟 고객 세그먼트 정의 및 우선순위 설정</div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">📊</div>
+                    <div class="feature-text">BANT 기준 Lead Qualification 및 스코어링</div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">🗺️</div>
+                    <div class="feature-text">의사결정 프로세스 및 이해관계자 매핑</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 7: Customer Segment Tool -->
+        <div class="slide">
+            <div class="slide-number">7 / 28</div>
+            <h2>고객 세그먼트 식별기</h2>
+            <div class="subtitle">Customer Segment Identifier</div>
+            
+            <div class="content-grid">
+                <div class="content-card">
+                    <h3>핵심 기능</h3>
+                    <ul class="tool-features">
+                        <li>업종별 맞춤 전략 제시</li>
+                        <li>Pain Point 기반 솔루션 매칭</li>
+                        <li>의사결정자 페르소나 분석</li>
+                        <li>추천 질문 스크립트 제공</li>
+                    </ul>
+                </div>
+                <div class="content-card">
+                    <h3>기대 효과</h3>
+                    <ul class="tool-features">
+                        <li>고객 이해도 70% 향상</li>
+                        <li>초기 미팅 성공률 증가</li>
+                        <li>타겟팅 정확도 개선</li>
+                        <li>영업 사이클 20% 단축</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div style="background: #f8fafc; padding: 25px; border-radius: 15px; margin-top: 30px;">
+                <p style="color: #64748b; font-style: italic;">
+                    💡 <strong>적용 이론:</strong> Miller Heiman의 Strategic Selling 방법론을 기반으로 
+                    고객의 구매 영향력자를 체계적으로 분석하고 접근 전략을 수립
+                </p>
+            </div>
+        </div>
+
+        <!-- Slide 8: Relationship Mapper -->
+        <div class="slide">
+            <div class="slide-number">8 / 28</div>
+            <h2>고객 관계 매퍼</h2>
+            <div class="subtitle">Customer Relationship Mapper</div>
+            
+            <div class="content-grid">
+                <div class="content-card">
+                    <h3>핵심 기능</h3>
+                    <ul class="tool-features">
+                        <li>조직도 기반 이해관계자 매핑</li>
+                        <li>의사결정 프로세스 분석</li>
+                        <li>개인별 관심사 및 Pain Point</li>
+                        <li>관계 구축 전략 수립</li>
+                    </ul>
+                </div>
+                <div class="content-card">
+                    <h3>기대 효과</h3>
+                    <ul class="tool-features">
+                        <li>키맨 식별 정확도 향상</li>
+                        <li>내부 챔피언 확보율 증가</li>
+                        <li>의사결정 영향력 파악</li>
+                        <li>정치적 리스크 최소화</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div style="background: #f8fafc; padding: 25px; border-radius: 15px; margin-top: 30px;">
+                <p style="color: #64748b; font-style: italic;">
+                    💡 <strong>적용 이론:</strong> Power Base Selling 개념을 활용하여 
+                    조직 내 실질적 영향력자와 의사결정 구조를 시각화하고 전략적 접근
+                </p>
+            </div>
+        </div>
+
+        <!-- Slide 9: BANT & Lead Scoring -->
+        <div class="slide">
+            <div class="slide-number">9 / 28</div>
+            <h2>통합 BANT & Lead Scoring</h2>
+            <div class="subtitle">Unified BANT & Lead Scoring System</div>
+            
+            <div class="content-grid">
+                <div class="content-card">
+                    <h3>핵심 기능</h3>
+                    <ul class="tool-features">
+                        <li>32개 항목 BANT 체크리스트</li>
+                        <li>100점 만점 Lead Scoring</li>
+                        <li>실시간 종합 분석 및 등급 산정</li>
+                        <li>맞춤형 액션 플랜 자동 생성</li>
+                    </ul>
+                </div>
+                <div class="content-card">
+                    <h3>기대 효과</h3>
+                    <ul class="tool-features">
+                        <li>영업 기회 평가 객관화</li>
+                        <li>리소스 배분 최적화</li>
+                        <li>파이프라인 예측 정확도 향상</li>
+                        <li>조기 리스크 감지</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div style="background: #f8fafc; padding: 25px; border-radius: 15px; margin-top: 30px;">
+                <p style="color: #64748b; font-style: italic;">
+                    💡 <strong>적용 이론:</strong> IBM의 BANT 프레임워크와 현대적 Lead Scoring 방법론을 
+                    통합하여 정량적 기회 평가 및 우선순위 설정
+                </p>
+            </div>
+        </div>
+
+        <!-- Slide 10: Phase 2 Overview -->
+        <div class="slide">
+            <div class="slide-number">10 / 28</div>
+            <h2>2단계: 영업</h2>
+            <div class="subtitle">가치 제안과 경쟁 우위 확보</div>
+            
+            <div class="content-card" style="background: linear-gradient(135deg, #d1fae5, #a7f3d0); border-left-color: #10b981;">
+                <h3>단계 목표</h3>
+                <p style="line-height: 1.8; color: #475569;">
+                    분석 결과를 바탕으로 실제 영업 활동을 전개합니다.
+                    고객의 니즈에 맞는 가치를 효과적으로 전달하고,
+                    경쟁사 대비 차별화된 포지셔닝으로 고객의 신뢰를 확보합니다.
+                </p>
+            </div>
+
+            <div class="feature-list">
+                <div class="feature-item">
+                    <div class="feature-icon">⚔️</div>
+                    <div class="feature-text">경쟁사 대비 강점 부각 및 반박 처리</div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">💰</div>
+                    <div class="feature-text">구체적인 ROI 산정 및 가치 입증</div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">🎯</div>
+                    <div class="feature-text">고객 맞춤형 영업 스크립트 활용</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 11: Battle Cards -->
+        <div class="slide">
+            <div class="slide-number">11 / 28</div>
+            <h2>경쟁사 배틀카드</h2>
+            <div class="subtitle">Competitive Battle Cards</div>
+            
+            <div class="content-grid">
+                <div class="content-card">
+                    <h3>핵심 기능</h3>
+                    <ul class="tool-features">
+                        <li>Cisco, Fortinet, Palo Alto 분석</li>
+                        <li>기능별 비교 매트릭스</li>
+                        <li>고객 반박 대응 스크립트</li>
+                        <li>커스터마이징 기능</li>
+                    </ul>
+                </div>
+                <div class="content-card">
+                    <h3>기대 효과</h3>
+                    <ul class="tool-features">
+                        <li>경쟁 대응력 80% 향상</li>
+                        <li>차별화 포인트 명확화</li>
+                        <li>영업 자신감 증대</li>
+                        <li>반박 처리 성공률 향상</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div style="background: #f8fafc; padding: 25px; border-radius: 15px; margin-top: 30px;">
+                <p style="color: #64748b; font-style: italic;">
+                    💡 <strong>적용 이론:</strong> Competitive Intelligence 프레임워크를 활용한 
+                    체계적 경쟁 분석과 차별화 전략 수립
+                </p>
+            </div>
+        </div>
+
+        <!-- Slide 12: Sales Script Generator -->
+        <div class="slide">
+            <div class="slide-number">12 / 28</div>
+            <h2>영업 스크립트 생성기</h2>
+            <div class="subtitle">Sales Script Generator</div>
+            
+            <div class="content-grid">
+                <div class="content-card">
+                    <h3>핵심 기능</h3>
+                    <ul class="tool-features">
+                        <li>고객 프로파일 기반 스크립트</li>
+                        <li>단계별 대화 가이드라인</li>
+                        <li>반박 처리 스크립트</li>
+                        <li>성공 사례 맞춤 삽입</li>
+                    </ul>
+                </div>
+                <div class="content-card">
+                    <h3>기대 효과</h3>
+                    <ul class="tool-features">
+                        <li>미팅 준비 시간 70% 단축</li>
+                        <li>메시지 일관성 확보</li>
+                        <li>신입 영업 교육 효율화</li>
+                        <li>클로징률 25% 개선</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div style="background: #f8fafc; padding: 25px; border-radius: 15px; margin-top: 30px;">
+                <p style="color: #64748b; font-style: italic;">
+                    💡 <strong>적용 이론:</strong> SPIN Selling과 Challenger Sale 방법론을 
+                    결합한 상황별 맞춤형 대화 전략
+                </p>
+            </div>
+        </div>
+
+        <!-- Slide 13: ROI Calculator -->
+        <div class="slide">
+            <div class="slide-number">13 / 28</div>
+            <h2>ROI 계산기</h2>
+            <div class="subtitle">ROI Calculator</div>
+            
+            <div class="content-grid">
+                <div class="content-card">
+                    <h3>핵심 기능</h3>
+                    <ul class="tool-features">
+                        <li>업종별 맞춤 ROI 계산</li>
+                        <li>3년 투자 수익률 분석</li>
+                        <li>비용 절감 효과 시각화</li>
+                        <li>경쟁사 대비 TCO 비교</li>
+                    </ul>
+                </div>
+                <div class="content-card">
+                    <h3>기대 효과</h3>
+                    <ul class="tool-features">
+                        <li>가치 입증력 강화</li>
+                        <li>구매 정당성 제공</li>
+                        <li>의사결정 가속화</li>
+                        <li>예산 협상력 증대</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div style="background: #f8fafc; padding: 25px; border-radius: 15px; margin-top: 30px;">
+                <p style="color: #64748b; font-style: italic;">
+                    💡 <strong>적용 이론:</strong> Value Selling 방법론과 TCO(Total Cost of Ownership) 
+                    분석을 통한 정량적 가치 증명
+                </p>
+            </div>
+        </div>
+
+        <!-- Slide 14: Cognitive Bias Checker -->
+        <div class="slide">
+            <div class="slide-number">14 / 28</div>
+            <h2>고객 인지편향 분석 도구</h2>
+            <div class="subtitle">Cognitive Bias Checker</div>
+            
+            <div class="content-grid">
+                <div class="content-card">
+                    <h3>핵심 기능</h3>
+                    <ul class="tool-features">
+                        <li>12가지 주요 인지편향 분석</li>
+                        <li>고객 행동 패턴 파악</li>
+                        <li>맞춤형 설득 전략 제시</li>
+                        <li>상황별 대응 가이드</li>
+                    </ul>
+                </div>
+                <div class="content-card">
+                    <h3>기대 효과</h3>
+                    <ul class="tool-features">
+                        <li>고객 심리 이해도 향상</li>
+                        <li>설득 성공률 증가</li>
+                        <li>반대 의견 극복</li>
+                        <li>협상력 강화</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div style="background: #f8fafc; padding: 25px; border-radius: 15px; margin-top: 30px;">
+                <p style="color: #64748b; font-style: italic;">
+                    💡 <strong>적용 이론:</strong> 행동경제학과 심리학의 인지편향 이론을 
+                    B2B 영업에 적용한 고객 심리 분석
+                </p>
+            </div>
+        </div>
+
+        <!-- Slide 15: Phase 3 Overview -->
+        <div class="slide">
+            <div class="slide-number">15 / 28</div>
+            <h2>3단계: 제안</h2>
+            <div class="subtitle">맞춤형 솔루션 설계와 제안</div>
+            
+            <div class="content-card" style="background: linear-gradient(135deg, #fff4e6, #fed7aa); border-left-color: #f59e0b;">
+                <h3>단계 목표</h3>
+                <p style="line-height: 1.8; color: #475569;">
+                    고객의 요구사항에 최적화된 솔루션을 설계하고 제안합니다.
+                    기술적 타당성과 비즈니스 가치를 균형있게 제시하며,
+                    구현 가능한 로드맵과 명확한 가격 제안으로 신뢰를 구축합니다.
+                </p>
+            </div>
+
+            <div class="feature-list">
+                <div class="feature-item">
+                    <div class="feature-icon">📑</div>
+                    <div class="feature-text">고객 맞춤형 제안서 자동 생성</div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">💵</div>
+                    <div class="feature-text">정확한 견적 산출 및 가격 최적화</div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">📖</div>
+                    <div class="feature-text">스토리텔링 기반 가치 전달</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 16: Proposal Generator -->
+        <div class="slide">
+            <div class="slide-number">16 / 28</div>
+            <h2>제안서 생성기 ⭐</h2>
+            <div class="subtitle">Intelligent Proposal Generator</div>
+            
+            <div class="content-grid">
+                <div class="content-card">
+                    <h3>핵심 기능</h3>
+                    <ul class="tool-features">
+                        <li>5단계 맞춤형 선택 프로세스</li>
+                        <li>고객 유형별 특화 제안서</li>
+                        <li>IoT, 클라우드, VDI 환경 지원</li>
+                        <li>한국어/영어 버전 자동 선택</li>
+                    </ul>
+                </div>
+                <div class="content-card">
+                    <h3>기대 효과</h3>
+                    <ul class="tool-features">
+                        <li>제안서 작성 시간 80% 단축</li>
+                        <li>일관된 품질 유지</li>
+                        <li>맞춤형 컨텐츠 제공</li>
+                        <li>즉시 활용 가능한 PDF</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div style="background: linear-gradient(135deg, #fff4e6, #fed7aa); padding: 25px; border-radius: 15px; margin-top: 30px;">
+                <p style="color: #f97316; font-weight: 600;">
+                    🔥 <strong>HOT 도구:</strong> 가장 많이 사용되는 핵심 도구로, 
+                    고객 상황에 최적화된 제안서를 5분 내에 생성
+                </p>
+            </div>
+        </div>
+
+        <!-- Slide 17: Quote Calculator -->
+        <div class="slide">
+            <div class="slide-number">17 / 28</div>
+            <h2>통합 견적 계산기 🆕</h2>
+            <div class="subtitle">Major Quote Calculator</div>
+            
+            <div class="content-grid">
+                <div class="content-card">
+                    <h3>핵심 기능</h3>
+                    <ul class="tool-features">
+                        <li>하드웨어/소프트웨어 통합 견적</li>
+                        <li>구축비 및 유지보수 비용 계산</li>
+                        <li>TCO 분석 및 비교</li>
+                        <li>할인율 적용 및 최종가 산출</li>
+                    </ul>
+                </div>
+                <div class="content-card">
+                    <h3>기대 효과</h3>
+                    <ul class="tool-features">
+                        <li>견적 정확도 95% 이상</li>
+                        <li>가격 협상 유연성 확보</li>
+                        <li>마진 최적화</li>
+                        <li>견적서 자동 생성</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div style="background: linear-gradient(135deg, #d1fae5, #a7f3d0); padding: 25px; border-radius: 15px; margin-top: 30px;">
+                <p style="color: #10b981; font-weight: 600;">
+                    ✨ <strong>NEW 도구:</strong> 최신 출시된 통합 견적 도구로, 
+                    복잡한 솔루션 가격을 체계적으로 산출
+                </p>
+            </div>
+        </div>
+
+        <!-- Slide 18: Value Story Builder -->
+        <div class="slide">
+            <div class="slide-number">18 / 28</div>
+            <h2>Value Story Builder</h2>
+            <div class="subtitle">실무형 가치 스토리 구성</div>
+            
+            <div class="content-grid">
+                <div class="content-card">
+                    <h3>핵심 기능</h3>
+                    <ul class="tool-features">
+                        <li>현황 분석 및 과제 정의</li>
+                        <li>솔루션 매핑 및 가치 제안</li>
+                        <li>구현 로드맵 설계</li>
+                        <li>성공 지표 및 ROI 산정</li>
+                    </ul>
+                </div>
+                <div class="content-card">
+                    <h3>기대 효과</h3>
+                    <ul class="tool-features">
+                        <li>스토리텔링 효과 극대화</li>
+                        <li>고객 공감대 형성</li>
+                        <li>복잡한 솔루션 단순화</li>
+                        <li>의사결정 촉진</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div style="background: #f8fafc; padding: 25px; border-radius: 15px; margin-top: 30px;">
+                <p style="color: #64748b; font-style: italic;">
+                    💡 <strong>적용 이론:</strong> Solution Selling의 9-Box Vision Process를 활용한 
+                    Before-After 시나리오 기반 가치 전달
+                </p>
+            </div>
+        </div>
+
+        <!-- Slide 19: ZTNA Pricing -->
+        <div class="slide">
+            <div class="slide-number">19 / 28</div>
+            <h2>ZTNA 견적 시뮬레이터</h2>
+            <div class="subtitle">ZTNA Pricing Simulator</div>
+            
+            <div class="content-grid">
+                <div class="content-card">
+                    <h3>핵심 기능</h3>
+                    <ul class="tool-features">
+                        <li>사용자 수 기반 가격 산정</li>
+                        <li>기능별 옵션 선택 및 계산</li>
+                        <li>경쟁사 대비 가격 비교</li>
+                        <li>맞춤형 견적서 생성</li>
+                    </ul>
+                </div>
+                <div class="content-card">
+                    <h3>기대 효과</h3>
+                    <ul class="tool-features">
+                        <li>ZTNA 견적 신속 처리</li>
+                        <li>가격 투명성 확보</li>
+                        <li>옵션별 가치 명확화</li>
+                        <li>구매 결정 지원</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div style="background: #f8fafc; padding: 25px; border-radius: 15px; margin-top: 30px;">
+                <p style="color: #64748b; font-style: italic;">
+                    💡 <strong>적용 이론:</strong> SaaS 가격 모델링과 Value-based Pricing 전략을 
+                    Zero Trust 보안 솔루션에 적용
+                </p>
+            </div>
+        </div>
+
+        <!-- Slide 20: Phase 4 Overview -->
+        <div class="slide">
+            <div class="slide-number">20 / 28</div>
+            <h2>4단계: 입찰</h2>
+            <div class="subtitle">최종 협상과 계약 체결</div>
+            
+            <div class="content-card" style="background: linear-gradient(135deg, #f3e8ff, #e9d5ff); border-left-color: #8b5cf6;">
+                <h3>단계 목표</h3>
+                <p style="line-height: 1.8; color: #475569;">
+                    최종 프레젠테이션과 협상을 통해 성공적인 계약 체결을 이끌어냅니다.
+                    체계적인 준비와 전략적 협상으로 최적의 조건을 확보하며,
+                    장기적인 파트너십의 기반을 마련합니다.
+                </p>
+            </div>
+
+            <div class="feature-list">
+                <div class="feature-item">
+                    <div class="feature-icon">🎯</div>
+                    <div class="feature-text">임팩트 있는 최종 프레젠테이션 준비</div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">🤝</div>
+                    <div class="feature-text">Win-Win 협상 전략 수립 및 실행</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 21: Presentation Coach -->
+        <div class="slide">
+            <div class="slide-number">21 / 28</div>
+            <h2>최종 프레젠테이션 코치</h2>
+            <div class="subtitle">Final Presentation Coach</div>
+            
+            <div class="content-grid">
+                <div class="content-card">
+                    <h3>핵심 기능</h3>
+                    <ul class="tool-features">
+                        <li>프레젠테이션 구성 최적화</li>
+                        <li>예상 질문 및 답변 준비</li>
+                        <li>핵심 메시지 전달 기법</li>
+                        <li>비언어적 커뮤니케이션 가이드</li>
+                    </ul>
+                </div>
+                <div class="content-card">
+                    <h3>기대 효과</h3>
+                    <ul class="tool-features">
+                        <li>발표 영향력 극대화</li>
+                        <li>Q&A 대응력 향상</li>
+                        <li>의사결정자 설득력 증대</li>
+                        <li>최종 선정률 30% 향상</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div style="background: #f8fafc; padding: 25px; border-radius: 15px; margin-top: 30px;">
+                <p style="color: #64748b; font-style: italic;">
+                    💡 <strong>적용 이론:</strong> Executive Presentation Skills와 Pyramid Principle을 
+                    활용한 구조화된 메시지 전달
+                </p>
+            </div>
+        </div>
+
+        <!-- Slide 22: Negotiation Playbook -->
+        <div class="slide">
+            <div class="slide-number">22 / 28</div>
+            <h2>협상 플레이북</h2>
+            <div class="subtitle">Negotiation Playbook</div>
+            
+            <div class="content-grid">
+                <div class="content-card">
+                    <h3>핵심 기능</h3>
+                    <ul class="tool-features">
+                        <li>상황별 협상 전략</li>
+                        <li>가격 협상 대응 스크립트</li>
+                        <li>계약 조건 체크리스트</li>
+                        <li>성사 후 관리 가이드</li>
+                    </ul>
+                </div>
+                <div class="content-card">
+                    <h3>기대 효과</h3>
+                    <ul class="tool-features">
+                        <li>협상력 50% 향상</li>
+                        <li>마진 보호 능력 강화</li>
+                        <li>리스크 최소화</li>
+                        <li>고객 만족도 유지</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div style="background: #f8fafc; padding: 25px; border-radius: 15px; margin-top: 30px;">
+                <p style="color: #64748b; font-style: italic;">
+                    💡 <strong>적용 이론:</strong> Getting to Yes의 원칙적 협상론과 
+                    BATNA(Best Alternative to Negotiated Agreement) 전략 활용
+                </p>
+            </div>
+        </div>
+
+        <!-- Slide 23: Phase 5 Overview -->
+        <div class="slide">
+            <div class="slide-number">23 / 28</div>
+            <h2>5단계: 관리</h2>
+            <div class="subtitle">성과 분석과 지속적 개선</div>
+            
+            <div class="content-card" style="background: linear-gradient(135deg, #fee2e2, #fecaca); border-left-color: #ef4444;">
+                <h3>단계 목표</h3>
+                <p style="line-height: 1.8; color: #475569;">
+                    계약 후 체계적인 관리를 통해 고객 성공을 지원합니다.
+                    영업 성과를 분석하여 개선점을 도출하고,
+                    Best Practice를 축적하여 조직 전체의 영업력을 향상시킵니다.
+                </p>
+            </div>
+
+            <div class="feature-list">
+                <div class="feature-item">
+                    <div class="feature-icon">📊</div>
+                    <div class="feature-text">체계적인 Win/Loss 분석 및 인사이트 도출</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 24: Win/Loss Analysis -->
+        <div class="slide">
+            <div class="slide-number">24 / 28</div>
+            <h2>Win/Loss 분석 도구</h2>
+            <div class="subtitle">Win/Loss Analysis Tool</div>
+            
+            <div class="content-grid">
+                <div class="content-card">
+                    <h3>핵심 기능</h3>
+                    <ul class="tool-features">
+                        <li>딜 성공/실패 요인 분석</li>
+                        <li>경쟁사 승/패 패턴 분석</li>
+                        <li>개선 포인트 도출</li>
+                        <li>베스트 프랙티스 추출</li>
+                    </ul>
+                </div>
+                <div class="content-card">
+                    <h3>기대 효과</h3>
+                    <ul class="tool-features">
+                        <li>영업 전략 고도화</li>
+                        <li>실패 재발 방지</li>
+                        <li>성공 패턴 확산</li>
+                        <li>조직 학습 가속화</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div style="background: #f8fafc; padding: 25px; border-radius: 15px; margin-top: 30px;">
+                <p style="color: #64748b; font-style: italic;">
+                    💡 <strong>적용 이론:</strong> Sales Analytics와 Continuous Improvement 방법론을 통한 
+                    데이터 기반 영업 프로세스 최적화
+                </p>
+            </div>
+        </div>
+
+        <!-- Slide 25: Additional Tools Overview -->
+        <div class="slide">
+            <div class="slide-number">25 / 28</div>
+            <h2>기타 지원 도구</h2>
+            <div class="subtitle">Additional Support Tools</div>
+            
+            <div class="content-card" style="background: linear-gradient(135deg, #fef3c7, #fde68a); border-left-color: #f59e0b;">
+                <h3>추가 도구 Overview</h3>
+                <p style="line-height: 1.8; color: #475569; margin-bottom: 20px;">
+                    영업 프로세스 전반을 지원하는 보조 도구들로, 
+                    고객 관리, 팔로우업, 맞춤 도구 생성 등 다양한 영업 활동을 지원합니다.
+                </p>
+            </div>
+
+            <div class="tool-grid" style="margin-top: 30px;">
+                <div class="tool-card">
+                    <div class="tool-icon">📈</div>
+                    <div class="tool-name">고객 성장 플래너</div>
+                    <div class="tool-desc">기존 고객의 업셀/크로스셀 기회 발굴</div>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-icon">📞</div>
+                    <div class="tool-name">팔로우업 트래커</div>
+                    <div class="tool-desc">체계적인 고객 팔로우업 관리</div>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-icon">🛠️</div>
+                    <div class="tool-name">툴 생성기 베타</div>
+                    <div class="tool-desc">AI 기반 맞춤형 영업 도구 생성</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 26: Additional Tools Details -->
+        <div class="slide">
+            <div class="slide-number">26 / 28</div>
+            <h2>기타 도구 상세</h2>
+            <div class="subtitle">3가지 핵심 보조 도구</div>
+            
+            <div style="display: flex; flex-
