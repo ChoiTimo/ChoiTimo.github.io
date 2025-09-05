@@ -1,0 +1,1011 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartWAN 견적계산기 | SK텔레콤</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif;
+            background: linear-gradient(135deg, #ea4335 0%, #ff6b00 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #ea4335 0%, #ff6b00 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 20px 20px 0 0;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .header .subtitle {
+            font-size: 1.1em;
+            opacity: 0.95;
+        }
+        
+        .content {
+            padding: 40px;
+        }
+        
+        .info-cards {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        
+        .info-card {
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 15px;
+            padding: 25px;
+            transition: all 0.3s ease;
+        }
+        
+        .info-card:hover {
+            border-color: #ff6b00;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(255,107,0,0.1);
+        }
+        
+        .info-card h3 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        
+        .badge-premium {
+            background: linear-gradient(135deg, #ffd700, #ffed4e);
+            color: #333;
+        }
+        
+        .badge-basic {
+            background: #e0e0e0;
+            color: #666;
+        }
+        
+        .feature-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .feature-list li {
+            padding: 5px 0;
+            font-size: 0.95em;
+        }
+        
+        .step-section {
+            margin-bottom: 40px;
+        }
+        
+        .step-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        
+        .step-number {
+            background: #ff6b00;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+        
+        .step-title {
+            font-size: 1.6em;
+            color: #333;
+        }
+        
+        .service-selector {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .service-option {
+            flex: 1;
+            position: relative;
+        }
+        
+        .service-option input[type="radio"] {
+            position: absolute;
+            opacity: 0;
+        }
+        
+        .service-option label {
+            display: block;
+            padding: 20px;
+            background: white;
+            border: 3px solid #e0e0e0;
+            border-radius: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .service-option input[type="radio"]:checked + label {
+            border-color: #ff6b00;
+            background: linear-gradient(135deg, rgba(255,107,0,0.05), rgba(255,107,0,0.1));
+        }
+        
+        .service-option label strong {
+            display: block;
+            font-size: 1.1em;
+            margin-bottom: 5px;
+            color: #333;
+        }
+        
+        .service-option label small {
+            color: #666;
+            font-size: 0.9em;
+        }
+        
+        .config-section {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .config-section.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .connection-item {
+            background: #f8f9fa;
+            border: 2px solid #e0e0e0;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            position: relative;
+        }
+        
+        .connection-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        
+        .connection-title {
+            font-size: 1.2em;
+            color: #ff6b00;
+            font-weight: bold;
+        }
+        
+        .hub-badge {
+            background: #ff6b00;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 0.85em;
+            margin-left: 10px;
+        }
+        
+        .remove-btn {
+            background: #dc3545;
+            color: white;
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 20px;
+            line-height: 1;
+            transition: all 0.3s ease;
+        }
+        
+        .remove-btn:hover {
+            background: #c82333;
+            transform: rotate(90deg);
+        }
+        
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .form-group label {
+            color: #666;
+            font-size: 0.9em;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        
+        .form-group select,
+        .form-group input {
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1em;
+            background: white;
+            transition: all 0.3s ease;
+        }
+        
+        .form-group select:focus,
+        .form-group input:focus {
+            outline: none;
+            border-color: #ff6b00;
+            box-shadow: 0 0 0 3px rgba(255,107,0,0.1);
+        }
+        
+        .add-button {
+            background: linear-gradient(135deg, #ff6b00, #ea4335);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 10px;
+            font-size: 1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .add-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(255,107,0,0.3);
+        }
+        
+        .calculate-button {
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            color: white;
+            border: none;
+            padding: 20px 50px;
+            border-radius: 15px;
+            font-size: 1.3em;
+            font-weight: bold;
+            cursor: pointer;
+            display: block;
+            margin: 40px auto;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 20px rgba(76,175,80,0.3);
+        }
+        
+        .calculate-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(76,175,80,0.4);
+        }
+        
+        .contract-section {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+        
+        .contract-options {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+        }
+        
+        .contract-option {
+            position: relative;
+        }
+        
+        .contract-option input[type="radio"] {
+            position: absolute;
+            opacity: 0;
+        }
+        
+        .contract-option label {
+            display: block;
+            padding: 15px;
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .contract-option input[type="radio"]:checked + label {
+            border-color: #ff6b00;
+            background: rgba(255,107,0,0.05);
+        }
+        
+        .contract-option label strong {
+            display: block;
+            margin-bottom: 5px;
+        }
+        
+        .contract-option label small {
+            font-size: 0.85em;
+        }
+        
+        .result-section {
+            display: none;
+            background: linear-gradient(135deg, rgba(255,107,0,0.05), rgba(234,67,53,0.05));
+            border: 2px solid rgba(255,107,0,0.2);
+            border-radius: 15px;
+            padding: 30px;
+            margin-top: 40px;
+        }
+        
+        .result-section.show {
+            display: block;
+        }
+        
+        .result-header {
+            font-size: 1.8em;
+            color: #ff6b00;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+        
+        .result-table {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+        
+        .result-table table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .result-table th {
+            background: #ff6b00;
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+        
+        .result-table td {
+            padding: 15px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .result-table tbody tr:hover {
+            background: #f8f9fa;
+        }
+        
+        .result-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .total-summary {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+        
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .summary-row:last-child {
+            border-bottom: none;
+            padding-top: 20px;
+            font-size: 1.4em;
+            font-weight: bold;
+            color: #ff6b00;
+        }
+        
+        .summary-label {
+            color: #666;
+        }
+        
+        .summary-value {
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 30px;
+        }
+        
+        .action-button {
+            padding: 15px 40px;
+            border-radius: 10px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+        }
+        
+        .print-button {
+            background: linear-gradient(135deg, #ff6b00, #ea4335);
+            color: white;
+        }
+        
+        .print-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(255,107,0,0.3);
+        }
+        
+        .reset-button {
+            background: white;
+            color: #ff6b00;
+            border: 2px solid #ff6b00 !important;
+        }
+        
+        .reset-button:hover {
+            background: #ff6b00;
+            color: white;
+        }
+        
+        .warning-box {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 25px;
+        }
+        
+        .warning-box strong {
+            color: #856404;
+            display: block;
+            margin-bottom: 10px;
+        }
+        
+        .warning-box ul {
+            margin: 0;
+            padding-left: 20px;
+            color: #856404;
+        }
+        
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            .container {
+                box-shadow: none;
+            }
+            .add-button, .remove-btn, .calculate-button, .reset-button {
+                display: none;
+            }
+            .step-section:not(.result-section) {
+                display: none;
+            }
+            .result-section {
+                display: block !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🌐 SmartWAN 견적계산기</h1>
+            <p class="subtitle">SK텔레콤 & SK C&C 공동 사업 | 글로벌 네트워크 연결 서비스</p>
+        </div>
+        
+        <div class="content">
+            <div class="info-cards">
+                <div class="info-card">
+                    <span class="badge badge-premium">Premium</span>
+                    <h3>⭐⭐⭐ 3 Star 서비스</h3>
+                    <ul class="feature-list">
+                        <li>✅ SLA 보장 (안정성 최우선)</li>
+                        <li>✅ 중간 POP 경유 최적화</li>
+                        <li>✅ 24/365 모니터링</li>
+                        <li>✅ CPE 임대료 포함</li>
+                        <li>✅ Hub & Spoke 구조</li>
+                        <li>✅ 2년 약정 기준</li>
+                    </ul>
+                </div>
+                
+                <div class="info-card">
+                    <span class="badge badge-basic">Basic</span>
+                    <h3>⭐ 1 Star 서비스</h3>
+                    <ul class="feature-list">
+                        <li>📦 CPE 장비 임대 서비스</li>
+                        <li>📦 SLA 미보장 (비용 효율적)</li>
+                        <li>📦 24/365 모니터링</li>
+                        <li>📦 L1~L3 서포트</li>
+                        <li>📦 Point-to-Point 연결</li>
+                        <li>📦 약정기간 선택 가능</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="step-section">
+                <div class="step-header">
+                    <div class="step-number">1</div>
+                    <h2 class="step-title">서비스 유형 선택</h2>
+                </div>
+                <div class="service-selector">
+                    <div class="service-option">
+                        <input type="radio" id="type-3star" name="service-type" value="3star" checked>
+                        <label for="type-3star">
+                            <strong>⭐⭐⭐ 3 Star Only</strong>
+                            <small>프리미엄 SLA 보장</small>
+                        </label>
+                    </div>
+                    <div class="service-option">
+                        <input type="radio" id="type-1star" name="service-type" value="1star">
+                        <label for="type-1star">
+                            <strong>⭐ 1 Star Only</strong>
+                            <small>비용 효율 중심</small>
+                        </label>
+                    </div>
+                    <div class="service-option">
+                        <input type="radio" id="type-combo" name="service-type" value="combo">
+                        <label for="type-combo">
+                            <strong>⭐+⭐⭐⭐ 조합형</strong>
+                            <small>최적 비용 구성</small>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="config-3star" class="config-section active">
+                <div class="step-section">
+                    <div class="step-header">
+                        <div class="step-number">2</div>
+                        <h2 class="step-title">3 Star 서비스 구성</h2>
+                    </div>
+                    <div id="star3-list"></div>
+                    <button class="add-button" onclick="add3StarConnection()">➕ 연결 지점 추가</button>
+                </div>
+            </div>
+            
+            <div id="config-1star" class="config-section">
+                <div class="step-section">
+                    <div class="step-header">
+                        <div class="step-number">2</div>
+                        <h2 class="step-title">1 Star 서비스 구성</h2>
+                    </div>
+                    <div id="star1-list"></div>
+                    <button class="add-button" onclick="add1StarConnection()">➕ CPE 장비 추가</button>
+                </div>
+                
+                <div class="contract-section">
+                    <div class="step-header">
+                        <div class="step-number">3</div>
+                        <h2 class="step-title">약정 기간 선택</h2>
+                    </div>
+                    <div class="contract-options">
+                        <div class="contract-option">
+                            <input type="radio" id="contract-0" name="contract" value="0">
+                            <label for="contract-0">
+                                <strong>무약정</strong>
+                                <small style="color: red;">+20% 할증</small>
+                            </label>
+                        </div>
+                        <div class="contract-option">
+                            <input type="radio" id="contract-1" name="contract" value="1">
+                            <label for="contract-1">
+                                <strong>1년 약정</strong>
+                                <small style="color: orange;">+10% 할증</small>
+                            </label>
+                        </div>
+                        <div class="contract-option">
+                            <input type="radio" id="contract-2" name="contract" value="2" checked>
+                            <label for="contract-2">
+                                <strong>2년 약정</strong>
+                                <small style="color: green;">기준가</small>
+                            </label>
+                        </div>
+                        <div class="contract-option">
+                            <input type="radio" id="contract-3" name="contract" value="3">
+                            <label for="contract-3">
+                                <strong>3년 약정</strong>
+                                <small style="color: blue;">-5% 할인</small>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <button class="calculate-button" onclick="calculateQuote()">💰 견적 계산하기</button>
+            
+            <div id="result" class="result-section">
+                <h2 class="result-header">📊 견적 결과</h2>
+                <div class="result-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>구분</th>
+                                <th>상세내역</th>
+                                <th>대역폭</th>
+                                <th>원가</th>
+                                <th>판매가 (VAT 별도)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="result-body"></tbody>
+                    </table>
+                </div>
+                
+                <div class="total-summary">
+                    <div class="summary-row">
+                        <span class="summary-label">원가 합계:</span>
+                        <span class="summary-value" id="cost-total">₩0</span>
+                    </div>
+                    <div class="summary-row">
+                        <span class="summary-label">약정 할인/할증:</span>
+                        <span class="summary-value" id="contract-info">-</span>
+                    </div>
+                    <div class="summary-row">
+                        <span class="summary-label">판매 마진 (30%):</span>
+                        <span class="summary-value" id="margin-amount">₩0</span>
+                    </div>
+                    <div class="summary-row">
+                        <span class="summary-label">월 판매가 (VAT 별도):</span>
+                        <span class="summary-value" id="final-price">₩0</span>
+                    </div>
+                </div>
+                
+                <div class="warning-box">
+                    <strong>⚠️ 예외사항 안내</strong>
+                    <ul>
+                        <li>10Mbps 이하 한국/중국 외 지역: 배송료 별도</li>
+                        <li>백업(이중화) 구성: 추가 비용 발생</li>
+                        <li>특수 요구사항: 상품담당자 문의</li>
+                        <li>문의처: 상품기획팀 (02-1234-5678)</li>
+                    </ul>
+                </div>
+                
+                <div class="action-buttons">
+                    <button class="action-button print-button" onclick="window.print()">🖨️ 견적서 인쇄</button>
+                    <button class="action-button reset-button" onclick="resetAll()">🔄 초기화</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // 데이터 정의
+        const prices3Star = {
+            'Area A': { name: '인도, 방글라데시, 캐나다, 멕시코, 브라질, 아르헨티나, 호주, 뉴질랜드, 영국', prices: { 2: 246000, 4: 373000, 6: 523000, 8: 657000, 10: 784000, 20: 1334000, 30: 1825000, 40: 2264000, 50: 2673000, 60: 3107000, 70: 3514000, 80: 3940000, 90: 4382000, 100: 4635000 } },
+            'Area B': { name: '미국, 칠레, 홍콩, 대만, 필리핀, 라오스, 일본, 미얀마, 싱가폴', prices: { 2: 319000, 4: 481000, 6: 674000, 8: 847000, 10: 1011000, 20: 1722000, 30: 2354000, 40: 2922000, 50: 3447000, 60: 4008000, 70: 4533000, 80: 5084000, 90: 5655000, 100: 5980000 } },
+            'Area C': { name: '인도네시아, 말레이시아, 태국', prices: { 2: 461000, 4: 698000, 6: 978000, 8: 1229000, 10: 1466000, 20: 2496000, 30: 3411000, 40: 4237000, 50: 4998000, 60: 5811000, 70: 6573000, 80: 7372000, 90: 8198000, 100: 8670000 } },
+            'Area D': { name: '독일, 폴란드, 프랑스, 이스라엘, 베트남', prices: { 2: 692000, 4: 1049000, 6: 1469000, 8: 1847000, 10: 2203000, 20: 3752000, 30: 5128000, 40: 6369000, 50: 7515000, 60: 8737000, 70: 9882000, 80: 11081000, 90: 12325000, 100: 13035000 } },
+            'Area E': { name: '남아프리카공화국, 잠비아', prices: { 2: 1020000, 4: 1545000, 6: 2167000, 8: 2723000, 10: 3249000, 20: 5533000, 30: 7563000, 40: 9392000, 50: 11082000, 60: 12884000, 70: 14573000, 80: 16343000, 90: 18175000, 100: 19223000 } },
+            'Area F': { name: '사우디아라비아, 쿠웨이트, UAE', prices: { 2: 1364000, 4: 2067000, 6: 2897000, 8: 3643000, 10: 4345000, 20: 7400000, 30: 10115000, 40: 12562000, 50: 14821000, 60: 17231000, 70: 19491000, 80: 21857000, 90: 24309000, 100: 25711000 } },
+            'Area G': { name: '중국', prices: { 10: 422000, 20: 718000, 30: 982000, 40: 1219000, 50: 1438000, 60: 1672000, 70: 1891000, 80: 2121000, 90: 2358000, 100: 2494000, 200: 4710000, 300: 6420000, 500: 9769000, 700: 13675000, 1000: 20007000, 2000: 20007000 } },
+            'South Korea': { name: '한국', prices: { 10: 497000, 20: 845000, 30: 1156000, 40: 1435000, 50: 1693000, 60: 1968000, 70: 2226000, 80: 2496000, 90: 2776000, 100: 2936000, 200: 5100000, 300: 7360000, 500: 11521000, 700: 16129000, 1000: 23594000, 2000: 23594000 } }
+        };
+        
+        const pricesDomestic = {
+            'LW 2008': { bw: 130, price: 151000 },
+            'LW 2308': { bw: 130, price: 217000 },
+            'LW 2509': { bw: 200, price: 458000 },
+            'LW 3002v2': { bw: 200, price: 278000 },
+            'LW 3003v4': { bw: 500, price: 494000 },
+            'LW 3007V4 (Single)': { bw: 1000, price: 772000 },
+            'LW 3007V4 (Dual)': { bw: 1000, price: 832000 },
+            'LW 7007': { bw: 1800, price: 1269867 },
+            'LW 7009': { bw: 2500, price: 1587597 }
+        };
+        
+        const pricesIntl = {
+            'LW 2008': { bw: 100, price: 482000 },
+            'LW 3002v2': { bw: 200, price: 844000 },
+            'LW 3003v3': { bw: 400, price: 1085000 },
+            'LW 3003v3 (Dual)': { bw: 400, price: 1145000 },
+            'LW 3003v3 (Dual+8Port)': { bw: 400, price: 1217000 },
+            'LW 3007v3': { bw: 800, price: 1446000 },
+            'LW 3007v3 (Dual)': { bw: 800, price: 1507000 },
+            'LW 3007v3 (Dual+8Port)': { bw: 800, price: 1579000 },
+            'LW 7007': { bw: 1800, price: 2410000 },
+            'LW 7009': { bw: 2500, price: 3013000 }
+        };
+        
+        let count3Star = 0;
+        let count1Star = 0;
+        
+        // 서비스 타입 변경
+        document.querySelectorAll('input[name="service-type"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                document.querySelectorAll('.config-section').forEach(sec => sec.classList.remove('active'));
+                
+                if (this.value === '3star') {
+                    document.getElementById('config-3star').classList.add('active');
+                    if (count3Star === 0) add3StarConnection();
+                } else if (this.value === '1star') {
+                    document.getElementById('config-1star').classList.add('active');
+                    if (count1Star === 0) add1StarConnection();
+                } else {
+                    document.getElementById('config-3star').classList.add('active');
+                    document.getElementById('config-1star').classList.add('active');
+                    if (count3Star === 0) add3StarConnection();
+                    if (count1Star === 0) add1StarConnection();
+                }
+            });
+        });
+        
+        function add3StarConnection() {
+            count3Star++;
+            const isHub = count3Star === 1;
+            const html = `
+                <div class="connection-item" id="conn3-${count3Star}">
+                    <div class="connection-header">
+                        <div>
+                            <span class="connection-title">${isHub ? '🏢 Hub (메인센터)' : '📡 지점 ' + (count3Star - 1)}</span>
+                            ${isHub ? '<span class="hub-badge">HUB</span>' : ''}
+                        </div>
+                        ${!isHub ? `<button class="remove-btn" onclick="remove3Star(${count3Star})">×</button>` : ''}
+                    </div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>지역 선택</label>
+                            <select id="area3-${count3Star}" onchange="updateBW(${count3Star})">
+                                <option value="">선택하세요</option>
+                                ${Object.entries(prices3Star).map(([k,v]) => 
+                                    `<option value="${k}" ${isHub && k === 'South Korea' ? 'selected' : ''}>${k} - ${v.name}</option>`
+                                ).join('')}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>대역폭 (Mbps)</label>
+                            <select id="bw3-${count3Star}">
+                                <option value="">지역 선택 필요</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>사이트명 (선택)</label>
+                            <input type="text" id="site3-${count3Star}" placeholder="예: 서울본사">
+                        </div>
+                    </div>
+                </div>`;
+            document.getElementById('star3-list').insertAdjacentHTML('beforeend', html);
+            if (isHub) updateBW(1);
+        }
+        
+        function updateBW(id) {
+            const area = document.getElementById(`area3-${id}`).value;
+            const bwSelect = document.getElementById(`bw3-${id}`);
+            if (!area) {
+                bwSelect.innerHTML = '<option value="">지역 선택 필요</option>';
+                return;
+            }
+            const bws = Object.keys(prices3Star[area].prices).map(Number).sort((a,b) => a-b);
+            bwSelect.innerHTML = '<option value="">선택</option>' + 
+                bws.map(b => `<option value="${b}">${b} Mbps</option>`).join('');
+        }
+        
+        function remove3Star(id) {
+            document.getElementById(`conn3-${id}`).remove();
+        }
+        
+        function add1StarConnection() {
+            count1Star++;
+            const html = `
+                <div class="connection-item" id="conn1-${count1Star}">
+                    <div class="connection-header">
+                        <div>
+                            <span class="connection-title">🔧 CPE ${count1Star}</span>
+                        </div>
+                        <button class="remove-btn" onclick="remove1Star(${count1Star})">×</button>
+                    </div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>설치 위치</label>
+                            <select id="loc1-${count1Star}" onchange="updateModels(${count1Star})">
+                                <option value="">선택하세요</option>
+                                <option value="domestic">국내</option>
+                                <option value="intl">해외</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>CPE 모델</label>
+                            <select id="model1-${count1Star}">
+                                <option value="">위치 선택 필요</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>사이트명 (선택)</label>
+                            <input type="text" id="site1-${count1Star}" placeholder="예: 부산지점">
+                        </div>
+                    </div>
+                </div>`;
+            document.getElementById('star1-list').insertAdjacentHTML('beforeend', html);
+        }
+        
+        function updateModels(id) {
+            const loc = document.getElementById(`loc1-${id}`).value;
+            const modelSelect = document.getElementById(`model1-${id}`);
+            if (!loc) {
+                modelSelect.innerHTML = '<option value="">위치 선택 필요</option>';
+                return;
+            }
+            const hasIntl = checkIntl();
+            const p = (hasIntl || loc === 'intl') ? pricesIntl : pricesDomestic;
+            modelSelect.innerHTML = '<option value="">선택</option>' + 
+                Object.entries(p).map(([m,i]) => `<option value="${m}">${m} (${i.bw}Mbps)</option>`).join('');
+        }
+        
+        function checkIntl() {
+            for (let i = 1; i <= count1Star; i++) {
+                const loc = document.getElementById(`loc1-${i}`);
+                if (loc && loc.value === 'intl') return true;
+            }
+            return false;
+        }
+        
+        function remove1Star(id) {
+            document.getElementById(`conn1-${id}`).remove();
+            for (let i = 1; i <= count1Star; i++) {
+                if (document.getElementById(`loc1-${i}`)) updateModels(i);
+            }
+        }
+        
+        function calculateQuote() {
+            const type = document.querySelector('input[name="service-type"]:checked').value;
+            let total = 0;
+            let rows = [];
+            
+            // 3 Star
+            if (type === '3star' || type === 'combo') {
+                let hubTotal = 0;
+                const sites = [];
+                
+                for (let i = 2; i <= count3Star; i++) {
+                    const area = document.getElementById(`area3-${i}`)?.value;
+                    const bw = document.getElementById(`bw3-${i}`)?.value;
+                    const site = document.getElementById(`site3-${i}`)?.value;
+                    
+                    if (area && bw) {
+                        const price = prices3Star[area].prices[parseInt(bw)];
+                        hubTotal += parseInt(bw);
+                        total += price;
+                        sites.push({ area, bw, site, price });
+                    }
+                }
+                
+                const hubArea = document.getElementById('area3-1')?.value;
+                const hubSite = document.getElementById('site3-1')?.value;
+                if (hubArea && hubTotal > 0) {
+                    const hubPrice = prices3Star[hubArea].prices[hubTotal] || prices3Star[hubArea].prices[2000];
+                    total += hubPrice;
+                    rows.push({
+                        type: '3 Star Hub',
+                        detail: `${hubSite || '메인센터'} - ${prices3Star[hubArea].name}`,
+                        bw: hubTotal,
+                        cost: hubPrice,
+                        sell: Math.round(hubPrice * 1.3)
+                    });
+                }
+                
+                sites.forEach(s => {
+                    rows.push({
+                        type: '3 Star',
+                        detail: `${s.site || prices3Star[s.area].name}`,
+                        bw: s.bw,
+                        cost: s.price,
+                        sell: Math.round(s.price * 1.3)
+                    });
+                });
+            }
+            
+            // 1 Star
+            if (type === '1star' || type === 'combo') {
+                const hasIntl = checkIntl();
+                const contract = document.querySelector('input[name="contract"]:checked')?.value || '2';
+                let mult = { '0': 1.2, '1': 1.1, '2': 1, '3': 0.95 }[contract];
+                
+                for (let i = 1; i <= count1Star; i++) {
+                    const model = document.getElementById(`model1-${i}`)?.value;
+                    const site = document.getElementById(`site1-${i}`)?.value;
+                    
+                    if (model) {
+                        const p = hasIntl ? pricesIntl : pricesDomestic;
+                        const info = p[model];
+                        const price = Math.round(info.price * mult);
+                        total += price;
+                        
+                        rows.push({
+                            type: '1 Star CPE',
+                            detail: `${site || (hasIntl ? '해외' : '국내')} - ${model}`,
+                            bw: info.bw,
+                            cost: price,
+                            sell: Math.round(price * 1.3)
+                        });
+                    }
+                }
+            }
+            
+            if (rows.length === 0) {
+                alert('견적 계산을 위한 정보를 입력해주세요.');
+                return;
+            }
+            
+            showResults(rows, total);
+        }
+        
+        function showResults(rows, total) {
+            const tbody = document.getElementById('result-body');
+            tbody.innerHTML = rows.map(r => `
+                <tr>
+                    <td>${r.type}</td>
+                    <td>${r.detail}</td>
+                    <td>${r.bw} Mbps</td>
+                    <td>₩${r.cost.toLocaleString()}</td>
+                    <td>₩${r.sell.toLocaleString()}</td>
+                </tr>`).join('');
+            
+            const margin = Math.round(total * 0.3);
+            document.getElementById('cost-total').textContent = '₩' + total.toLocaleString();
+            document.getElementById('margin-amount').textContent = '₩' + margin.toLocaleString();
+            document.getElementById('final-price').textContent = '₩' + (total + margin).toLocaleString();
+            
+            const type = document.querySelector('input[name="service-type"]:checked').value;
+            let contractText = '2년 약정 (기준가)';
+            if (type === '1star' || type === 'combo') {
+                const c = document.querySelector('input[name="contract"]:checked')?.value || '2';
+                contractText = { '0': '무약정 (+20%)', '1': '1년 약정 (+10%)', '2': '2년 약정 (기준가)', '3': '3년 약정 (-5%)' }[c];
+            }
+            document.getElementById('contract-info').textContent = contractText;
+            
+            document.getElementById('result').classList.add('show');
+            document.getElementById('result').scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        function resetAll() {
+            if (confirm('모든 내용이 초기화됩니다. 계속하시겠습니까?')) {
+                location.reload();
+            }
+        }
+        
+        window.onload = () => add3StarConnection();
+    </script>
+</body>
+</html>
