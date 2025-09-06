@@ -27,11 +27,12 @@
         }
         
         .header {
-            background: linear-gradient(135deg, #ea4335 0%, #ff6b00 100%);
+            background: linear-gradient(135deg, #ff6b00 0%, #ff8c00 100%);
             color: white;
             padding: 40px;
             border-radius: 20px 20px 0 0;
             text-align: center;
+            box-shadow: 0 2px 10px rgba(255,107,0,0.2);
         }
         
         .header h1 {
@@ -61,12 +62,13 @@
             border-radius: 15px;
             padding: 25px;
             transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
         }
         
         .info-card:hover {
             border-color: #ff6b00;
             transform: translateY(-3px);
-            box-shadow: 0 10px 30px rgba(255,107,0,0.1);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
         
         .info-card h3 {
@@ -199,12 +201,13 @@
         }
         
         .connection-item {
-            background: #f8f9fa;
+            background: #fafafa;
             border: 2px solid #e0e0e0;
             border-radius: 15px;
             padding: 25px;
             margin-bottom: 20px;
             position: relative;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
         }
         
         .connection-header {
@@ -283,7 +286,7 @@
         }
         
         .add-button {
-            background: linear-gradient(135deg, #ff6b00, #ea4335);
+            background: linear-gradient(135deg, #ff6b00, #ff8c00);
             color: white;
             border: none;
             padding: 12px 30px;
@@ -295,6 +298,7 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
+            box-shadow: 0 3px 10px rgba(255,107,0,0.2);
         }
         
         .add-button:hover {
@@ -323,10 +327,11 @@
         }
         
         .contract-section {
-            background: #f8f9fa;
+            background: #fafafa;
             border-radius: 15px;
             padding: 25px;
             margin-bottom: 30px;
+            border: 1px solid #e0e0e0;
         }
         
         .contract-options {
@@ -371,8 +376,8 @@
         
         .result-section {
             display: none;
-            background: linear-gradient(135deg, rgba(255,107,0,0.05), rgba(234,67,53,0.05));
-            border: 2px solid rgba(255,107,0,0.2);
+            background: #fafafa;
+            border: 2px solid #e0e0e0;
             border-radius: 15px;
             padding: 30px;
             margin-top: 40px;
@@ -415,7 +420,7 @@
         }
         
         .result-table tbody tr:hover {
-            background: #f8f9fa;
+            background: #fafafa;
         }
         
         .result-table tbody tr:last-child td {
@@ -426,7 +431,8 @@
             background: white;
             border-radius: 10px;
             padding: 25px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+            border: 1px solid #e0e0e0;
         }
         
         .summary-row {
@@ -471,7 +477,7 @@
         }
         
         .print-button {
-            background: linear-gradient(135deg, #ff6b00, #ea4335);
+            background: linear-gradient(135deg, #ff6b00, #ff8c00);
             color: white;
         }
         
@@ -492,8 +498,8 @@
         }
         
         .warning-box {
-            background: #fff3cd;
-            border: 2px solid #ffc107;
+            background: #fff9e6;
+            border: 1px solid #ffcc80;
             border-radius: 10px;
             padding: 20px;
             margin-top: 25px;
@@ -535,7 +541,7 @@
     <div class="container">
         <div class="header">
             <h1>🌐 SmartWAN 견적계산기</h1>
-            <p class="subtitle">SK텔레콤 | AI 기반 글로벌 네트워크 연결 서비스</p>
+            <p class="subtitle">SK텔레콤 & SK C&C 공동 사업 | 글로벌 네트워크 연결 서비스</p>
         </div>
         
         <div class="content">
@@ -667,8 +673,7 @@
                                 <th>구분</th>
                                 <th>상세내역</th>
                                 <th>대역폭</th>
-                                <th>원가</th>
-                                <th>판매가 (VAT 별도)</th>
+                                <th>월 이용료 (VAT 별도)</th>
                             </tr>
                         </thead>
                         <tbody id="result-body"></tbody>
@@ -677,20 +682,12 @@
                 
                 <div class="total-summary">
                     <div class="summary-row">
-                        <span class="summary-label">원가 합계:</span>
-                        <span class="summary-value" id="cost-total">₩0</span>
-                    </div>
-                    <div class="summary-row">
-                        <span class="summary-label">약정 할인/할증:</span>
+                        <span class="summary-label">약정 조건:</span>
                         <span class="summary-value" id="contract-info">-</span>
                     </div>
                     <div class="summary-row">
-                        <span class="summary-label">판매 마진 (30%):</span>
-                        <span class="summary-value" id="margin-amount">₩0</span>
-                    </div>
-                    <div class="summary-row">
-                        <span class="summary-label">월 판매가 (VAT 별도):</span>
-                        <span class="summary-value" id="final-price">₩0</span>
+                        <span class="summary-label">월 이용료 합계 (VAT 별도):</span>
+                        <span class="summary-value" id="final-total">₩0</span>
                     </div>
                 </div>
                 
@@ -891,14 +888,15 @@
         
         function calculateQuote() {
             const type = document.querySelector('input[name="service-type"]:checked').value;
-            let total = 0;
             let rows = [];
+            let totalSellPrice = 0;
             
-            // 3 Star
+            // 3 Star 계산
             if (type === '3star' || type === 'combo') {
                 let hubTotal = 0;
                 const sites = [];
                 
+                // Hub 이외의 연결들 먼저 계산
                 for (let i = 2; i <= count3Star; i++) {
                     const area = document.getElementById(`area3-${i}`)?.value;
                     const bw = document.getElementById(`bw3-${i}`)?.value;
@@ -906,42 +904,42 @@
                     
                     if (area && bw) {
                         const price = prices3Star[area].prices[parseInt(bw)];
+                        const sellPrice = Math.round(price * 1.3);
                         hubTotal += parseInt(bw);
-                        total += price;
-                        sites.push({ area, bw, site, price });
+                        totalSellPrice += sellPrice;
+                        sites.push({ 
+                            type: '3 Star',
+                            detail: site || prices3Star[area].name,
+                            bw: parseInt(bw),
+                            sellPrice: sellPrice
+                        });
                     }
                 }
                 
+                // Hub 계산
                 const hubArea = document.getElementById('area3-1')?.value;
                 const hubSite = document.getElementById('site3-1')?.value;
                 if (hubArea && hubTotal > 0) {
                     const hubPrice = prices3Star[hubArea].prices[hubTotal] || prices3Star[hubArea].prices[2000];
-                    total += hubPrice;
+                    const hubSellPrice = Math.round(hubPrice * 1.3);
+                    totalSellPrice += hubSellPrice;
                     rows.push({
                         type: '3 Star Hub',
                         detail: `${hubSite || '메인센터'} - ${prices3Star[hubArea].name}`,
                         bw: hubTotal,
-                        cost: hubPrice,
-                        sell: Math.round(hubPrice * 1.3)
+                        sellPrice: hubSellPrice
                     });
                 }
                 
-                sites.forEach(s => {
-                    rows.push({
-                        type: '3 Star',
-                        detail: `${s.site || prices3Star[s.area].name}`,
-                        bw: s.bw,
-                        cost: s.price,
-                        sell: Math.round(s.price * 1.3)
-                    });
-                });
+                // Sites 추가
+                rows = rows.concat(sites);
             }
             
-            // 1 Star
+            // 1 Star 계산
             if (type === '1star' || type === 'combo') {
                 const hasIntl = checkIntl();
                 const contract = document.querySelector('input[name="contract"]:checked')?.value || '2';
-                let mult = { '0': 1.2, '1': 1.1, '2': 1, '3': 0.95 }[contract];
+                const mult = { '0': 1.2, '1': 1.1, '2': 1, '3': 0.95 }[contract];
                 
                 for (let i = 1; i <= count1Star; i++) {
                     const model = document.getElementById(`model1-${i}`)?.value;
@@ -950,15 +948,15 @@
                     if (model) {
                         const p = hasIntl ? pricesIntl : pricesDomestic;
                         const info = p[model];
-                        const price = Math.round(info.price * mult);
-                        total += price;
+                        const adjustedPrice = Math.round(info.price * mult);
+                        const sellPrice = Math.round(adjustedPrice * 1.3);
+                        totalSellPrice += sellPrice;
                         
                         rows.push({
                             type: '1 Star CPE',
                             detail: `${site || (hasIntl ? '해외' : '국내')} - ${model}`,
                             bw: info.bw,
-                            cost: price,
-                            sell: Math.round(price * 1.3)
+                            sellPrice: sellPrice
                         });
                     }
                 }
@@ -969,32 +967,33 @@
                 return;
             }
             
-            showResults(rows, total);
+            showResults(rows, totalSellPrice, type);
         }
         
-        function showResults(rows, total) {
+        function showResults(rows, totalPrice, serviceType) {
             const tbody = document.getElementById('result-body');
             tbody.innerHTML = rows.map(r => `
                 <tr>
                     <td>${r.type}</td>
                     <td>${r.detail}</td>
                     <td>${r.bw} Mbps</td>
-                    <td>₩${r.cost.toLocaleString()}</td>
-                    <td>₩${r.sell.toLocaleString()}</td>
+                    <td>₩${r.sellPrice.toLocaleString()}</td>
                 </tr>`).join('');
             
-            const margin = Math.round(total * 0.3);
-            document.getElementById('cost-total').textContent = '₩' + total.toLocaleString();
-            document.getElementById('margin-amount').textContent = '₩' + margin.toLocaleString();
-            document.getElementById('final-price').textContent = '₩' + (total + margin).toLocaleString();
-            
-            const type = document.querySelector('input[name="service-type"]:checked').value;
-            let contractText = '2년 약정 (기준가)';
-            if (type === '1star' || type === 'combo') {
+            // 약정 조건 표시
+            let contractText = '2년 약정';
+            if (serviceType === '1star' || serviceType === 'combo') {
                 const c = document.querySelector('input[name="contract"]:checked')?.value || '2';
-                contractText = { '0': '무약정 (+20%)', '1': '1년 약정 (+10%)', '2': '2년 약정 (기준가)', '3': '3년 약정 (-5%)' }[c];
+                contractText = { 
+                    '0': '무약정 (+20%)', 
+                    '1': '1년 약정 (+10%)', 
+                    '2': '2년 약정', 
+                    '3': '3년 약정 (-5%)' 
+                }[c];
             }
+            
             document.getElementById('contract-info').textContent = contractText;
+            document.getElementById('final-total').textContent = '₩' + totalPrice.toLocaleString();
             
             document.getElementById('result').classList.add('show');
             document.getElementById('result').scrollIntoView({ behavior: 'smooth' });
