@@ -49,6 +49,64 @@
             padding: 40px;
         }
 
+        /* 프리셋 섹션 스타일 */
+        .preset-section {
+            margin-bottom: 40px;
+            padding: 25px;
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border-radius: 15px;
+            border: 2px solid #f59e0b;
+        }
+
+        .preset-section h2 {
+            color: #92400e;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+            display: flex;
+            align-items: center;
+        }
+
+        .preset-section h2::before {
+            content: "⚡";
+            margin-right: 10px;
+            font-size: 1.2em;
+        }
+
+        .preset-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+        }
+
+        .preset-btn {
+            background: white;
+            border: 2px solid #f59e0b;
+            padding: 12px 15px;
+            border-radius: 10px;
+            font-size: 0.9em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: left;
+        }
+
+        .preset-btn:hover {
+            background: #f59e0b;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(245, 158, 11, 0.3);
+        }
+
+        .preset-btn .preset-title {
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .preset-btn .preset-desc {
+            font-size: 0.8em;
+            opacity: 0.8;
+        }
+
         .section {
             margin-bottom: 40px;
             padding: 30px;
@@ -362,6 +420,10 @@
             .checkbox-group {
                 grid-template-columns: 1fr;
             }
+
+            .preset-buttons {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
@@ -373,6 +435,46 @@
         </div>
 
         <div class="content">
+            <!-- 프리셋 섹션 추가 -->
+            <div class="preset-section">
+                <h2>빠른 테스트 프리셋</h2>
+                <p style="margin-bottom: 15px; color: #92400e; font-size: 0.9em;">자주 사용되는 고객 프로필을 클릭 한 번으로 불러올 수 있습니다</p>
+                <div class="preset-buttons">
+                    <button class="preset-btn" onclick="loadPreset('samsung')">
+                        <div class="preset-title">🏭 대형전자회사</div>
+                        <div class="preset-desc">글로벌 제조업 리더</div>
+                    </button>
+                    <button class="preset-btn" onclick="loadPreset('kb')">
+                        <div class="preset-title">🏦 Tier1은행</div>
+                        <div class="preset-desc">대형 금융기관</div>
+                    </button>
+                    <button class="preset-btn" onclick="loadPreset('sk')">
+                        <div class="preset-title">📡 통신사</div>
+                        <div class="preset-desc">통신 대기업</div>
+                    </button>
+                    <button class="preset-btn" onclick="loadPreset('kepco')">
+                        <div class="preset-title">⚡ 전력공기업</div>
+                        <div class="preset-desc">공공기관</div>
+                    </button>
+                    <button class="preset-btn" onclick="loadPreset('hyundai')">
+                        <div class="preset-title">🚗 모빌리티제조사</div>
+                        <div class="preset-desc">글로벌 제조업체</div>
+                    </button>
+                    <button class="preset-btn" onclick="loadPreset('naver')">
+                        <div class="preset-title">💚 대형포털</div>
+                        <div class="preset-desc">IT 플랫폼 기업</div>
+                    </button>
+                    <button class="preset-btn" onclick="loadPreset('coupang')">
+                        <div class="preset-title">📦 이커머스</div>
+                        <div class="preset-desc">이커머스 대기업</div>
+                    </button>
+                    <button class="preset-btn" onclick="loadPreset('posco')">
+                        <div class="preset-title">🏗️ 대형제조사</div>
+                        <div class="preset-desc">철강 제조업</div>
+                    </button>
+                </div>
+            </div>
+
             <!-- 1. 기본 정보 -->
             <div class="section">
                 <h2>기본 고객 정보</h2>
@@ -409,7 +511,7 @@
                         <option value="">IT 성숙도를 선택하세요</option>
                         <option value="leader">🚀 디지털 선도기업 (클라우드 퍼스트, DevOps 문화, CISO 조직)</option>
                         <option value="follower">⚡ 디지털 추격기업 (디지털 전환 진행 중, 하이브리드 IT)</option>
-                        <option value="conservative">🐢 보수적 기업 (온프레미스 중심, 레거시 시스템 비중 높음)</option>
+                        <option value="conservative">🏢 보수적 기업 (온프레미스 중심, 레거시 시스템 비중 높음)</option>
                     </select>
                 </div>
             </div>
@@ -422,11 +524,11 @@
                 <div class="checkbox-group" id="painPoints">
                     <div class="checkbox-item">
                         <input type="checkbox" id="slow_network" value="slow_network">
-                        <label for="slow_network">🌍 해외 법인과의 네트워크 속도 지연</label>
+                        <label for="slow_network">🌐 해외 법인과의 네트워크 속도 지연</label>
                     </div>
                     <div class="checkbox-item">
                         <input type="checkbox" id="vpn_security" value="vpn_security">
-                        <label for="vpn_security">🔐 VPN 보안 취약점 우려</label>
+                        <label for="vpn_security">🔒 VPN 보안 취약점 우려</label>
                     </div>
                     <div class="checkbox-item">
                         <input type="checkbox" id="high_cost" value="high_cost">
@@ -464,7 +566,7 @@
                     <select id="decision_maker">
                         <option value="">의사결정자를 선택하세요</option>
                         <option value="cio">👑 CIO/CDO/IT본부장 (디지털 전환 책임자)</option>
-                        <option value="ciso">🔒 CISO/보안팀장 (정보보호 책임자)</option>
+                        <option value="ciso">🔐 CISO/보안팀장 (정보보호 책임자)</option>
                         <option value="it_manager">💻 IT팀장/네트워크 관리자 (기술 실무진)</option>
                         <option value="cfo">💰 CFO/재무팀장 (예산 승인자)</option>
                     </select>
@@ -494,6 +596,120 @@
     </div>
 
     <script>
+        // 프리셋 데이터
+        const presets = {
+            samsung: {
+                company: '대형전자회사',
+                industry: 'manufacturing',
+                size: 'global',
+                maturity: 'leader',
+                painPoints: ['slow_network', 'data_transfer', 'video_quality', 'complex_manage'],
+                decisionMaker: 'cio',
+                budget: 'high'
+            },
+            kb: {
+                company: 'Tier1은행',
+                industry: 'financial',
+                size: 'global',
+                maturity: 'follower',
+                painPoints: ['vpn_security', 'compliance', 'remote_work', 'slow_network'],
+                decisionMaker: 'ciso',
+                budget: 'high'
+            },
+            sk: {
+                company: '통신사',
+                industry: 'enterprise',
+                size: 'global',
+                maturity: 'leader',
+                painPoints: ['complex_manage', 'high_cost', 'video_quality', 'data_transfer'],
+                decisionMaker: 'cio',
+                budget: 'high'
+            },
+            kepco: {
+                company: '전력공기업',
+                industry: 'public',
+                size: 'global',
+                maturity: 'conservative',
+                painPoints: ['compliance', 'vpn_security', 'complex_manage', 'high_cost'],
+                decisionMaker: 'ciso',
+                budget: 'medium'
+            },
+            hyundai: {
+                company: '모빌리티제조사',
+                industry: 'manufacturing',
+                size: 'global',
+                maturity: 'follower',
+                painPoints: ['slow_network', 'data_transfer', 'video_quality', 'remote_work'],
+                decisionMaker: 'it_manager',
+                budget: 'high'
+            },
+            naver: {
+                company: '대형포털',
+                industry: 'enterprise',
+                size: 'global',
+                maturity: 'leader',
+                painPoints: ['high_cost', 'complex_manage', 'data_transfer', 'video_quality'],
+                decisionMaker: 'cio',
+                budget: 'high'
+            },
+            coupang: {
+                company: '이커머스',
+                industry: 'enterprise',
+                size: 'midmarket',
+                maturity: 'leader',
+                painPoints: ['slow_network', 'high_cost', 'data_transfer', 'complex_manage'],
+                decisionMaker: 'cfo',
+                budget: 'medium'
+            },
+            posco: {
+                company: '대형제조사',
+                industry: 'manufacturing',
+                size: 'global',
+                maturity: 'conservative',
+                painPoints: ['slow_network', 'vpn_security', 'compliance', 'data_transfer'],
+                decisionMaker: 'it_manager',
+                budget: 'medium'
+            }
+        };
+
+        // 프리셋 로드 함수
+        function loadPreset(presetName) {
+            const preset = presets[presetName];
+            if (!preset) return;
+
+            // 기본 정보 입력
+            document.getElementById('company').value = preset.company;
+            document.getElementById('industry').value = preset.industry;
+            document.getElementById('size').value = preset.size;
+            document.getElementById('maturity').value = preset.maturity;
+            document.getElementById('decision_maker').value = preset.decisionMaker;
+            document.getElementById('budget_range').value = preset.budget;
+
+            // 모든 체크박스 초기화
+            document.querySelectorAll('#painPoints input[type="checkbox"]').forEach(checkbox => {
+                checkbox.checked = false;
+                checkbox.closest('.checkbox-item').classList.remove('checked');
+            });
+
+            // Pain Points 체크
+            preset.painPoints.forEach(point => {
+                const checkbox = document.getElementById(point);
+                if (checkbox) {
+                    checkbox.checked = true;
+                    checkbox.closest('.checkbox-item').classList.add('checked');
+                }
+            });
+
+            // 약간의 애니메이션 효과
+            const sections = document.querySelectorAll('.section');
+            sections.forEach((section, index) => {
+                section.style.animation = 'none';
+                setTimeout(() => {
+                    section.style.animation = 'slideIn 0.3s ease';
+                }, index * 100);
+            });
+        }
+
         // 체크박스 시각적 피드백
         document.querySelectorAll('.checkbox-item input[type="checkbox"]').forEach(checkbox => {
             checkbox.addEventListener('change', function() {
@@ -585,7 +801,7 @@
             enterprise: [
                 {
                     title: "글로벌 인프라 서비스 제공업체",
-                    industry: "🏗️ 건설/인프라 | XLarge 글로벌",
+                    industry: "🗏 건설/인프라 | XLarge 글로벌",
                     result: "45일 내 초고속 서비스 제공",
                     details: "300+ 해외 자회사, 3000+ 모바일 오피스 구성. 전 세계 어디서나 샤먼 금융 시스템 액세스 최적화",
                     metrics: ["3000+ 지점 연결", "지속적 모니터링"],
@@ -767,7 +983,7 @@
                     segmentName = '🏦 금융업';
                     approachStrategy = '금융 규제 강화(전자금융법, 개인정보보호법) 대응과 VPN 보안 취약점 해결에 집중. 제로트러스트 CC인증과 컴플라이언스 대응 방안을 핵심으로 제시.';
                     valueProps = [
-                        '🔒 국내 최초 ZTNA CC인증 보안',
+                        '🔐 국내 최초 ZTNA CC인증 보안',
                         '📋 금융 규제 완벽 대응',
                         '🚀 해외 법인 네트워크 성능 개선 (PoC 진행 평균 300% 이상)',
                         '🛡️ VPN 대비 99% 해킹 리스크 감소'
@@ -784,7 +1000,7 @@
                     segmentName = '🏢 기업서비스';
                     approachStrategy = '통신/IT 업계의 높은 기술 이해도를 활용한 기술적 우수성 중심 접근. 레퍼런스 효과 극대화와 파트너십 기회 모색.';
                     valueProps = [
-                        '🌍 AI 기반 자동 네트워크 최적화',
+                        '🌐 AI 기반 자동 네트워크 최적화',
                         '📊 실시간 글로벌 네트워크 모니터링',
                         '⚡ 99.9% 가용성 보장',
                         '🤝 기술 파트너십 기회'
@@ -801,7 +1017,7 @@
                     segmentName = '🏛️ 공공/준공공';
                     approachStrategy = '보안과 안정성을 최우선으로 하는 공공부문 특성을 고려. 정부 정책(제로트러스트 의무화) 대응과 예산 대비 효과성 강조.';
                     valueProps = [
-                        '🔒 정부 보안 정책 완벽 대응',
+                        '🔐 정부 보안 정책 완벽 대응',
                         '💰 예산 대비 최고 효율성',
                         '🛡️ 국산 솔루션 신뢰성',
                         '📋 공공부문 레퍼런스 보유'
@@ -821,7 +1037,7 @@
                     personaMatch = '👑 CIO 페르소나: 디지털 전환 성과 창출 압박과 IT비용 최적화 딜레마를 겪고 있습니다. 비즈니스 임팩트 중심의 ROI 계산서와 경쟁사 벤치마킹 자료가 필요합니다.';
                     break;
                 case 'ciso':
-                    personaMatch = '🔒 CISO 페르소나: VPN 취약점과 제로트러스트 도입 압박을 받고 있습니다. 보안 인증서, 컴플라이언스 대응 방안, 보안 아키텍처 자료가 필요합니다.';
+                    personaMatch = '🔐 CISO 페르소나: VPN 취약점과 제로트러스트 도입 압박을 받고 있습니다. 보안 인증서, 컴플라이언스 대응 방안, 보안 아키텍처 자료가 필요합니다.';
                     break;
                 case 'it_manager':
                     personaMatch = '💻 IT 운영팀 페르소나: 네트워크 장애와 복잡한 멀티벤더 관리로 스트레스를 받고 있습니다. 기술적 상세 스펙, 운영 편의성, 기술지원 프로세스 설명이 필요합니다.';
@@ -918,10 +1134,10 @@
                     <div style="margin-top: 20px; padding: 15px; background: #e6fffa; border-radius: 10px; border-left: 4px solid #38b2ac;">
                         <h3>📋 다음 단계 액션 플랜</h3>
                         <ol>
-                            <li><strong>ROI 계산:</strong> 고객 맞춤 ROI 분석서 작성</li>
-                            <li><strong>레퍼런스 공유:</strong> 동일 업종 성공 사례 제시</li>
-                            <li><strong>데모 준비:</strong> Pain Point 해결 중심 데모 시나리오</li>
-                            <li><strong>제안서 작성:</strong> 세그먼트별 맞춤 제안서 템플릿 활용</li>
+                            <li><strong> ROI 계산:</strong> 고객 맞춤 ROI 분석서 작성</li>
+                            <li><strong> 레퍼런스 공유:</strong> 동일 업종 성공 사례 제시(상품담당자 검증 필요)</li>
+                            <li><strong> 데모 준비:</strong> Pain Point 해결 중심 데모 시나리오(기존 레퍼런스 검증 연동 필요)</li>
+                            <li><strong> 제안서 작성:</strong> 세그먼트별 맞춤 제안서 템플릿 활용</li>
                         </ol>
                     </div>
                 </div>
