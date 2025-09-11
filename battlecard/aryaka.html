@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aryaka vs SmartWAN 배틀카드</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #ee7724 0%, #d8363a 50%, #dd3675 100%);
+            padding: 20px;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #ee7724;
+            margin-bottom: 40px;
+            font-size: 2.5em;
+        }
+        
+        .section {
+            margin-bottom: 40px;
+            padding: 25px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            border-left: 5px solid #ee7724;
+        }
+        
+        .section h2 {
+            color: #333;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .comparison-table th {
+            background: linear-gradient(135deg, #ee7724, #d8363a);
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+        
+        .comparison-table td {
+            padding: 15px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .comparison-table tr:hover {
+            background: #f5f5f5;
+        }
+        
+        .win { color: #22c55e; font-weight: bold; }
+        .lose { color: #ef4444; font-weight: bold; }
+        .draw { color: #f59e0b; font-weight: bold; }
+        
+        .weakness-box {
+            background: #fff4e6;
+            border: 2px solid #ff9800;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .weakness-item {
+            margin: 15px 0;
+            padding-left: 25px;
+            position: relative;
+        }
+        
+        .weakness-item::before {
+            content: "💸";
+            position: absolute;
+            left: 0;
+        }
+        
+        .objection-box {
+            background: #e8f5e9;
+            border: 2px solid #4caf50;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .response {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            border-left: 4px solid #4caf50;
+        }
+        
+        .key-message {
+            background: linear-gradient(135deg, #ee7724 0%, #d8363a 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 10px 0;
+            box-shadow: 0 5px 15px rgba(238, 119, 36, 0.4);
+        }
+        
+        .cost-comparison {
+            background: #fff9c4;
+            border: 2px solid #fbc02d;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .cost-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #fbc02d;
+        }
+        
+        .cost-item:last-child {
+            border-bottom: none;
+            font-weight: bold;
+            font-size: 1.2em;
+            margin-top: 10px;
+            padding-top: 20px;
+            border-top: 2px solid #fbc02d;
+        }
+        
+        .feature-badge {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            margin: 5px;
+        }
+        
+        .badge-win {
+            background: #22c55e;
+            color: white;
+        }
+        
+        .badge-premium {
+            background: #ef4444;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>💰 Aryaka vs SmartWAN 배틀카드</h1>
+        
+        <div class="section">
+            <h2>📊 핵심 비교 분석</h2>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th width="25%">비교 항목</th>
+                        <th width="30%">Aryaka</th>
+                        <th width="30%">SmartWAN</th>
+                        <th width="15%">우위</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>서비스 모델</strong></td>
+                        <td>완전 관리형 (Fully Managed)</td>
+                        <td>하이브리드 (관리형/자체 선택)</td>
+                        <td class="win">SmartWAN ✓</td>
+                    </tr>
+                    <tr>
+                        <td><strong>가격 수준</strong></td>
+                        <td>프리미엄 (업계 최고가)</td>
+                        <td>합리적 가격</td>
+                        <td class="win">SmartWAN ✓</td>
+                    </tr>
+                    <tr>
+                        <td><strong>네트워크 유형</strong></td>
+                        <td>프라이빗 백본</td>
+                        <td>하이브리드 (프라이빗+퍼블릭)</td>
+                        <td class="draw">동등 =</td>
+                    </tr>
+                    <tr>
+                        <td><strong>한국/아시아 PoP</strong></td>
+                        <td>1-2개 (서울 1개)</td>
+                        <td>30+ (아시아 집중)</td>
+                        <td class="win">SmartWAN ✓</td>
+                    </tr>
+                    <tr>
+                        <td><strong>구축 속도</strong></td>
+                        <td>2-4주</td>
+                        <td>1-2주</td>
+                        <td class="win">SmartWAN ✓</td>
+                    </tr>
+                    <tr>
+                        <td><strong>커스터마이징</strong></td>
+                        <td>제한적 (표준화)</td>
+                        <td>높은 유연성</td>
+                        <td class="win">SmartWAN ✓</td>
+                    </tr>
+                    <tr>
+                        <td><strong>SLA 보장</strong></td>
+                        <td>99.99% (프리미엄)</td>
+                        <td>99.95%</td>
+                        <td class="lose">Aryaka ✓</td>
+                    </tr>
+                    <tr>
+                        <td><strong>성능 최적화</strong></td>
+                        <td>WAN 최적화</td>
+                        <td>RTT + AI 최적화</td>
+                        <td class="win">SmartWAN ✓</td>
+                    </tr>
+                    <tr>
+                        <td><strong>TCO (3년)</strong></td>
+                        <td>매우 높음</td>
+                        <td>50-70% 절감</td>
+                        <td class="win">SmartWAN ✓</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="section">
+            <h2>💸 비용 비교 (100Mbps 기준, 연간)</h2>
+            <div class="cost-comparison">
+                <div class="cost-item">
+                    <span>Aryaka 기본 서비스</span>
+                    <span>$60,000 - $80,000</span>
+                </div>
+                <div class="cost-item">
+                    <span>SmartWAN 기본 서비스</span>
+                    <span>$25,000 - $35,000</span>
+                </div>
+                <div class="cost-item">
+                    <span>Aryaka 추가 지점당</span>
+                    <span>$15,000 - $20,000</span>
+                </div>
+                <div class="cost-item">
+                    <span>SmartWAN 추가 지점당</span>
+                    <span>$5,000 - $8,000</span>
+                </div>
+                <div class="cost-item">
+                    <span>연간 절감액</span>
+                    <span style="color: #22c55e;">$35,000 - $45,000 (약 60%)</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>⚠️ Aryaka의 주요 약점</h2>
+            <div class="weakness-box">
+                <div class="weakness-item">
+                    <strong>극도로 높은 비용:</strong> 업계 최고가 수준으로 중견기업에겐 부담스러운 가격
+                </div>
+                <div class="weakness-item">
+                    <strong>경직된 서비스:</strong> 완전 관리형만 제공, 고객 자체 관리 불가능
+                </div>
+                <div class="weakness-item">
+                    <strong>한국 인프라 부족:</strong> 서울에 PoP 1개뿐, 지방 성능 보장 어려움
+                </div>
+                <div class="weakness-item">
+                    <strong>벤더 종속성:</strong> 모든 것을 Aryaka에 의존, 변경 시 전면 재구축 필요
+                </div>
+                <div class="weakness-item">
+                    <strong>커스터마이징 제한:</strong> 표준화된 서비스만 제공, 특수 요구사항 대응 어려움
+                </div>
+                <div class="weakness-item">
+                    <strong>오버스펙:</strong> 대부분 기업에게 불필요한 프리미엄 기능으로 비용 상승
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>💬 예상 반박 대응</h2>
+            <div class="objection-box">
+                <h3>고객: "Aryaka가 글로벌 프라이빗 네트워크로 더 안정적이지 않나요?"</h3>
+                <div class="response">
+                    <p><strong>✅ 실용적 관점:</strong><br>
+                    "프라이빗 네트워크는 좋지만, 그 비용이 정당한가요? SmartWAN은 하이브리드 방식으로 동일한 성능을 60% 낮은 비용으로 제공합니다. 특히 RTT 터널링으로 퍼블릭 구간에서도 프라이빗급 성능을 보장합니다."</p>
+                    
+                    <p><strong>✅ 한국 특화:</strong><br>
+                    "Aryaka는 한국에 PoP가 1개뿐입니다. 부산, 대구 지점은 어떻게 하실 건가요? SmartWAN은 한국 전역에 30개 이상 PoP로 전국 어디서나 최적 성능을 보장합니다."</p>
+                </div>
+            </div>
+            
+            <div class="objection-box">
+                <h3>고객: "Aryaka는 99.99% SLA를 보장한다던데?"</h3>
+                <div class="response">
+                    <p><strong>✅ 현실적 접근:</strong><br>
+                    "99.99%와 99.95%의 차이는 연간 26분입니다. 이 26분을 위해 2배 이상 비용을 지불하시겠습니까? SmartWAN도 실제로는 99.98% 이상 가용성을 기록하고 있습니다."</p>
+                    
+                    <p><strong>✅ TCO 관점:</strong><br>
+                    "SLA 0.04% 차이보다 중요한 건 총 비용입니다. Aryaka로 1개 지점 운영할 비용으로 SmartWAN은 2-3개 지점을 운영할 수 있습니다. 예산 효율성이 더 중요하지 않을까요?"</p>
+                </div>
+            </div>
+            
+            <div class="objection-box">
+                <h3>고객: "완전 관리형이라 운영이 편하다고 하던데?"</h3>
+                <div class="response">
+                    <p><strong>✅ 유연성 강조:</strong><br>
+                    "완전 관리형은 편하지만 모든 변경을 Aryaka에 요청해야 합니다. SmartWAN은 관리형과 자체 관리를 선택할 수 있어, 긴급한 변경은 즉시 처리하고 일상 운영은 위탁할 수 있습니다."</p>
+                    
+                    <p><strong>✅ 독립성 확보:</strong><br>
+                    "IT 팀의 역량을 유지하는 것도 중요합니다. 모든 걸 아웃소싱하면 벤더 교체가 불가능해집니다. SmartWAN은 필요시 인소싱도 가능한 유연한 구조입니다."</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>🎯 핵심 차별화 메시지</h2>
+            <div class="key-message">
+                <h3>💰 60% 비용 절감</h3>
+                <p>"Aryaka 대비 60% 낮은 비용으로 동등 이상의 성능. 절감된 예산으로 더 많은 지점 연결 가능."</p>
+            </div>
+            <div class="key-message">
+                <h3>🌏 한국/아시아 최적화</h3>
+                <p>"한국 30+ PoP vs Aryaka 1개. 전국 어디서나 최고 성능 보장."</p>
+            </div>
+            <div class="key-message">
+                <h3>🚀 RTT 성능 혁신</h3>
+                <p>"프라이빗 네트워크 없이도 RTT 터널링으로 프리미엄급 성능 실현."</p>
+            </div>
+            <div class="key-message">
+                <h3>🔧 유연한 운영 모델</h3>
+                <p>"관리형/자체 관리 선택 가능. 벤더 종속 없는 독립적 운영."</p>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>📈 ROI 계산 예시 (10개 지점 기준)</h2>
+            <div class="cost-comparison">
+                <div class="cost-item">
+                    <span><strong>구축 비용</strong></span>
+                    <span></span>
+                </div>
+                <div class="cost-item">
+                    <span>Aryaka 초기 구축</span>
+                    <span>$150,000</span>
+                </div>
+                <div class="cost-item">
+                    <span>SmartWAN 초기 구축</span>
+                    <span>$50,000</span>
+                </div>
+                <div class="cost-item">
+                    <span><strong>연간 운영비</strong></span>
+                    <span></span>
+                </div>
+                <div class="cost-item">
+                    <span>Aryaka 연간</span>
+                    <span>$200,000</span>
+                </div>
+                <div class="cost-item">
+                    <span>SmartWAN 연간</span>
+                    <span>$80,000</span>
+                </div>
+                <div class="cost-item">
+                    <span><strong>3년 TCO</strong></span>
+                    <span></span>
+                </div>
+                <div class="cost-item">
+                    <span>Aryaka 3년 총비용</span>
+                    <span>$750,000</span>
+                </div>
+                <div class="cost-item">
+                    <span>SmartWAN 3년 총비용</span>
+                    <span>$290,000</span>
+                </div>
+                <div class="cost-item">
+                    <span>3년 절감액</span>
+                    <span style="color: #22c55e;">$460,000 (61% 절감)</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>✨ SmartWAN 선택 이유</h2>
+            <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px;">
+                <span class="feature-badge badge-win">60% 비용 절감</span>
+                <span class="feature-badge badge-win">한국 30+ PoP</span>
+                <span class="feature-badge badge-win">RTT 터널링 기술</span>
+                <span class="feature-badge badge-win">유연한 운영 모델</span>
+                <span class="feature-badge badge-win">즉시 구축 가능</span>
+                <span class="feature-badge badge-win">벤더 독립성</span>
+                <span class="feature-badge badge-win">24/7 한국어 지원</span>
+                <span class="feature-badge badge-premium">프리미엄급 성능</span>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

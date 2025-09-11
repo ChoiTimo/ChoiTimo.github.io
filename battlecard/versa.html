@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Versa Networks vs SmartWAN 배틀카드</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #667eea;
+            margin-bottom: 40px;
+            font-size: 2.5em;
+        }
+        
+        .section {
+            margin-bottom: 40px;
+            padding: 25px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            border-left: 5px solid #667eea;
+        }
+        
+        .section h2 {
+            color: #333;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .comparison-table th {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+        
+        .comparison-table td {
+            padding: 15px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .comparison-table tr:hover {
+            background: #f5f5f5;
+        }
+        
+        .win { color: #22c55e; font-weight: bold; }
+        .lose { color: #ef4444; font-weight: bold; }
+        .draw { color: #f59e0b; font-weight: bold; }
+        
+        .weakness-box {
+            background: #fff4e6;
+            border: 2px solid #ff9800;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .weakness-item {
+            margin: 15px 0;
+            padding-left: 25px;
+            position: relative;
+        }
+        
+        .weakness-item::before {
+            content: "⚠️";
+            position: absolute;
+            left: 0;
+        }
+        
+        .objection-box {
+            background: #e8f5e9;
+            border: 2px solid #4caf50;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .response {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            border-left: 4px solid #4caf50;
+        }
+        
+        .key-message {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 10px 0;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .feature-badge {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            margin: 5px;
+        }
+        
+        .badge-win {
+            background: #22c55e;
+            color: white;
+        }
+        
+        .badge-lose {
+            background: #ef4444;
+            color: white;
+        }
+        
+        .badge-draw {
+            background: #f59e0b;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎯 Versa Networks vs SmartWAN 배틀카드</h1>
+        
+        <div class="section">
+            <h2>📊 핵심 비교 분석</h2>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th width="25%">비교 항목</th>
+                        <th width="30%">Versa Networks</th>
+                        <th width="30%">SmartWAN</th>
+                        <th width="15%">우위</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>SASE 통합</strong></td>
+                        <td>완성도 높은 통합 플랫폼</td>
+                        <td>SASE + RTT 터널링 결합</td>
+                        <td class="draw">동등 =</td>
+                    </tr>
+                    <tr>
+                        <td><strong>성능 최적화</strong></td>
+                        <td>표준 SD-WAN 최적화</td>
+                        <td>RTT 터널링 300% 성능 향상</td>
+                        <td class="win">SmartWAN ✓</td>
+                    </tr>
+                    <tr>
+                        <td><strong>한국 시장</strong></td>
+                        <td>레퍼런스 거의 없음</td>
+                        <td>대기업 다수 사용 중</td>
+                        <td class="win">SmartWAN ✓</td>
+                    </tr>
+                    <tr>
+                        <td><strong>가격 정책</strong></td>
+                        <td>복잡한 기능별 라이선싱</td>
+                        <td>단순하고 투명한 가격</td>
+                        <td class="win">SmartWAN ✓</td>
+                    </tr>
+                    <tr>
+                        <td><strong>기술 지원</strong></td>
+                        <td>한국 전담팀 없음</td>
+                        <td>24/7 한국어 지원</td>
+                        <td class="win">SmartWAN ✓</td>
+                    </tr>
+                    <tr>
+                        <td><strong>배포 유연성</strong></td>
+                        <td>다양한 배포 옵션</td>
+                        <td>클라우드/온프레미스 모두 지원</td>
+                        <td class="draw">동등 =</td>
+                    </tr>
+                    <tr>
+                        <td><strong>글로벌 PoP</strong></td>
+                        <td>150+ PoP</td>
+                        <td>200+ PoP (아시아 집중)</td>
+                        <td class="win">SmartWAN ✓</td>
+                    </tr>
+                    <tr>
+                        <td><strong>AI 기반 최적화</strong></td>
+                        <td>기본적인 자동화</td>
+                        <td>고급 AI 실시간 최적화</td>
+                        <td class="win">SmartWAN ✓</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="section">
+            <h2>⚠️ Versa Networks의 주요 약점</h2>
+            <div class="weakness-box">
+                <div class="weakness-item">
+                    <strong>낮은 브랜드 인지도:</strong> 기술은 우수하나 시장 인지도가 낮아 고객 신뢰성 확보 어려움
+                </div>
+                <div class="weakness-item">
+                    <strong>복잡한 라이선싱 모델:</strong> 기능별 세분화된 라이선스로 총 비용 예측 및 관리 복잡
+                </div>
+                <div class="weakness-item">
+                    <strong>한국 시장 경험 부족:</strong> 국내 레퍼런스 거의 없고 한국 비즈니스 문화 이해도 낮음
+                </div>
+                <div class="weakness-item">
+                    <strong>지원 체계 미흡:</strong> 한국 전담 조직 없어 긴급 상황 대응 및 기술지원 품질 불안정
+                </div>
+                <div class="weakness-item">
+                    <strong>파트너 생태계 약함:</strong> 국내 파트너사 네트워크 부족으로 구축/운영 리스크 존재
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>💬 예상 반박 대응</h2>
+            <div class="objection-box">
+                <h3>고객: "Versa가 SASE 통합이 더 완성도 높다고 들었는데요?"</h3>
+                <div class="response">
+                    <p><strong>✅ 실적으로 증명:</strong><br>
+                    "맞습니다, Versa의 SASE는 기술적으로 우수합니다. 하지만 SmartWAN은 실제 운영 환경에서 검증되었습니다. 삼성, LG 같은 한국 대기업들이 이미 사용 중이며, RTT 터널링으로 SASE 성능까지 300% 향상시킵니다."</p>
+                    
+                    <p><strong>✅ 리스크 관리:</strong><br>
+                    "아무리 좋은 기술도 지원이 없으면 무용지물입니다. Versa는 한국에 레퍼런스가 거의 없고 전담 지원팀도 없습니다. 장애 발생 시 영어로 본사와 소통해야 하는데, 긴급 상황에서 감당하실 수 있으실까요?"</p>
+                </div>
+            </div>
+            
+            <div class="objection-box">
+                <h3>고객: "Versa의 아키텍처가 더 유연하다던데?"</h3>
+                <div class="response">
+                    <p><strong>✅ 실용성 강조:</strong><br>
+                    "유연성도 중요하지만, 실제로 필요한 유연성인지가 핵심입니다. SmartWAN은 고객이 실제로 필요한 클라우드/온프레미스 배포를 모두 지원하며, 복잡한 설정 없이도 즉시 사용 가능합니다."</p>
+                    
+                    <p><strong>✅ TCO 관점:</strong><br>
+                    "Versa의 유연성은 복잡한 라이선싱으로 이어집니다. 기능 추가할 때마다 비용이 늘어나고, 관리 복잡도도 증가합니다. SmartWAN은 All-in-One 가격으로 예산 관리가 투명합니다."</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>🎯 핵심 차별화 메시지</h2>
+            <div class="key-message">
+                <h3>🏆 검증된 성과</h3>
+                <p>"한국 대기업이 선택한 검증된 SD-WAN. 이론이 아닌 실제 성과로 증명합니다."</p>
+            </div>
+            <div class="key-message">
+                <h3>🚀 RTT 성능 혁신</h3>
+                <p>"SASE + RTT 터널링으로 보안과 성능 모두 확보. 실측 300% 성능 향상."</p>
+            </div>
+            <div class="key-message">
+                <h3>💰 투명한 가격</h3>
+                <p>"복잡한 라이선싱 없이 All-inclusive 가격. 숨겨진 비용 없는 정직한 가격 정책."</p>
+            </div>
+            <div class="key-message">
+                <h3>🛡️ 완벽한 지원</h3>
+                <p>"24/7 한국어 기술지원. 한국 비즈니스를 이해하는 전담 팀이 함께합니다."</p>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>✨ SmartWAN 선택 이유</h2>
+            <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px;">
+                <span class="feature-badge badge-win">한국 대기업 레퍼런스</span>
+                <span class="feature-badge badge-win">RTT 300% 성능 향상</span>
+                <span class="feature-badge badge-win">24/7 한국어 지원</span>
+                <span class="feature-badge badge-win">투명한 가격 정책</span>
+                <span class="feature-badge badge-win">200+ 글로벌 PoP</span>
+                <span class="feature-badge badge-win">AI 기반 최적화</span>
+                <span class="feature-badge badge-win">즉시 구축 가능</span>
+                <span class="feature-badge badge-win">검증된 안정성</span>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

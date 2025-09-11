@@ -1,1 +1,476 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartWAN 경쟁사 배틀카드</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            height: 100vh;
+            overflow: hidden;
+            background: #f5f7fa;
+        }
+
+        .container {
+            display: flex;
+            height: 100vh;
+        }
+
+        /* 헤더 */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%);
+            color: white;
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+        }
+
+        .header h1 {
+            font-size: 1.5em;
+            font-weight: 600;
+        }
+
+        .print-btn {
+            margin-left: auto;
+            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 6px;
+            font-size: 0.9em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .print-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(72, 187, 120, 0.3);
+        }
+
+        /* 사이드바 */
+        .sidebar {
+            width: 280px;
+            background: white;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.05);
+            overflow-y: auto;
+            padding: 80px 15px 20px;
+            flex-shrink: 0;
+        }
+
+        .sidebar h2 {
+            font-size: 1.1em;
+            color: #4a5568;
+            margin-bottom: 20px;
+            padding: 0 10px;
+        }
+
+        .competitor-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            margin-bottom: 8px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .competitor-item:hover {
+            background: #f0f4f8;
+            transform: translateX(5px);
+        }
+
+        .competitor-item.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-color: #667eea;
+        }
+
+        .competitor-logo {
+            font-size: 1.5em;
+            margin-right: 12px;
+            width: 35px;
+            text-align: center;
+        }
+
+        .competitor-info {
+            flex: 1;
+        }
+
+        .competitor-name {
+            font-weight: 600;
+            font-size: 0.95em;
+            margin-bottom: 2px;
+        }
+
+        .competitor-desc {
+            font-size: 0.75em;
+            opacity: 0.7;
+        }
+
+        /* 메인 콘텐츠 */
+        .main-content {
+            flex: 1;
+            padding-top: 60px;
+            display: flex;
+            flex-direction: column;
+            background: #f5f7fa;
+        }
+
+        .iframe-wrapper {
+            flex: 1;
+            padding: 20px;
+            overflow: hidden;
+        }
+
+        #battleframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        /* 초기 화면 */
+        .welcome-message {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            color: #718096;
+            font-size: 1.2em;
+            text-align: center;
+        }
+
+        /* 로딩 */
+        .loading {
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+
+        .loading.show {
+            display: block;
+        }
+
+        .spinner {
+            border: 3px solid #f3f4f6;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* 반응형 */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 220px;
+                padding: 70px 10px 20px;
+            }
+
+            .header h1 {
+                font-size: 1.2em;
+            }
+
+            .competitor-item {
+                padding: 10px;
+            }
+
+            .competitor-logo {
+                font-size: 1.2em;
+                width: 30px;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                height: 200px;
+                padding: 70px 15px 15px;
+                overflow-x: auto;
+                overflow-y: hidden;
+            }
+
+            .sidebar h2 {
+                display: none;
+            }
+
+            .competitor-list {
+                display: flex;
+                gap: 10px;
+                padding-bottom: 10px;
+            }
+
+            .competitor-item {
+                min-width: 120px;
+                flex-direction: column;
+                text-align: center;
+                padding: 10px;
+                margin-bottom: 0;
+            }
+
+            .competitor-logo {
+                margin-right: 0;
+                margin-bottom: 5px;
+            }
+
+            .main-content {
+                height: calc(100vh - 200px);
+            }
+        }
+
+        /* 인쇄 스타일 */
+        @media print {
+            .header,
+            .sidebar {
+                display: none !important;
+            }
+
+            .main-content {
+                padding-top: 0 !important;
+            }
+
+            .iframe-wrapper {
+                padding: 0 !important;
+            }
+
+            #battleframe {
+                box-shadow: none !important;
+                border-radius: 0 !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 헤더 -->
+        <div class="header">
+            <h1>⚔️ SmartWAN 경쟁사 배틀카드</h1>
+            <button class="print-btn" onclick="printBattleCard()" id="printBtn" style="display: none;">
+                📄 인쇄하기
+            </button>
+        </div>
+
+        <!-- 사이드바 -->
+        <div class="sidebar">
+            <h2>경쟁사 선택</h2>
+            <div class="competitor-list" id="competitorList">
+                <div class="competitor-item" onclick="loadBattleCard('cisco.html')">
+                    <div class="competitor-logo">🌐</div>
+                    <div class="competitor-info">
+                        <div class="competitor-name">Cisco</div>
+                        <div class="competitor-desc">Meraki, SASE</div>
+                    </div>
+                </div>
+
+                <div class="competitor-item" onclick="loadBattleCard('fortinet.html')">
+                    <div class="competitor-logo">🛡️</div>
+                    <div class="competitor-info">
+                        <div class="competitor-name">Fortinet</div>
+                        <div class="competitor-desc">FortiSASE</div>
+                    </div>
+                </div>
+
+                <div class="competitor-item" onclick="loadBattleCard('paloalto.html')">
+                    <div class="competitor-logo">🔥</div>
+                    <div class="competitor-info">
+                        <div class="competitor-name">Palo Alto</div>
+                        <div class="competitor-desc">Prisma SASE</div>
+                    </div>
+                </div>
+
+                <div class="competitor-item" onclick="loadBattleCard('cato.html')">
+                    <div class="competitor-logo">☁️</div>
+                    <div class="competitor-info">
+                        <div class="competitor-name">Cato</div>
+                        <div class="competitor-desc">Cloud SASE</div>
+                    </div>
+                </div>
+
+                <div class="competitor-item" onclick="loadBattleCard('domestic-vpn.html')">
+                    <div class="competitor-logo">🔒</div>
+                    <div class="competitor-info">
+                        <div class="competitor-name">국내 VPN</div>
+                        <div class="competitor-desc">전통 VPN</div>
+                    </div>
+                </div>
+
+                <div class="competitor-item" onclick="loadBattleCard('vmware.html')">
+                    <div class="competitor-logo">🔷</div>
+                    <div class="competitor-info">
+                        <div class="competitor-name">VMware</div>
+                        <div class="competitor-desc">VeloCloud</div>
+                    </div>
+                </div>
+
+                <div class="competitor-item" onclick="loadBattleCard('silverpeak.html')">
+                    <div class="competitor-logo">⛰️</div>
+                    <div class="competitor-info">
+                        <div class="competitor-name">Silver Peak</div>
+                        <div class="competitor-desc">HPE Aruba</div>
+                    </div>
+                </div>
+
+                <div class="competitor-item" onclick="loadBattleCard('versa.html')">
+                    <div class="competitor-logo">🔀</div>
+                    <div class="competitor-info">
+                        <div class="competitor-name">Versa</div>
+                        <div class="competitor-desc">SASE Platform</div>
+                    </div>
+                </div>
+
+                <div class="competitor-item" onclick="loadBattleCard('aryaka.html')">
+                    <div class="competitor-logo">🌐</div>
+                    <div class="competitor-info">
+                        <div class="competitor-name">Aryaka</div>
+                        <div class="competitor-desc">Managed SD-WAN</div>
+                    </div>
+                </div>
+
+                <div class="competitor-item" onclick="loadBattleCard('kt.html')">
+                    <div class="competitor-logo">📡</div>
+                    <div class="competitor-info">
+                        <div class="competitor-name">KT</div>
+                        <div class="competitor-desc">통신사 SD-WAN</div>
+                    </div>
+                </div>
+
+                <div class="competitor-item" onclick="loadBattleCard('lgu.html')">
+                    <div class="competitor-logo">📱</div>
+                    <div class="competitor-info">
+                        <div class="competitor-name">LGU+</div>
+                        <div class="competitor-desc">통신사 SD-WAN</div>
+                    </div>
+                </div>
+
+                <div class="competitor-item" onclick="loadBattleCard('custom.html')">
+                    <div class="competitor-logo">⚙️</div>
+                    <div class="competitor-info">
+                        <div class="competitor-name">기타</div>
+                        <div class="competitor-desc">직접 입력</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 메인 콘텐츠 -->
+        <div class="main-content">
+            <div class="iframe-wrapper">
+                <div class="welcome-message" id="welcomeMessage">
+                    왼쪽에서 경쟁사를 선택하세요
+                </div>
+                <div class="loading" id="loading">
+                    <div class="spinner"></div>
+                    <p>배틀카드를 불러오는 중...</p>
+                </div>
+                <iframe id="battleframe" style="display: none;" title="배틀카드 내용"></iframe>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentCard = null;
+
+        function loadBattleCard(filename) {
+            // 모든 항목 선택 해제
+            document.querySelectorAll('.competitor-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            // 선택된 항목 표시
+            event.currentTarget.classList.add('active');
+            
+            // 요소들 가져오기
+            const welcomeMessage = document.getElementById('welcomeMessage');
+            const loading = document.getElementById('loading');
+            const iframe = document.getElementById('battleframe');
+            const printBtn = document.getElementById('printBtn');
+            
+            // 초기 메시지 숨기고 로딩 표시
+            welcomeMessage.style.display = 'none';
+            loading.classList.add('show');
+            iframe.style.display = 'none';
+            printBtn.style.display = 'none';
+            
+            // 아이프레임에 페이지 로드
+            currentCard = filename;
+            iframe.src = filename;
+            
+            // 아이프레임 로드 완료 시
+            iframe.onload = function() {
+                loading.classList.remove('show');
+                iframe.style.display = 'block';
+                printBtn.style.display = 'block';
+            };
+            
+            // 에러 처리
+            iframe.onerror = function() {
+                loading.classList.remove('show');
+                welcomeMessage.style.display = 'flex';
+                welcomeMessage.textContent = '배틀카드를 불러올 수 없습니다.';
+                alert('파일을 찾을 수 없습니다: ' + filename);
+            };
+        }
+
+        function printBattleCard() {
+            const iframe = document.getElementById('battleframe');
+            
+            if (!iframe.src) {
+                alert('먼저 배틀카드를 선택해주세요.');
+                return;
+            }
+            
+            try {
+                // 아이프레임 창의 print 메서드 직접 호출
+                iframe.contentWindow.focus();
+                iframe.contentWindow.print();
+            } catch (e) {
+                console.error('인쇄 오류:', e);
+                // 폴백: 새 창에서 열기
+                window.open(currentCard, '_blank');
+            }
+        }
+
+        // 키보드 단축키 (Ctrl+P)
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey && e.key === 'p') {
+                const iframe = document.getElementById('battleframe');
+                if (iframe.style.display !== 'none') {
+                    e.preventDefault();
+                    printBattleCard();
+                }
+            }
+        });
+    </script>
+</body>
+</html>

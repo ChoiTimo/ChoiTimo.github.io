@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Silver Peak (HPE Aruba) vs SmartWAN 배틀카드</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            padding: 20px;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #01a982;
+            margin-bottom: 40px;
+            font-size: 2.5em;
+        }
+        
+        .section {
+            margin-bottom: 40px;
+            padding: 25px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            border-left: 5px solid #01a982;
+        }
+        
+        .section h2 {
+            color: #333;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .comparison-table th {
+            background: linear-gradient(135deg, #01a982, #00739d);
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+        
+        .comparison-table td {
+            padding: 15px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .comparison-table tr:hover {
+            background: #f5f5f5;
+        }
+        
+        .win { color: #22c55e; font-weight: bold; }
+        .lose { color: #ef4444; font-weight: bold; }
+        .draw { color: #f59e0b; font-weight: bold; }
+        
+        .weakness-box {
+            background: #fff4e6;
+            border: 2px solid #ff9800;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .weakness-item {
+            margin: 15px 0;
+            padding-left: 25px;
+            position: relative;
+        }
+        
+        .weakness-item::before {
+            content: "🔄";
+            position: absolute;
+            left: 0;
+        }
+        
+        .objection-box {
+            background: #e8f5e9;
+            border: 2px solid #4caf50;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .response {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            border-left: 4px solid #4caf50;
+        }
+        
+        .key-message {
+            background: linear-gradient(135deg, #01a982 0%, #00739d 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 10px 0;
+            box-shadow: 0 5px 15px rgba(1, 169, 130, 0.4);
+        }
+        
+        .acquisition-alert {
+            background: #ffebee;
+            border: 2px solid #ef5350;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .acquisition-alert h3 {
+            color: #c62828;
+            margin-bottom: 10px;
+        }
+        
+        .timeline {
+            background: #e3f2fd;
+            border: 2px solid #2196f3;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .timeline-item {
+            display: flex;
+            align-items: center;
+            margin: 15px 0;
+            padding-left: 30px;
+            position: relative;
+        }
+        
+        .timeline-item::before {
+            content: "📅";
+            position: absolute;
+            left: 0;
+        }
+        
+        .feature-badge {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            margin: 5px;
+        }
+        
+        .badge-win {
+            background: #22c55e;
+            color: white;
+        }
+        
+        .badge-risk {
+            background: #ef4444;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔄 Silver Peak (HPE Aruba) vs SmartWAN 배틀카드</h1>
+        
+        <div class="acquisition-alert">
+            <h3>⚠️ 중요: HPE 인수 후 불확실성</h3>
+            <p>Silver Peak는 2020년 HPE에 9.25억 달러에 인수되어 Aruba 브랜드로 통합되었습니다.</p>
+            <p><strong>영업 포인트:</strong> 제품 로드맵 불확실, 독립성 상실, 대기업 관료주의로 혁신 속도 저하</p>
+        </div>
+        
+        <div class="section">
+            <h2>📊 핵심 비교 분석</h2>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th width="25%">비교 항목</th>
+                        <th width="30%">Silver Peak (HPE)</th>
+                        <th width="30%">SmartWAN</th>
+                        <th width="15%">우위</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>WAN 최적화</strong></td>
+                        <td>전통적 강점 분야</td>
+                        <td>RTT + AI 최적화</td>
+                        <td class="draw">동등 =</td>
+                    </tr>
+                    <tr>
+                        <td><strong>제품 독립성</strong></td>
+                        <td>HPE 종속 (인수됨)</td>
+                        <td>독립 기업</td>
+                        <td class="win">SmartWAN ✓</td>
+                    </tr>
+                    <tr>
+                        <td><strong>혁신 속도</strong></td>
+                        <td>HPE 관료주의로 둔화</td>
+                        <td>빠른 기능 개발</td>
+                        <td class="win">SmartWAN ✓</td>
+                    </tr>
+                    <tr>
+                        <td><strong>보안 통합</strong></td>
+                        <td>별도 구매 필요</td>
+                        <td>통합 SASE 플랫폼</td>
+                        <td class="win">SmartWAN ✓</td>
+                    </tr>
+                    <tr>
+                        <td><strong>아시아 지원</strong></td>
+                        <td>매우 제한적</td>
+                        <td>30+ 아시아 PoP</td>
+                        <td class="win">SmartWAN ✓</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Unity Orchestrator</strong></td>
+                        <td>성숙한 관리 플랫폼</td>
+                        <td>직관적 대시보드</td>
+                        <td class="draw">동등 =</td>
+                    </tr>
+                    <tr>
+                        <td><strong>가격 정책</strong></td>
+                        <td>HPE 프리미엄 가격</td>
+                        <td>합리적 가격</td>
+                        <td class="win">SmartWAN ✓</td>
+                    </tr>
+                    <tr>
+                        <td><strong>한국 시장</strong></td>
+                        <td>거의 없음</td>
+                        <td>적극적 지원</td>
+                        <td class="win">SmartWAN ✓</td>
+                    </tr>
+                    <tr>
+                        <td><strong>로드맵 명확성</strong></td>
+                        <td>HPE 통합으로 불투명</td>
+                        <td>명확한 비전</td>
+                        <td class="win">SmartWAN ✓</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="section">
+            <h2>📅 Silver Peak의 변화 타임라인</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <strong>2020년 이전:</strong> 독립 SD-WAN 전문 기업, WAN 최적화 선두
+                </div>
+                <div class="timeline-item">
+                    <strong>2020년 7월:</strong> HPE가 9.25억 달러에 인수 발표
+                </div>
+                <div class="timeline-item">
+                    <strong>2021년:</strong> Aruba 브랜드로 통합 시작, 제품명 변경
+                </div>
+                <div class="timeline-item">
+                    <strong>2022년:</strong> 기존 Silver Peak 팀 대거 이탈
+                </div>
+                <div class="timeline-item">
+                    <strong>2023년:</strong> HPE 전체 구조조정, SD-WAN 투자 축소
+                </div>
+                <div class="timeline-item" style="color: #c62828;">
+                    <strong>현재:</strong> 제품 로드맵 불투명, 신기능 개발 정체
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>⚠️ Silver Peak (HPE)의 현재 문제점</h2>
+            <div class="weakness-box">
+                <div class="weakness-item">
+                    <strong>HPE 인수 후 정체:</strong> 독립성 상실로 혁신 속도 현저히 둔화
+                </div>
+                <div class="weakness-item">
+                    <strong>제품 로드맵 불확실:</strong> HPE 포트폴리오 재편으로 SD-WAN 미래 불투명
+                </div>
+                <div class="weakness-item">
+                    <strong>핵심 인력 이탈:</strong> 창업팀과 핵심 개발자들 대부분 퇴사
+                </div>
+                <div class="weakness-item">
+                    <strong>보안 기능 부족:</strong> SASE 대응 늦어 별도 보안 솔루션 구매 필요
+                </div>
+                <div class="weakness-item">
+                    <strong>아시아 시장 포기:</strong> 미국/유럽 중심, 아시아는 사실상 방치
+                </div>
+                <div class="weakness-item">
+                    <strong>가격 인상:</strong> HPE 인수 후 라이선스 가격 30% 이상 인상
+                </div>
+                <div class="weakness-item">
+                    <strong>지원 품질 저하:</strong> HPE 일반 지원팀으로 통합, 전문성 하락
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>💬 예상 반박 대응</h2>
+            <div class="objection-box">
+                <h3>고객: "Silver Peak가 WAN 최적화 기술이 뛰어나다던데?"</h3>
+                <div class="response">
+                    <p><strong>✅ 과거형 강조:</strong><br>
+                    "맞습니다. '과거에는' 최고였습니다. 하지만 HPE 인수 후 개발이 정체되었습니다. SmartWAN의 RTT 터널링은 최신 기술로 Silver Peak보다 3배 빠릅니다."</p>
+                    
+                    <p><strong>✅ 인력 이탈 언급:</strong><br>
+                    "Silver Peak를 만든 핵심 인력들이 모두 떠났습니다. 지금은 HPE 일반 직원들이 관리합니다. 기술 혁신을 기대할 수 있을까요?"</p>
+                </div>
+            </div>
+            
+            <div class="objection-box">
+                <h3>고객: "HPE라는 대기업이 뒤에 있어 안정적이지 않나요?"</h3>
+                <div class="response">
+                    <p><strong>✅ 대기업의 함정:</strong><br>
+                    "대기업 인수는 축복이 아니라 저주입니다. HPE는 서버와 스토리지가 주력이고, SD-WAN은 부수적입니다. 우선순위가 낮아 투자도 줄었습니다."</p>
+                    
+                    <p><strong>✅ 실제 사례:</strong><br>
+                    "HPE는 최근 대규모 구조조정을 했습니다. SD-WAN 부서도 영향을 받았죠. 고객 지원 품질이 눈에 띄게 떨어졌다는 불만이 많습니다."</p>
+                </div>
+            </div>
+            
+            <div class="objection-box">
+                <h3>고객: "Unity Orchestrator가 좋다고 들었는데?"</h3>
+                <div class="response">
+                    <p><strong>✅ 정체된 기술:</strong><br>
+                    "Unity는 좋은 플랫폼이었지만, 2년째 큰 업데이트가 없습니다. SmartWAN은 매 분기 새로운 기능을 추가합니다. 어느 쪽이 미래지향적일까요?"</p>
+                    
+                    <p><strong>✅ 통합 문제:</strong><br>
+                    "Unity는 HPE의 다른 제품들과 통합되면서 복잡해졌습니다. 원래의 단순함을 잃었죠. SmartWAN은 SD-WAN에만 집중해 더 직관적입니다."</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>🎯 핵심 차별화 메시지</h2>
+            <div class="key-message">
+                <h3>🚀 살아있는 혁신</h3>
+                <p>"정체된 HPE 제품 vs 계속 진화하는 SmartWAN. 미래를 선택하세요."</p>
+            </div>
+            <div class="key-message">
+                <h3>🌏 아시아 우선</h3>
+                <p>"Silver Peak 아시아 포기 vs SmartWAN 30+ 아시아 PoP. 우리를 위한 선택."</p>
+            </div>
+            <div class="key-message">
+                <h3>💡 독립적 비전</h3>
+                <p>"대기업 부속품 vs 독립 전문 기업. SD-WAN에만 집중하는 진정성."</p>
+            </div>
+            <div class="key-message">
+                <h3>🛡️ 통합 보안</h3>
+                <p>"별도 보안 구매 vs 통합 SASE. 완벽한 올인원 솔루션."</p>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>📊 리스크 평가</h2>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>리스크 항목</th>
+                        <th>Silver Peak (HPE)</th>
+                        <th>리스크 수준</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>제품 단종 가능성</strong></td>
+                        <td>HPE 포트폴리오 정리 시 위험</td>
+                        <td class="lose">높음</td>
+                    </tr>
+                    <tr>
+                        <td><strong>가격 인상</strong></td>
+                        <td>매년 10-15% 인상 중</td>
+                        <td class="lose">매우 높음</td>
+                    </tr>
+                    <tr>
+                        <td><strong>기술 정체</strong></td>
+                        <td>신기능 개발 거의 없음</td>
+                        <td class="lose">높음</td>
+                    </tr>
+                    <tr>
+                        <td><strong>지원 품질 저하</strong></td>
+                        <td>전문 인력 부족</td>
+                        <td class="lose">높음</td>
+                    </tr>
+                    <tr>
+                        <td><strong>마이그레이션 어려움</strong></td>
+                        <td>HPE 종속으로 이탈 어려움</td>
+                        <td class="lose">매우 높음</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="section">
+            <h2>✨ SmartWAN 선택 이유</h2>
+            <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px;">
+                <span class="feature-badge badge-win">독립 전문 기업</span>
+                <span class="feature-badge badge-win">계속되는 혁신</span>
+                <span class="feature-badge badge-win">RTT 터널링</span>
+                <span class="feature-badge badge-win">통합 SASE</span>
+                <span class="feature-badge badge-win">아시아 30+ PoP</span>
+                <span class="feature-badge badge-win">명확한 로드맵</span>
+                <span class="feature-badge badge-risk">리스크 없음</span>
+                <span class="feature-badge badge-win">전문 지원팀</span>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

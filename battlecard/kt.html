@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KT SD-WAN vs SmartWAN 배틀카드</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            padding: 20px;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #f5576c;
+            margin-bottom: 40px;
+            font-size: 2.5em;
+        }
+        
+        .section {
+            margin-bottom: 40px;
+            padding: 25px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            border-left: 5px solid #f5576c;
+        }
+        
+        .section h2 {
+            color: #333;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .comparison-table th {
+            background: linear-gradient(135deg, #f093fb, #f5576c);
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+        
+        .comparison-table td {
+            padding: 15px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .comparison-table tr:hover {
+            background: #f5f5f5;
+        }
+        
+        .win { color: #22c55e; font-weight: bold; }
+        .lose { color: #ef4444; font-weight: bold; }
+        .draw { color: #f59e0b; font-weight: bold; }
+        
+        .weakness-box {
+            background: #ffebee;
+            border: 2px solid #ef5350;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .weakness-item {
+            margin: 15px 0;
+            padding-left: 25px;
+            position: relative;
+        }
+        
+        .weakness-item::before {
+            content: "🚨";
+            position: absolute;
+            left: 0;
+        }
+        
+        .objection-box {
+            background: #e8f5e9;
+            border: 2px solid #4caf50;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .response {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            border-left: 4px solid #4caf50;
+        }
+        
+        .key-message {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 10px 0;
+            box-shadow: 0 5px 15px rgba(245, 87, 108, 0.4);
+        }
+        
+        .alert-box {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .alert-box h3 {
+            color: #856404;
+            margin-bottom: 10px;
+        }
+        
+        .feature-badge {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            margin: 5px;
+        }
+        
+        .badge-win {
+            background: #22c55e;
+            color: white;
+        }
+        
+        .badge-critical {
+            background: #ef4444;
+            color: white;
+        }
+        
+        .issue-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .issue-card {
+            background: white;
+            border: 2px solid #ef5350;
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+        }
+        
+        .issue-card h4 {
+            color: #ef5350;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📡 KT SD-WAN vs SmartWAN 배틀카드</h1>
+        
+        <div class="alert-box">
+            <h3>⚠️ 중요 정보</h3>
+            <p>KT는 외부 SD-WAN 솔루션을 인수하여 자체 브랜드로 제공하고 있으나, <strong>기술 통합 및 품질 이슈</strong>가 지속적으로 보고되고 있습니다. 이는 영업 시 중요한 차별화 포인트입니다.</p>
+        </div>
+        
+        <div class="section">
+            <h2>📊 핵심 비교 분석</h2>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th width="25%">비교 항목</th>
+                        <th width="30%">KT SD-WAN</th>
+                        <th width="30%">SmartWAN</th>
+                        <th width="15%">우위</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>기술 자체 개발</strong></td>
+                        <td>인수 솔루션 (통합 이슈)</td>
+                        <td>100% 자체 개발</td>
+                        <td class="win">SmartWAN ✓</td>
+                    </tr>
+                    <tr>
+                        <td><strong>품질 안정성</strong></td>
+                        <td>품질 이슈 빈번</td>
+                        <td>검증된 안정성</td>
+                        <td class="win">SmartWAN ✓</td>
+                    </tr>
+                    <tr>
+                        <td><strong>글로벌 커버리지</strong></td>
+                        <td>국내 중심 (해외 약함)</td>
+                        <td>200+ 글로벌 PoP</td>
+                        <td class="win">SmartWAN ✓</td>
+                    </tr>
+                    <tr>
+                        <td><strong>국내 백본</strong></td>
+                        <td>KT 백본 활용</td>
+                        <td>멀티 캐리어 지원</td>
+                        <td class="draw">동등 =</td>
+                    </tr>
+                    <tr>
+                        <td><strong>기술 지원</strong></td>
+                        <td>대기업 관료적 대응</td>
+                        <td>신속한 전담팀 대응</td>
+                        <td class="win">SmartWAN ✓</td>
+                    </tr>
+                    <tr>
+                        <td><strong>SD-WAN 기능</strong></td>
+                        <td>기본적 기능 (MPLS 의존)</td>
+                        <td>순수 SD-WAN + RTT</td>
+                        <td class="win">SmartWAN ✓</td>
+                    </tr>
+                    <tr>
+                        <td><strong>번들링</strong></td>
+                        <td>통신 서비스 번들</td>
+                        <td>독립적 서비스</td>
+                        <td class="lose">KT ✓</td>
+                    </tr>
+                    <tr>
+                        <td><strong>벤더 종속성</strong></td>
+                        <td>KT 종속 높음</td>
+                        <td>독립적 운영 가능</td>
+                        <td class="win">SmartWAN ✓</td>
+                    </tr>
+                    <tr>
+                        <td><strong>혁신 속도</strong></td>
+                        <td>느린 업데이트</td>
+                        <td>빠른 기능 개발</td>
+                        <td class="win">SmartWAN ✓</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="section">
+            <h2>🚨 KT SD-WAN의 치명적 약점</h2>
+            <div class="issue-grid">
+                <div class="issue-card">
+                    <h4>품질 이슈</h4>
+                    <p>인수한 솔루션의 통합 문제로 장애 빈발, 성능 불안정</p>
+                </div>
+                <div class="issue-card">
+                    <h4>기술력 부재</h4>
+                    <p>자체 개발 능력 없어 문제 해결 지연, 커스터마이징 불가</p>
+                </div>
+                <div class="issue-card">
+                    <h4>글로벌 무력</h4>
+                    <p>해외 지점 연결 시 성능 보장 불가, 파트너 의존</p>
+                </div>
+                <div class="issue-card">
+                    <h4>관료적 대응</h4>
+                    <p>대기업 특유의 느린 의사결정, 고객 요구 반영 지연</p>
+                </div>
+            </div>
+            
+            <div class="weakness-box" style="margin-top: 30px;">
+                <div class="weakness-item">
+                    <strong>인수 솔루션 통합 실패:</strong> 여러 솔루션을 인수했으나 제대로 통합하지 못해 일관성 없는 서비스
+                </div>
+                <div class="weakness-item">
+                    <strong>MPLS 의존도 높음:</strong> 진정한 SD-WAN이 아닌 MPLS에 SD-WAN 기능을 덧붙인 수준
+                </div>
+                <div class="weakness-item">
+                    <strong>혁신 부재:</strong> 통신사 특유의 보수적 접근으로 새로운 기능 도입 매우 느림
+                </div>
+                <div class="weakness-item">
+                    <strong>숨겨진 비용:</strong> 초기 가격은 저렴해 보이나 추가 요금이 계속 발생
+                </div>
+                <div class="weakness-item">
+                    <strong>벤더 락인:</strong> KT 회선과 묶여 있어 변경 시 전체 네트워크 재구성 필요
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>💬 예상 반박 대응</h2>
+            <div class="objection-box">
+                <h3>고객: "KT 백본이 안정적이고 번들링 혜택이 있지 않나요?"</h3>
+                <div class="response">
+                    <p><strong>✅ 품질 이슈 지적:</strong><br>
+                    "KT 백본은 좋지만 SD-WAN 솔루션 자체가 문제입니다. 인수한 기술을 제대로 통합하지 못해 장애가 자주 발생합니다. 실제로 많은 기업들이 품질 문제로 이탈하고 있습니다."</p>
+                    
+                    <p><strong>✅ 독립성 강조:</strong><br>
+                    "번들링은 편해 보이지만 벤더 종속의 함정입니다. 문제가 생겨도 바꿀 수 없고, KT가 가격을 올려도 받아들여야 합니다. SmartWAN은 어떤 회선과도 독립적으로 운영 가능합니다."</p>
+                </div>
+            </div>
+            
+            <div class="objection-box">
+                <h3>고객: "대기업 KT가 더 안정적이지 않을까요?"</h3>
+                <div class="response">
+                    <p><strong>✅ 현실 직시:</strong><br>
+                    "대기업이라고 모든 서비스가 좋은 건 아닙니다. KT는 통신은 전문이지만 SD-WAN은 인수한 솔루션에 의존합니다. 자체 기술이 없어 문제 해결도 늦고, 고객 요구 반영도 어렵습니다."</p>
+                    
+                    <p><strong>✅ 전문성 부각:</strong><br>
+                    "SmartWAN은 SD-WAN 전문 기업입니다. 100% 자체 개발로 즉각적인 문제 해결과 빠른 기능 업데이트가 가능합니다. 실제 고객 만족도를 비교해보시면 차이가 명확합니다."</p>
+                </div>
+            </div>
+            
+            <div class="objection-box">
+                <h3>고객: "국내 전국망이 필요한데 KT가 유리하지 않나요?"</h3>
+                <div class="response">
+                    <p><strong>✅ 멀티캐리어 장점:</strong><br>
+                    "SmartWAN은 KT뿐만 아니라 SKT, LGU+ 모든 회선을 활용합니다. 특정 지역에서 KT 회선에 문제가 생겨도 자동으로 다른 회선으로 전환됩니다. 오히려 더 안정적입니다."</p>
+                    
+                    <p><strong>✅ 글로벌 우위:</strong><br>
+                    "해외 지점이 하나라도 있으시다면 KT는 선택지가 아닙니다. KT SD-WAN의 해외 성능은 매우 열악합니다. SmartWAN은 200+ 글로벌 PoP로 어디서나 최적 성능을 보장합니다."</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>🎯 핵심 차별화 메시지</h2>
+            <div class="key-message">
+                <h3>✅ 검증된 자체 기술</h3>
+                <p>"100% 자체 개발 SD-WAN vs 인수 솔루션의 품질 이슈. 안정성이 검증된 솔루션을 선택하세요."</p>
+            </div>
+            <div class="key-message">
+                <h3>🌍 진정한 글로벌 SD-WAN</h3>
+                <p>"국내 전용 vs 글로벌 200+ PoP. 미래의 해외 진출을 고려한다면 선택은 명확합니다."</p>
+            </div>
+            <div class="key-message">
+                <h3>🚀 순수 SD-WAN 기술</h3>
+                <p>"MPLS 의존 vs RTT 터널링 혁신. 진짜 SD-WAN의 성능을 경험하세요."</p>
+            </div>
+            <div class="key-message">
+                <h3>🔓 벤더 독립성</h3>
+                <p>"KT 종속 vs 완전한 독립성. 미래의 유연성을 확보하세요."</p>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>📌 KT 선택 시 리스크</h2>
+            <div class="alert-box" style="background: #ffebee; border-color: #ef5350;">
+                <h3 style="color: #c62828;">경영진 보고용 리스크 요약</h3>
+                <ul style="margin-top: 15px; padding-left: 20px;">
+                    <li><strong>기술 리스크:</strong> 자체 기술 없어 문제 해결 능력 부족</li>
+                    <li><strong>품질 리스크:</strong> 검증되지 않은 통합 솔루션으로 장애 위험 높음</li>
+                    <li><strong>벤더 리스크:</strong> KT 종속으로 협상력 상실, 가격 인상 무력</li>
+                    <li><strong>글로벌 리스크:</strong> 해외 확장 시 전면 재구축 필요</li>
+                    <li><strong>혁신 리스크:</strong> 느린 기술 발전으로 경쟁력 저하</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>✨ SmartWAN 선택 이유</h2>
+            <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px;">
+                <span class="feature-badge badge-win">100% 자체 기술</span>
+                <span class="feature-badge badge-win">검증된 안정성</span>
+                <span class="feature-badge badge-win">글로벌 200+ PoP</span>
+                <span class="feature-badge badge-win">RTT 터널링</span>
+                <span class="feature-badge badge-win">멀티캐리어 지원</span>
+                <span class="feature-badge badge-win">벤더 독립성</span>
+                <span class="feature-badge badge-win">빠른 혁신</span>
+                <span class="feature-badge badge-critical">품질 보장</span>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

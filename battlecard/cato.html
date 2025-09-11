@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cato Networks vs SmartWAN 배틀카드</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            padding: 20px;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #4facfe;
+            margin-bottom: 40px;
+            font-size: 2.5em;
+        }
+        
+        .section {
+            margin-bottom: 40px;
+            padding: 25px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            border-left: 5px solid #4facfe;
+        }
+        
+        .section h2 {
+            color: #333;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .comparison-table th {
+            background: linear-gradient(135deg, #4facfe, #00f2fe);
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+        
+        .comparison-table td {
+            padding: 15px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .comparison-table tr:hover {
+            background: #f5f5f5;
+        }
+        
+        .win { color: #22c55e; font-weight: bold; }
+        .lose { color: #ef4444; font-weight: bold; }
+        .draw { color: #f59e0b; font-weight: bold; }
+        
+        .weakness-box {
+            background: #fff4e6;
+            border: 2px solid #ff9800;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .weakness-item {
+            margin: 15px 0;
+            padding-left: 25px;
+            position: relative;
+        }
+        
+        .weakness-item::before {
+            content: "🔒";
+            position: absolute;
+            left: 0;
+        }
+        
+        .objection-box {
+            background: #e8f5e9;
+            border: 2px solid #4caf50;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .response {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            border-left: 4px solid #4caf50;
+        }
+        
+        .key-message {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 10px 0;
+            box-shadow: 0 5px 15px rgba(79, 172, 254, 0.4);
+        }
+        
+        .feature-badge {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            margin: 5px;
+        }
+        
+        .badge-win {
+            background: #22c55e;
+            color: white;
+        }
+        
+        .badge-security {
+            background: #4facfe;
+            color: white;
+        }
+        
+        .alert-box {
+            background: #e3f2fd;
+            border: 2px solid #2196f3;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🌐 Cato Networks vs SmartWAN 배틀카드</h1>
+        
+        <div class="alert-box">
+            <h3 style="color: #1565c0;">💡 핵심 포인트</h3>
+            <p>Cato는 클라우드 네이티브 SASE를 강조하지만, <strong>자체 백본 부족</strong>과 <strong>제한적인 커스터마이징</strong>이 약점입니다.</p>
+        </div>
+        
+        <div class="section">
+            <h2>📊 핵심 비교 분석</h2>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th width="25%">비교 항목</th>
+                        <th width="30%">Cato Networks</th>
+                        <th width="30%">SmartWAN</th>
+                        <th width="15%">우위</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>아키텍처</strong></td>
+                        <td>클라우드 네이티브 SASE</td>
+                        <td>하이브리드 SASE + RTT</td>
+                        <td class="draw">동등 =</td>
+                    </tr>
+                    <tr>
+                        <td><strong>네트워크 백본</strong></td>
+                        <td>퍼블릭 클라우드 의존</td>
+                        <td>자체 백본 + 200+ PoP</td>
+                        <td class="win">SmartWAN ✓</td>
+                    </tr>
+                    <tr>
+                        <td><strong>성능 최적화</strong></td>
+                        <td>표준 최적화</td>
+                        <td>RTT 터널링 300% 향상</td>
+                        <td class="win">SmartWAN ✓</td>
+                    </tr>
+                    <tr>
+                        <td><strong>보안 통합</strong></td>
+                        <td>완전 통합 SASE</td>
+                        <td>모듈형 보안 통합</td>
+                        <td class="draw">동등 =</td>
+                    </tr>
+                    <tr>
+                        <td><strong>커스터마이징</strong></td>
+                        <td>제한적 (SaaS 모델)</td>
+                        <td>높은 유연성</td>
+                        <td class="win">SmartWAN ✓</td>
+                    </tr>
+                    <tr>
+                        <td><strong>한국/아시아</strong></td>
+                        <td>PoP 부족 (2-3개)</td>
+                        <td>30+ 아시아 PoP</td>
+                        <td class="win">SmartWAN ✓</td>
+                    </tr>
+                    <tr>
+                        <td><strong>온프레미스</strong></td>
+                        <td>지원 안함 (클라우드 온리)</td>
+                        <td>하이브리드 지원</td>
+                        <td class="win">SmartWAN ✓</td>
+                    </tr>
+                    <tr>
+                        <td><strong>가격 투명성</strong></td>
+                        <td>복잡한 사용량 기반</td>
+                        <td>명확한 정액제</td>
+                        <td class="win">SmartWAN ✓</td>
+                    </tr>
+                    <tr>
+                        <td><strong>관리 편의성</strong></td>
+                        <td>단일 콘솔</td>
+                        <td>통합 대시보드</td>
+                        <td class="draw">동등 =</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="section">
+            <h2>⚠️ Cato Networks의 주요 약점</h2>
+            <div class="weakness-box">
+                <div class="weakness-item">
+                    <strong>자체 백본 부족:</strong> AWS/Azure 등 퍼블릭 클라우드에 의존, 성능 보장 어려움
+                </div>
+                <div class="weakness-item">
+                    <strong>커스터마이징 제한:</strong> SaaS 모델로 고객별 맞춤 설정 거의 불가능
+                </div>
+                <div class="weakness-item">
+                    <strong>온프레미스 미지원:</strong> 100% 클라우드만 지원, 규제 산업 대응 어려움
+                </div>
+                <div class="weakness-item">
+                    <strong>아시아 인프라 부족:</strong> 한국 포함 아시아 PoP 2-3개로 매우 제한적
+                </div>
+                <div class="weakness-item">
+                    <strong>벤더 종속성 높음:</strong> Cato 클라우드에 완전 의존, 이탈 시 전면 재구축
+                </div>
+                <div class="weakness-item">
+                    <strong>예측 불가능한 비용:</strong> 트래픽 기반 과금으로 월 비용 변동 심함
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>💬 예상 반박 대응</h2>
+            <div class="objection-box">
+                <h3>고객: "Cato가 진정한 클라우드 네이티브 SASE 아닌가요?"</h3>
+                <div class="response">
+                    <p><strong>✅ 실제 성능 강조:</strong><br>
+                    "클라우드 네이티브는 좋지만, 자체 백본이 없어 성능을 보장할 수 없습니다. Cato는 AWS/Azure의 퍼블릭 인터넷에 의존합니다. SmartWAN은 자체 백본과 RTT 터널링으로 확실한 성능을 보장합니다."</p>
+                    
+                    <p><strong>✅ 유연성 부족:</strong><br>
+                    "100% 클라우드는 편해 보이지만, 온프레미스가 필요한 상황에선 무력합니다. 금융, 의료 같은 규제 산업은 어떻게 하실 건가요? SmartWAN은 클라우드와 온프레미스를 모두 지원합니다."</p>
+                </div>
+            </div>
+            
+            <div class="objection-box">
+                <h3>고객: "단일 벤더 SASE가 관리가 더 간단하지 않나요?"</h3>
+                <div class="response">
+                    <p><strong>✅ 종속성 리스크:</strong><br>
+                    "단일 벤더는 편하지만 종속성이 문제입니다. Cato에 문제가 생기면 네트워크와 보안이 동시에 마비됩니다. SmartWAN은 모듈형으로 필요한 부분만 교체 가능합니다."</p>
+                    
+                    <p><strong>✅ 최적화 선택권:</strong><br>
+                    "모든 기능을 Cato가 정한 대로만 써야 합니다. SmartWAN은 고객이 원하는 보안 솔루션을 선택하고 통합할 수 있습니다. Best-of-Breed 접근이 가능합니다."</p>
+                </div>
+            </div>
+            
+            <div class="objection-box">
+                <h3>고객: "Cato의 글로벌 커버리지가 좋다던데?"</h3>
+                <div class="response">
+                    <p><strong>✅ 아시아 현실:</strong><br>
+                    "Cato는 미국/유럽 중심입니다. 한국엔 PoP가 1개뿐이고, 아시아 전체도 2-3개입니다. SmartWAN은 아시아에만 30개 이상 PoP를 운영합니다. 어느 쪽이 아시아 비즈니스에 적합할까요?"</p>
+                    
+                    <p><strong>✅ 실제 성능 차이:</strong><br>
+                    "PoP가 멀면 레이턴시가 증가합니다. 부산에서 도쿄 Cato PoP까지 왕복하는 것보다, SmartWAN 부산 PoP를 쓰는 게 10배는 빠릅니다."</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>🎯 핵심 차별화 메시지</h2>
+            <div class="key-message">
+                <h3>🚀 자체 백본의 힘</h3>
+                <p>"퍼블릭 클라우드 의존 vs 자체 백본 200+ PoP. 진짜 엔터프라이즈급 성능 보장."</p>
+            </div>
+            <div class="key-message">
+                <h3>🌏 아시아 최적화</h3>
+                <p>"미국 중심 vs 아시아 30+ PoP. 한국 기업을 위한 진짜 글로벌 네트워크."</p>
+            </div>
+            <div class="key-message">
+                <h3>🔧 하이브리드 유연성</h3>
+                <p>"클라우드 온리 vs 하이브리드 지원. 모든 환경에 대응 가능한 진정한 유연성."</p>
+            </div>
+            <div class="key-message">
+                <h3>💎 RTT 성능 혁신</h3>
+                <p>"표준 최적화 vs RTT 300% 향상. 같은 인프라에서도 3배 빠른 속도."</p>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>📈 TCO 비교 (50개 사이트 기준)</h2>
+            <div class="alert-box" style="background: #fff9c4; border-color: #fbc02d;">
+                <h3 style="color: #f57c00; margin-bottom: 15px;">3년 총 비용 비교</h3>
+                <table style="width: 100%; margin-top: 15px;">
+                    <tr>
+                        <td><strong>Cato Networks</strong></td>
+                        <td style="text-align: right;">약 5억원</td>
+                    </tr>
+                    <tr>
+                        <td>- 기본 라이선스</td>
+                        <td style="text-align: right;">3억원</td>
+                    </tr>
+                    <tr>
+                        <td>- 트래픽 초과 요금</td>
+                        <td style="text-align: right;">1.5억원</td>
+                    </tr>
+                    <tr>
+                        <td>- 추가 기능</td>
+                        <td style="text-align: right;">0.5억원</td>
+                    </tr>
+                    <tr style="border-top: 2px solid #fbc02d; margin-top: 10px;">
+                        <td><strong>SmartWAN</strong></td>
+                        <td style="text-align: right; color: #22c55e;"><strong>약 3억원 (40% 절감)</strong></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>✨ SmartWAN 선택 이유</h2>
+            <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px;">
+                <span class="feature-badge badge-win">자체 백본 200+ PoP</span>
+                <span class="feature-badge badge-win">RTT 300% 성능</span>
+                <span class="feature-badge badge-win">아시아 30+ PoP</span>
+                <span class="feature-badge badge-win">하이브리드 지원</span>
+                <span class="feature-badge badge-win">높은 커스터마이징</span>
+                <span class="feature-badge badge-security">온프레미스 가능</span>
+                <span class="feature-badge badge-win">예측 가능한 비용</span>
+                <span class="feature-badge badge-win">벤더 독립성</span>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

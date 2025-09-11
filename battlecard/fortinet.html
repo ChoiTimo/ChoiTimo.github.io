@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fortinet vs SmartWAN 배틀카드</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: white;
+            padding: 20px;
+            color: #2d3748;
+        }
+
+        h1 {
+            text-align: center;
+            color: #2d3748;
+            margin-bottom: 30px;
+            font-size: 2em;
+        }
+
+        .section {
+            margin-bottom: 30px;
+        }
+
+        .section h2 {
+            color: #4a5568;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        th {
+            background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%);
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        .win { color: #48bb78; font-weight: bold; }
+        .lose { color: #e53e3e; font-weight: bold; }
+        .equal { color: #ed8936; font-weight: bold; }
+
+        .weakness-box {
+            background: #fef5e7;
+            border: 2px solid #f6e05e;
+            border-radius: 10px;
+            padding: 20px;
+        }
+
+        .weakness-item {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border-left: 4px solid #ed8936;
+        }
+
+        .weakness-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .objection-box {
+            background: #fff5f5;
+            border: 2px solid #fed7d7;
+            border-radius: 10px;
+            padding: 20px;
+        }
+
+        .objection-box h3 {
+            color: #c53030;
+            margin-bottom: 15px;
+        }
+
+        .response-box {
+            background: #f0fff4;
+            border: 2px solid #c6f6d5;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+        }
+
+        .messages-box {
+            background: linear-gradient(135deg, #ebf8ff 0%, #bee3f8 100%);
+            border-radius: 10px;
+            padding: 20px;
+        }
+
+        .message-item {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border-left: 4px solid #3182ce;
+        }
+
+        .message-item:last-child {
+            margin-bottom: 0;
+        }
+
+        @media print {
+            body {
+                padding: 10px;
+            }
+            
+            .section {
+                page-break-inside: avoid;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+
+            table {
+                font-size: 0.9em;
+            }
+
+            td, th {
+                padding: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>🛡️ Fortinet vs SmartWAN</h1>
+
+    <div class="section">
+        <h2>비교 분석</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th width="25%">비교 항목</th>
+                    <th width="30%">Fortinet</th>
+                    <th width="30%">SmartWAN</th>
+                    <th width="15%">우위</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>사용 편의성</strong></td>
+                    <td>저가형 기본 UI</td>
+                    <td>통합 UI 및 강력한 투명성</td>
+                    <td class="win">SmartWAN ✓</td>
+                </tr>
+                <tr>
+                    <td><strong>성능 최적화</strong></td>
+                    <td>기본 라우팅</td>
+                    <td>AI 기반 경로 최적화</td>
+                    <td class="win">SmartWAN ✓</td>
+                </tr>
+                <tr>
+                    <td><strong>보안 기능</strong></td>
+                    <td>일반적 보안 기능</td>
+                    <td>ZTNA CC인증</td>
+                    <td class="win">SmartWAN ✓</td>
+                </tr>
+                <tr>
+                    <td><strong>국내 지원</strong></td>
+                    <td>채널 기반 저가 지원</td>
+                    <td>Tier 기반 국내 지원 체계</td>
+                    <td class="win">SmartWAN ✓</td>
+                </tr>
+                <tr>
+                    <td><strong>가격</strong></td>
+                    <td>낮은 수준</td>
+                    <td>가성비 높은 프리미엄 서비스</td>
+                    <td class="win">SmartWAN ✓</td>
+                </tr>
+                <tr>
+                    <td><strong>네트워킹</strong></td>
+                    <td>기본 네트워킹 지원</td>
+                    <td>최고 수준 Enterprise 네트워킹 기능 모두 수용</td>
+                    <td class="win">SmartWAN ✓</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="section">
+        <h2>Fortinet의 주요 약점</h2>
+        <div class="weakness-box">
+            <div class="weakness-item">
+                <strong>복잡한 관리:</strong> 보안 중심으로 설계되어 네트워크 최적화 설정이 복잡
+            </div>
+            <div class="weakness-item">
+                <strong>성능 한계:</strong> 보안에 집중하여 네트워크 속도 최적화 기능 부족
+            </div>
+            <div class="weakness-item">
+                <strong>국내 지원:</strong> 파트너사 의존으로 기술지원 품질 편차 존재
+            </div>
+            <div class="weakness-item">
+                <strong>사용자 경험:</strong> 보안 전문가가 아닌 일반 IT 관리자에게 어려운 인터페이스
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>예상 반박 및 대응</h2>
+        <div class="objection-box">
+            <h3>💬 "Fortinet이 보안 측면에서 더 강력하지 않나요?"</h3>
+            <div class="response-box">
+                <p><strong>인정 + 차별화:</strong></p>
+                <p>"Fortinet은 확실히 보안 전문 업체입니다. 하지만 SmartWAN은 보안과 성능의 균형에 집중합니다. 국내 최초 ZTNA CC인증을 획득하여 보안성은 동등하면서도, AI 기반 성능 최적화로 네트워크 속도는 평균 300% 개선됩니다."</p>
+                <br>
+                <p><strong>고객 니즈 확인:</strong></p>
+                <p>"현재 가장 큰 문제가 보안인가요, 아니면 네트워크 성능인가요? 대부분의 고객은 보안과 성능을 모두 원하는데, SmartWAN이 그 균형점을 제공합니다."</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>핵심 차별화 메시지</h2>
+        <div class="messages-box">
+            <div class="message-item">
+                <strong>⚖️ 보안+성능 균형:</strong><br>
+                ZTNA, SASE 기반 보안에 AI 성능 최적화까지
+            </div>
+            <div class="message-item">
+                <strong>🎮 사용 편의성:</strong><br>
+                보안 전문가가 아니어도 쉽게 관리할 수 있는 직관적 UI
+            </div>
+            <div class="message-item">
+                <strong>🚀 성능 우위:</strong><br>
+                AI 기반 가속과 글로벌 최고 성능의 오버레이 네트워크
+            </div>
+            <div class="message-item">
+                <strong>🎯 실용적 접근:</strong><br>
+                네트워크 성능 기반 SASE 플랫폼으로 성능과 보안을 동시에
+            </div>
+        </div>
+    </div>
+</body>
+</html>

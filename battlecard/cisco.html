@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cisco vs SmartWAN 배틀카드</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: white;
+            padding: 20px;
+            color: #2d3748;
+        }
+
+        h1 {
+            text-align: center;
+            color: #2d3748;
+            margin-bottom: 30px;
+            font-size: 2em;
+        }
+
+        .section {
+            margin-bottom: 30px;
+        }
+
+        .section h2 {
+            color: #4a5568;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        th {
+            background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%);
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        .win { color: #48bb78; font-weight: bold; }
+        .lose { color: #e53e3e; font-weight: bold; }
+        .equal { color: #ed8936; font-weight: bold; }
+
+        .weakness-box {
+            background: #fef5e7;
+            border: 2px solid #f6e05e;
+            border-radius: 10px;
+            padding: 20px;
+        }
+
+        .weakness-item {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border-left: 4px solid #ed8936;
+        }
+
+        .weakness-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .objection-box {
+            background: #fff5f5;
+            border: 2px solid #fed7d7;
+            border-radius: 10px;
+            padding: 20px;
+        }
+
+        .objection-box h3 {
+            color: #c53030;
+            margin-bottom: 15px;
+        }
+
+        .response-box {
+            background: #f0fff4;
+            border: 2px solid #c6f6d5;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+        }
+
+        .messages-box {
+            background: linear-gradient(135deg, #ebf8ff 0%, #bee3f8 100%);
+            border-radius: 10px;
+            padding: 20px;
+        }
+
+        .message-item {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border-left: 4px solid #3182ce;
+        }
+
+        .message-item:last-child {
+            margin-bottom: 0;
+        }
+
+        @media print {
+            body {
+                padding: 10px;
+            }
+            
+            .section {
+                page-break-inside: avoid;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+
+            table {
+                font-size: 0.9em;
+            }
+
+            td, th {
+                padding: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>🌐 Cisco vs SmartWAN</h1>
+
+    <div class="section">
+        <h2>비교 분석</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th width="25%">비교 항목</th>
+                    <th width="30%">Cisco</th>
+                    <th width="30%">SmartWAN</th>
+                    <th width="15%">우위</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>가격 경쟁력</strong></td>
+                    <td>높은 라이선스 비용</td>
+                    <td>경쟁력 있는 가격</td>
+                    <td class="win">SmartWAN ✓</td>
+                </tr>
+                <tr>
+                    <td><strong>지원과 관리</strong></td>
+                    <td>복잡한 관리 구조<br>국내 개발 인력 없음</td>
+                    <td>단일 화면 단순 UI<br>국내 개발진 공동 개발</td>
+                    <td class="win">SmartWAN ✓</td>
+                </tr>
+                <tr>
+                    <td><strong>속도 최적화</strong></td>
+                    <td>기본 성능</td>
+                    <td>AI 기반 자동 최적화</td>
+                    <td class="win">SmartWAN ✓</td>
+                </tr>
+                <tr>
+                    <td><strong>보안 인증</strong></td>
+                    <td>글로벌 인증</td>
+                    <td>글로벌 인증 + 국내 ZTNA CC인증</td>
+                    <td class="win">SmartWAN ✓</td>
+                </tr>
+                <tr>
+                    <td><strong>브랜드 인지도</strong></td>
+                    <td>장비 판매 글로벌 1위</td>
+                    <td>서비스형 글로벌 1위</td>
+                    <td class="equal">동등 =</td>
+                </tr>
+                <tr>
+                    <td><strong>구축 복잡성</strong></td>
+                    <td>복잡한 설정</td>
+                    <td>원클릭 구축</td>
+                    <td class="win">SmartWAN ✓</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="section">
+        <h2>Cisco의 주요 약점</h2>
+        <div class="weakness-box">
+            <div class="weakness-item">
+                <strong>높은 TCO:</strong> 라이선스, 유지보수, 전문가 운영비용이 매우 높음
+            </div>
+            <div class="weakness-item">
+                <strong>복잡한 관리:</strong> 여러 콘솔과 복합적인 설정으로 운영 부담 가중
+            </div>
+            <div class="weakness-item">
+                <strong>현지 지원 한계:</strong> 긴급 상황 시 해외 본사 의존으로 대응 지연
+            </div>
+            <div class="weakness-item">
+                <strong>오버 엔지니어링:</strong> 대부분 고객이 사용하지 않는 과도한 기능들
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>예상 반박 및 대응</h2>
+        <div class="objection-box">
+            <h3>💬 "Cisco가 더 안정적이고 검증된 솔루션 아닌가요?"</h3>
+            <div class="response-box">
+                <p><strong>인정 + 재구성:</strong></p>
+                <p>"맞습니다. Cisco는 글로벌 1위 브랜드입니다. 하지만 큰 문제 발생 시 본사 혹은 Apec 쪽으로 에스컬레이션 되어 오랜 기다림이 필요합니다. SmartWAN은 Cisco 대비 낮은 TCO로 더 좋은 성능을 제공하며, 국내 환경에 특화된 빠른 기술지원이 가능합니다."</p>
+                <br>
+                <p><strong>증거 제시:</strong></p>
+                <p>"실제로 Fortune 500 기업의 15% 이상이 SmartWAN을 도입했으며, 삼성전자, SK계열사 등 국내 대기업에서도 Cisco를 대체하여 사용 중입니다."</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>핵심 차별화 메시지</h2>
+        <div class="messages-box">
+            <div class="message-item">
+                <strong>💰 비용 효율성:</strong><br>
+                Cisco 대비 낮은 TCO로 동등한 성능 제공
+            </div>
+            <div class="message-item">
+                <strong>🚀 운영 안정/편의성:</strong><br>
+                국내 환경에 적합한 지원 구조와 검증된 안정성 ('18년 이후 SLA 위반 장애 0건)
+            </div>
+            <div class="message-item">
+                <strong>🇰🇷 현지화 강점:</strong><br>
+                24/7 국내 전담 기술지원으로 빠른 문제 해결
+            </div>
+            <div class="message-item">
+                <strong>🎯 맞춤형 솔루션:</strong><br>
+                한국 기업에 최적화된 구성
+            </div>
+        </div>
+    </div>
+</body>
+</html>

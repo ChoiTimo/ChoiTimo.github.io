@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom 경쟁사 vs SmartWAN 배틀카드</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #667eea;
+            margin-bottom: 40px;
+            font-size: 2.5em;
+        }
+        
+        .edit-mode-banner {
+            background: #4caf50;
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .section {
+            margin-bottom: 40px;
+            padding: 25px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            border-left: 5px solid #667eea;
+        }
+        
+        .section h2 {
+            color: #333;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .editable {
+            background: #fff9c4;
+            padding: 2px 5px;
+            border-radius: 3px;
+            min-width: 100px;
+            display: inline-block;
+            cursor: text;
+        }
+        
+        .editable:hover {
+            background: #ffeb3b;
+        }
+        
+        .editable:focus {
+            background: white;
+            outline: 2px solid #667eea;
+        }
+        
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .comparison-table th {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+        
+        .comparison-table td {
+            padding: 15px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .comparison-table tr:hover {
+            background: #f5f5f5;
+        }
+        
+        .win { color: #22c55e; font-weight: bold; }
+        .lose { color: #ef4444; font-weight: bold; }
+        .draw { color: #f59e0b; font-weight: bold; }
+        
+        .weakness-box {
+            background: #fff4e6;
+            border: 2px solid #ff9800;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .weakness-item {
+            margin: 15px 0;
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+            position: relative;
+        }
+        
+        .add-button {
+            background: #4caf50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 15px;
+            font-size: 16px;
+        }
+        
+        .add-button:hover {
+            background: #45a049;
+        }
+        
+        .delete-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #ef4444;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        
+        .delete-button:hover {
+            background: #dc2626;
+        }
+        
+        .objection-box {
+            background: #e8f5e9;
+            border: 2px solid #4caf50;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .response {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            border-left: 4px solid #4caf50;
+        }
+        
+        .key-message {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 10px 0;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .feature-badge {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            margin: 5px;
+        }
+        
+        .badge-win {
+            background: #22c55e;
+            color: white;
+        }
+        
+        .instructions {
+            background: #e3f2fd;
+            border: 2px solid #2196f3;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .instructions h3 {
+            color: #1565c0;
+            margin-bottom: 10px;
+        }
+        
+        .instructions ul {
+            margin-left: 20px;
+            line-height: 1.8;
+        }
+        
+        select.editable {
+            padding: 5px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            background: #fff9c4;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎯 <span contenteditable="true" class="editable">경쟁사명</span> vs SmartWAN 배틀카드</h1>
+        
+        <div class="edit-mode-banner">
+            ✏️ 편집 모드 - 노란색 영역을 클릭하여 내용을 수정하세요
+        </div>
+        
+        <div class="instructions">
+            <h3>📝 사용 방법</h3>
+            <ul>
+                <li>노란색으로 표시된 모든 영역은 클릭하여 직접 편집 가능합니다</li>
+                <li>"경쟁사명"을 실제 경쟁사 이름으로 변경하세요</li>
+                <li>각 비교 항목과 설명을 해당 경쟁사에 맞게 수정하세요</li>
+                <li>"추가" 버튼으로 새로운 항목을 추가할 수 있습니다</li>
+                <li>"삭제" 버튼으로 불필요한 항목을 제거할 수 있습니다</li>
+                <li>편집 완료 후 브라우저에서 인쇄(Ctrl+P)하여 PDF로 저장하세요</li>
+            </ul>
+        </div>
+        
+        <div class="section">
+            <h2>📊 핵심 비교 분석</h2>
+            <table class="comparison-table" id="comparisonTable">
+                <thead>
+                    <tr>
+                        <th width="25%">비교 항목</th>
+                        <th width="30%"><span contenteditable="true" class="editable">경쟁사명</span></th>
+                        <th width="30%">SmartWAN</th>
+                        <th width="15%">우위</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong contenteditable="true" class="editable">기술력</strong></td>
+                        <td contenteditable="true" class="editable">경쟁사 기술 설명</td>
+                        <td contenteditable="true" class="editable">SmartWAN 기술 우위</td>
+                        <td>
+                            <select class="editable">
+                                <option value="win" class="win">SmartWAN ✓</option>
+                                <option value="lose" class="lose">경쟁사 ✓</option>
+                                <option value="draw" class="draw">동등 =</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong contenteditable="true" class="editable">가격</strong></td>
+                        <td contenteditable="true" class="editable">경쟁사 가격 수준</td>
+                        <td contenteditable="true" class="editable">SmartWAN 가격 경쟁력</td>
+                        <td>
+                            <select class="editable">
+                                <option value="win" class="win">SmartWAN ✓</option>
+                                <option value="lose" class="lose">경쟁사 ✓</option>
+                                <option value="draw" class="draw">동등 =</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong contenteditable="true" class="editable">성능</strong></td>
+                        <td contenteditable="true" class="editable">경쟁사 성능</td>
+                        <td contenteditable="true" class="editable">RTT 터널링 300% 향상</td>
+                        <td>
+                            <select class="editable">
+                                <option value="win" class="win">SmartWAN ✓</option>
+                                <option value="lose" class="lose">경쟁사 ✓</option>
+                                <option value="draw" class="draw">동등 =</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong contenteditable="true" class="editable">지원</strong></td>
+                        <td contenteditable="true" class="editable">경쟁사 지원 체계</td>
+                        <td contenteditable="true" class="editable">24/7 한국어 지원</td>
+                        <td>
+                            <select class="editable">
+                                <option value="win" class="win">SmartWAN ✓</option>
+                                <option value="lose" class="lose">경쟁사 ✓</option>
+                                <option value="draw" class="draw">동등 =</option>
+                            </select>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <button class="add-button" onclick="addComparisonRow()">+ 비교 항목 추가</button>
+        </div>
+        
+        <div class="section">
+            <h2>⚠️ <span contenteditable="true" class="editable">경쟁사명</span>의 주요 약점</h2>
+            <div class="weakness-box" id="weaknessBox">
+                <div class="weakness-item">
+                    <button class="delete-button" onclick="this.parentElement.remove()">삭제</button>
+                    <strong contenteditable="true" class="editable">약점 제목:</strong> 
+                    <span contenteditable="true" class="editable">경쟁사의 첫 번째 약점을 상세히 설명하세요</span>
+                </div>
+                <div class="weakness-item">
+                    <button class="delete-button" onclick="this.parentElement.remove()">삭제</button>
+                    <strong contenteditable="true" class="editable">약점 제목:</strong> 
+                    <span contenteditable="true" class="editable">경쟁사의 두 번째 약점을 상세히 설명하세요</span>
+                </div>
+                <div class="weakness-item">
+                    <button class="delete-button" onclick="this.parentElement.remove()">삭제</button>
+                    <strong contenteditable="true" class="editable">약점 제목:</strong> 
+                    <span contenteditable="true" class="editable">경쟁사의 세 번째 약점을 상세히 설명하세요</span>
+                </div>
+            </div>
+            <button class="add-button" onclick="addWeakness()">+ 약점 추가</button>
+        </div>
+        
+        <div class="section">
+            <h2>💬 예상 반박 대응</h2>
+            <div id="objectionsContainer">
+                <div class="objection-box">
+                    <button class="delete-button" onclick="this.parentElement.remove()">삭제</button>
+                    <h3>고객: "<span contenteditable="true" class="editable">경쟁사의 장점에 대한 고객 질문</span>"</h3>
+                    <div class="response">
+                        <p><strong>✅ <span contenteditable="true" class="editable">대응 전략 1:</span></strong><br>
+                        <span contenteditable="true" class="editable">SmartWAN의 차별화된 가치를 강조하는 답변을 작성하세요</span></p>
+                        
+                        <p><strong>✅ <span contenteditable="true" class="editable">대응 전략 2:</span></strong><br>
+                        <span contenteditable="true" class="editable">경쟁사의 약점을 부각시키면서 SmartWAN의 강점을 설명하세요</span></p>
+                    </div>
+                </div>
+            </div>
+            <button class="add-button" onclick="addObjection()">+ 반박 대응 추가</button>
+        </div>
+        
+        <div class="section">
+            <h2>🎯 핵심 차별화 메시지</h2>
+            <div id="keyMessages">
+                <div class="key-message">
+                    <button class="delete-button" onclick="this.parentElement.remove()" style="background: white; color: #667eea;">삭제</button>
+                    <h3 contenteditable="true" class="editable" style="background: transparent;">🏆 차별화 포인트 1</h3>
+                    <p contenteditable="true" class="editable" style="background: transparent;">SmartWAN만의 독특한 가치 제안을 작성하세요</p>
+                </div>
+                <div class="key-message">
+                    <button class="delete-button" onclick="this.parentElement.remove()" style="background: white; color: #667eea;">삭제</button>
+                    <h3 contenteditable="true" class="editable" style="background: transparent;">🚀 차별화 포인트 2</h3>
+                    <p contenteditable="true" class="editable" style="background: transparent;">기술적 우위나 성능 차별화를 강조하세요</p>
+                </div>
+                <div class="key-message">
+                    <button class="delete-button" onclick="this.parentElement.remove()" style="background: white; color: #667eea;">삭제</button>
+                    <h3 contenteditable="true" class="editable" style="background: transparent;">💰 차별화 포인트 3</h3>
+                    <p contenteditable="true" class="editable" style="background: transparent;">비용 효율성이나 ROI 관점의 메시지를 작성하세요</p>
+                </div>
+            </div>
+            <button class="add-button" onclick="addKeyMessage()">+ 핵심 메시지 추가</button>
+        </div>
+        
+        <div class="section">
+            <h2>✨ SmartWAN 선택 이유</h2>
+            <div id="featureBadges" style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px;">
+                <span class="feature-badge badge-win" contenteditable="true">RTT 터널링</span>
+                <span class="feature-badge badge-win" contenteditable="true">AI 최적화</span>
+                <span class="feature-badge badge-win" contenteditable="true">24/7 지원</span>
+                <span class="feature-badge badge-win" contenteditable="true">글로벌 PoP</span>
+                <span class="feature-badge badge-win" contenteditable="true">검증된 안정성</span>
+                <span class="feature-badge badge-win" contenteditable="true">추가 기능</span>
+            </div>
+            <button class="add-button" onclick="addFeatureBadge()">+ 기능 배지 추가</button>
+        </div>
+    </div>
+    
+    <script>
+        function addComparisonRow() {
+            const tbody = document.querySelector('#comparisonTable tbody');
+            const newRow = document.createElement('tr');
+            newRow.innerHTML = `
+                <td><strong contenteditable="true" class="editable">새 항목</strong></td>
+                <td contenteditable="true" class="editable">경쟁사 설명</td>
+                <td contenteditable="true" class="editable">SmartWAN 설명</td>
+                <td>
+                    <select class="editable">
+                        <option value="win" class="win">SmartWAN ✓</option>
+                        <option value="lose" class="lose">경쟁사 ✓</option>
+                        <option value="draw" class="draw">동등 =</option>
+                    </select>
+                </td>
+            `;
+            tbody.appendChild(newRow);
+        }
+        
+        function addWeakness() {
+            const weaknessBox = document.getElementById('weaknessBox');
+            const newWeakness = document.createElement('div');
+            newWeakness.className = 'weakness-item';
+            newWeakness.innerHTML = `
+                <button class="delete-button" onclick="this.parentElement.remove()">삭제</button>
+                <strong contenteditable="true" class="editable">새로운 약점:</strong> 
+                <span contenteditable="true" class="editable">경쟁사의 약점을 설명하세요</span>
+            `;
+            weaknessBox.appendChild(newWeakness);
+        }
+        
+        function addObjection() {
+            const container = document.getElementById('objectionsContainer');
+            const newObjection = document.createElement('div');
+            newObjection.className = 'objection-box';
+            newObjection.innerHTML = `
+                <button class="delete-button" onclick="this.parentElement.remove()">삭제</button>
+                <h3>고객: "<span contenteditable="true" class="editable">새로운 고객 질문</span>"</h3>
+                <div class="response">
+                    <p><strong>✅ <span contenteditable="true" class="editable">대응 전략:</span></strong><br>
+                    <span contenteditable="true" class="editable">효과적인 대응 방법을 작성하세요</span></p>
+                </div>
+            `;
+            container.appendChild(newObjection);
+        }
+        
+        function addKeyMessage() {
+            const keyMessages = document.getElementById('keyMessages');
+            const newMessage = document.createElement('div');
+            newMessage.className = 'key-message';
+            newMessage.innerHTML = `
+                <button class="delete-button" onclick="this.parentElement.remove()" style="background: white; color: #667eea;">삭제</button>
+                <h3 contenteditable="true" class="editable" style="background: transparent;">💡 새 메시지</h3>
+                <p contenteditable="true" class="editable" style="background: transparent;">핵심 차별화 메시지를 작성하세요</p>
+            `;
+            keyMessages.appendChild(newMessage);
+        }
+        
+        function addFeatureBadge() {
+            const badges = document.getElementById('featureBadges');
+            const newBadge = document.createElement('span');
+            newBadge.className = 'feature-badge badge-win';
+            newBadge.contentEditable = true;
+            newBadge.textContent = '새 기능';
+            badges.appendChild(newBadge);
+        }
+        
+        // 선택 박스 스타일 업데이트
+        document.addEventListener('change', function(e) {
+            if (e.target.tagName === 'SELECT' && e.target.classList.contains('editable')) {
+                const value = e.target.value;
+                e.target.className = 'editable';
+                if (value === 'win') {
+                    e.target.style.color = '#22c55e';
+                } else if (value === 'lose') {
+                    e.target.style.color = '#ef4444';
+                } else {
+                    e.target.style.color = '#f59e0b';
+                }
+            }
+        });
+    </script>
+</body>
+</html>
