@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SmartWAN BANT & Lead Scoring 분석기</title>
+    <title>SmartWAN BANT & Lead Scoring 분석기 v2.0</title>
     <style>
         * {
             margin: 0;
@@ -44,6 +44,105 @@
             font-size: 1.1rem;
             opacity: 0.9;
             margin-bottom: 20px;
+        }
+
+        .version-badge {
+            display: inline-block;
+            background: #10b981;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-top: 10px;
+        }
+
+        /* 프리셋 섹션 스타일 */
+        .preset-section {
+            padding: 30px 40px;
+            background: linear-gradient(135deg, #fef5e7 0%, #fdebd0 100%);
+            border-bottom: 2px solid #f6e05e;
+        }
+
+        .preset-section h2 {
+            color: #1e293b;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .preset-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 20px;
+        }
+
+        .preset-card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            border: 2px solid #e2e8f0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .preset-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            border-color: #3b82f6;
+        }
+
+        .preset-card.selected {
+            border-color: #3b82f6;
+            background: #eff6ff;
+        }
+
+        .preset-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 10px;
+        }
+
+        .preset-description {
+            color: #64748b;
+            font-size: 0.95rem;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .preset-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .preset-tag {
+            background: #e0e7ff;
+            color: #3730a3;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.85rem;
+        }
+
+        .load-preset-btn {
+            background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .load-preset-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(59, 130, 246, 0.3);
         }
 
         .main-content {
@@ -259,6 +358,22 @@
             margin-top: 5px;
         }
 
+        .clear-btn {
+            background: #6b7280;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            margin-bottom: 20px;
+        }
+
+        .clear-btn:hover {
+            background: #4b5563;
+        }
+
         .calculate-btn {
             width: 100%;
             background: linear-gradient(135deg, #10b981 0%, #059669 100%);
@@ -465,6 +580,10 @@
                 position: static;
                 max-height: none;
             }
+
+            .preset-cards {
+                grid-template-columns: 1fr;
+            }
         }
 
         @media (max-width: 768px) {
@@ -489,10 +608,68 @@
         <div class="header">
             <h1>🎯 SmartWAN BANT & Lead Scoring 분석기</h1>
             <p>체계적인 BANT 검증과 정량적 Lead Scoring을 통한 종합 고객 분석</p>
+            <span class="version-badge">v2.0 - 프리셋 추가</span>
+        </div>
+
+        <!-- 프리셋 섹션 -->
+        <div class="preset-section">
+            <h2>⚡ 빠른 시작 - 리드 유형별 프리셋</h2>
+            
+            <div class="preset-cards">
+                <div class="preset-card" id="preset1">
+                    <div class="preset-title">🔥 Hot Lead - 긴급 구매</div>
+                    <div class="preset-description">
+                        예산이 확보되고 긴급한 니즈가 있는 고온 리드입니다.
+                        의사결정권자가 참여하고 있으며 3개월 내 구매 예정입니다.
+                    </div>
+                    <div class="preset-tags">
+                        <span class="preset-tag">예산 확보</span>
+                        <span class="preset-tag">긴급 니즈</span>
+                        <span class="preset-tag">의사결정자 참여</span>
+                    </div>
+                    <button class="load-preset-btn" onclick="loadPreset('hot')">
+                        이 템플릿 사용하기
+                    </button>
+                </div>
+
+                <div class="preset-card" id="preset2">
+                    <div class="preset-title">🌡️ Warm Lead - 적극 검토</div>
+                    <div class="preset-description">
+                        니즈는 명확하지만 예산 승인이 필요한 중온 리드입니다.
+                        실무진과 관계가 형성되어 있으며 6개월 내 도입 검토 중입니다.
+                    </div>
+                    <div class="preset-tags">
+                        <span class="preset-tag">니즈 확인</span>
+                        <span class="preset-tag">예산 검토중</span>
+                        <span class="preset-tag">관계 형성</span>
+                    </div>
+                    <button class="load-preset-btn" onclick="loadPreset('warm')">
+                        이 템플릿 사용하기
+                    </button>
+                </div>
+
+                <div class="preset-card" id="preset3">
+                    <div class="preset-title">❄️ Cold Lead - 장기 육성</div>
+                    <div class="preset-description">
+                        초기 관심 단계의 저온 리드입니다.
+                        니즈 탐색 중이며 장기적인 관계 구축과 육성이 필요합니다.
+                    </div>
+                    <div class="preset-tags">
+                        <span class="preset-tag">초기 관심</span>
+                        <span class="preset-tag">정보 수집</span>
+                        <span class="preset-tag">장기 육성</span>
+                    </div>
+                    <button class="load-preset-btn" onclick="loadPreset('cold')">
+                        이 템플릿 사용하기
+                    </button>
+                </div>
+            </div>
         </div>
 
         <div class="main-content">
             <div class="input-section">
+                <button class="clear-btn" onclick="clearAllData()">🔄 전체 초기화</button>
+                
                 <div class="customer-info">
                     <h2 style="color: #1e293b; margin-bottom: 20px; font-size: 1.2rem;">🏢 고객 기본 정보</h2>
                     
@@ -569,7 +746,7 @@
 
                 <div class="bant-section">
                     <div class="bant-header">
-                        <div class="bant-title">👔 A - Authority (권한)</div>
+                        <div class="bant-title">👤 A - Authority (권한)</div>
                         <div class="bant-subtitle">의사결정 구조 파악</div>
                     </div>
                     
@@ -796,6 +973,166 @@
     </div>
 
     <script>
+        // 프리셋 데이터
+        const presets = {
+            hot: {
+                company: '삼성전자',
+                contact: '김철수',
+                title: 'IT본부장',
+                industry: 'manufacturing',
+                size: 'global',
+                bant: {
+                    b: [true, true, true, true],  // 모든 예산 체크
+                    a: [true, true, true, true],  // 모든 권한 체크
+                    n: [true, true, true, false], // 니즈 3개 체크
+                    t: [true, true, true, false]  // 시기 3개 체크
+                },
+                painPoints: [true, true, true, false, false],
+                competition: 'weak',
+                competitive: 8,
+                relationship: 7,
+                meetings: '3',
+                lastContact: '7'
+            },
+            warm: {
+                company: 'LG화학',
+                contact: '이영희',
+                title: '네트워크팀 팀장',
+                industry: 'manufacturing',
+                size: 'large',
+                bant: {
+                    b: [true, false, true, false], // 예산 2개 체크
+                    a: [true, true, false, false], // 권한 2개 체크
+                    n: [true, true, true, false],  // 니즈 3개 체크
+                    t: [true, false, false, false] // 시기 1개 체크
+                },
+                painPoints: [true, true, false, false, false],
+                competition: 'moderate',
+                competitive: 6,
+                relationship: 5,
+                meetings: '2',
+                lastContact: '14'
+            },
+            cold: {
+                company: '스타트업A',
+                contact: '박민수',
+                title: '개발팀장',
+                industry: 'enterprise',
+                size: 'small',
+                bant: {
+                    b: [false, false, false, false], // 예산 미체크
+                    a: [false, true, false, false],  // 권한 1개 체크
+                    n: [true, false, false, false],  // 니즈 1개 체크
+                    t: [false, false, false, false]  // 시기 미체크
+                },
+                painPoints: [true, false, false, false, false],
+                competition: 'strong',
+                competitive: 3,
+                relationship: 2,
+                meetings: '1',
+                lastContact: '90'
+            }
+        };
+
+        function loadPreset(presetType) {
+            const preset = presets[presetType];
+            
+            // 기존 결과 초기화
+            resetResults();
+            
+            // 기본 정보 입력
+            document.getElementById('company-name').value = preset.company;
+            document.getElementById('contact-name').value = preset.contact;
+            document.getElementById('contact-title').value = preset.title;
+            document.getElementById('industry').value = preset.industry;
+            document.getElementById('company-size').value = preset.size;
+            
+            // BANT 체크박스 설정
+            ['b', 'a', 'n', 't'].forEach(category => {
+                preset.bant[category].forEach((checked, index) => {
+                    const checkbox = document.getElementById(`${category}${index + 1}`);
+                    if (checkbox) {
+                        checkbox.checked = checked;
+                        const item = checkbox.closest('.checklist-item');
+                        if (item) {
+                            item.classList.toggle('checked', checked);
+                        }
+                    }
+                });
+            });
+            
+            // Pain Points 체크박스 설정
+            preset.painPoints.forEach((checked, index) => {
+                const checkbox = document.getElementById(`p${index + 1}`);
+                if (checkbox) {
+                    checkbox.checked = checked;
+                    const item = checkbox.closest('.checklist-item');
+                    if (item) {
+                        item.classList.toggle('checked', checked);
+                    }
+                }
+            });
+            
+            // 경쟁 환경 설정
+            document.getElementById('competition').value = preset.competition;
+            document.getElementById('competitive-slider').value = preset.competitive;
+            updateSliderScore('competitive');
+            
+            // 관계성 설정
+            document.getElementById('relationship-slider').value = preset.relationship;
+            updateSliderScore('relationship');
+            document.getElementById('meetings-count').value = preset.meetings;
+            document.getElementById('last-contact').value = preset.lastContact;
+            
+            // 선택된 프리셋 표시
+            document.querySelectorAll('.preset-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            document.getElementById(`preset${presetType === 'hot' ? '1' : presetType === 'warm' ? '2' : '3'}`).classList.add('selected');
+        }
+
+        function clearAllData() {
+            // 모든 입력 필드 초기화
+            document.getElementById('company-name').value = '';
+            document.getElementById('contact-name').value = '';
+            document.getElementById('contact-title').value = '';
+            document.getElementById('industry').value = '';
+            document.getElementById('company-size').value = '';
+            
+            // 모든 체크박스 해제
+            document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+                checkbox.checked = false;
+                const item = checkbox.closest('.checklist-item');
+                if (item) {
+                    item.classList.remove('checked');
+                }
+            });
+            
+            // 셀렉트 박스 초기화
+            document.getElementById('competition').value = 'none';
+            document.getElementById('meetings-count').value = '0';
+            document.getElementById('last-contact').value = '7';
+            
+            // 슬라이더 초기화
+            document.getElementById('competitive-slider').value = 5;
+            document.getElementById('relationship-slider').value = 5;
+            updateSliderScore('competitive');
+            updateSliderScore('relationship');
+            
+            // 결과 초기화
+            resetResults();
+            
+            // 프리셋 선택 해제
+            document.querySelectorAll('.preset-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+        }
+
+        function resetResults() {
+            document.getElementById('no-results').classList.remove('hidden');
+            document.getElementById('results-content').classList.add('hidden');
+        }
+
         // 체크박스 상태 관리
         document.querySelectorAll('.checklist-item').forEach(item => {
             const checkbox = item.querySelector('input[type="checkbox"]');
@@ -817,8 +1154,10 @@
         function updateSliderScore(type) {
             const slider = document.getElementById(type + '-slider');
             const scoreDisplay = document.getElementById(type + '-slider-score');
-            const value = slider.value;
-            scoreDisplay.textContent = `${value}/${slider.max}`;
+            if (slider && scoreDisplay) {
+                const value = slider.value;
+                scoreDisplay.textContent = `${value}/${slider.max}`;
+            }
         }
 
         // 최종 점수 계산
