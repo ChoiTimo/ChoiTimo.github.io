@@ -1,0 +1,1065 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartWAN Framework - AI Win/Loss 분석 & 학습 시스템</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #f8f9fa;
+            min-height: 100vh;
+            color: #2d3436;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            padding: 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 20px;
+            margin-bottom: 30px;
+            color: white;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.95;
+        }
+
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        @media (max-width: 1024px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .section {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            border: 1px solid #e1e8ed;
+        }
+
+        .section-title {
+            font-size: 1.4rem;
+            color: #2e7d32;
+            margin-bottom: 20px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .icon {
+            font-size: 1.5rem;
+        }
+
+        .sample-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .sample-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .sample-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .input-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .form-field {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: #495057;
+            margin-bottom: 5px;
+            font-size: 0.9rem;
+        }
+
+        .form-input {
+            padding: 10px;
+            border: 1px solid #ced4da;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-textarea {
+            width: 100%;
+            min-height: 150px;
+            padding: 12px;
+            border: 1px solid #ced4da;
+            border-radius: 8px;
+            font-size: 1rem;
+            resize: vertical;
+            font-family: inherit;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .analyze-btn {
+            background: linear-gradient(135deg, #4caf50, #2e7d32);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: 600;
+            display: block;
+            margin: 25px auto;
+            transition: all 0.3s ease;
+            min-width: 250px;
+        }
+
+        .analyze-btn:hover:not(:disabled) {
+            background: linear-gradient(135deg, #66bb6a, #4caf50);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(76, 175, 80, 0.3);
+        }
+
+        .analyze-btn:disabled {
+            background: #9e9e9e;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #667eea;
+        }
+
+        .loading-spinner {
+            border: 3px solid #e1e8ed;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .results-container {
+            display: none;
+        }
+
+        .results-container.show {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .analysis-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #e1e8ed;
+        }
+
+        .tab-btn {
+            background: none;
+            border: none;
+            padding: 12px 24px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #6c757d;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .tab-btn.active {
+            color: #667eea;
+        }
+
+        .tab-btn.active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: #667eea;
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .result-card {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-left: 4px solid #667eea;
+        }
+
+        .result-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #2d3436;
+            margin-bottom: 10px;
+        }
+
+        .result-content {
+            color: #636e72;
+            line-height: 1.7;
+        }
+
+        .improvement-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .improvement-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            transition: transform 0.3s ease;
+        }
+
+        .improvement-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        .improvement-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .improvement-desc {
+            font-size: 0.9rem;
+            opacity: 0.95;
+            line-height: 1.5;
+        }
+
+        .todo-list {
+            background: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            border: 1px solid #e1e8ed;
+        }
+
+        .todo-item {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .todo-item:hover {
+            background: #e9ecef;
+            transform: translateX(5px);
+        }
+
+        .todo-checkbox {
+            width: 20px;
+            height: 20px;
+            margin-right: 15px;
+            cursor: pointer;
+        }
+
+        .todo-text {
+            flex: 1;
+            color: #495057;
+        }
+
+        .todo-priority {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: white;
+        }
+
+        .priority-high {
+            background: #e74c3c;
+        }
+
+        .priority-medium {
+            background: #f39c12;
+        }
+
+        .priority-low {
+            background: #95a5a6;
+        }
+
+        .metric-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .metric-card {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            border: 1px solid #e1e8ed;
+        }
+
+        .metric-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #667eea;
+        }
+
+        .metric-label {
+            font-size: 0.9rem;
+            color: #6c757d;
+            margin-top: 5px;
+        }
+
+        .export-btn {
+            background: linear-gradient(135deg, #00b894, #00cec9);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .export-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 184, 148, 0.3);
+        }
+
+        .pattern-badge {
+            display: inline-block;
+            background: rgba(102, 126, 234, 0.1);
+            color: #667eea;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            margin-right: 8px;
+            margin-top: 5px;
+        }
+
+        .insight-highlight {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+            border-left: 4px solid #ff6b6b;
+        }
+
+        .insight-highlight h4 {
+            color: #d63031;
+            margin-bottom: 8px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e1e8ed;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 SmartWAN Framework 진화 시스템</h1>
+            <p>AI 기반 Win/Loss 분석 + 학습 Blanket 통합 플랫폼</p>
+        </div>
+
+        <div class="main-grid">
+            <!-- 왼쪽: 입력 섹션 -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="icon">📊</span>
+                    딜 정보 입력
+                </h2>
+
+                <div class="sample-buttons">
+                    <button class="sample-btn" onclick="loadSample('win')">✅ 성공 케이스</button>
+                    <button class="sample-btn" onclick="loadSample('loss')">❌ 실패 케이스</button>
+                    <button class="sample-btn" onclick="loadSample('pending')">⏳ 진행중</button>
+                </div>
+
+                <div class="input-group">
+                    <div class="form-field">
+                        <label class="form-label">고객사명</label>
+                        <input type="text" class="form-input" id="companyName" placeholder="고객사명 입력">
+                    </div>
+                    <div class="form-field">
+                        <label class="form-label">산업군</label>
+                        <select class="form-input" id="industry">
+                            <option value="">선택하세요</option>
+                            <option value="manufacturing">제조업</option>
+                            <option value="finance">금융</option>
+                            <option value="retail">유통/리테일</option>
+                            <option value="healthcare">헬스케어</option>
+                            <option value="public">공공</option>
+                            <option value="tech">IT/테크</option>
+                        </select>
+                    </div>
+                    <div class="form-field">
+                        <label class="form-label">딜 규모</label>
+                        <input type="text" class="form-input" id="dealSize" placeholder="예: 15억원">
+                    </div>
+                    <div class="form-field">
+                        <label class="form-label">영업 기간</label>
+                        <input type="text" class="form-input" id="salesPeriod" placeholder="예: 6개월">
+                    </div>
+                    <div class="form-field">
+                        <label class="form-label">결과</label>
+                        <select class="form-input" id="dealResult">
+                            <option value="">선택하세요</option>
+                            <option value="win">성공 (Win)</option>
+                            <option value="loss">실패 (Loss)</option>
+                            <option value="pending">진행중</option>
+                        </select>
+                    </div>
+                    <div class="form-field">
+                        <label class="form-label">주요 경쟁사</label>
+                        <input type="text" class="form-input" id="competitors" placeholder="예: Cisco, Fortinet">
+                    </div>
+                </div>
+
+                <div class="form-field">
+                    <label class="form-label">상세 상황 설명</label>
+                    <textarea class="form-textarea" id="dealDescription" 
+                        placeholder="딜의 전체 상황을 자세히 설명해주세요.
+- 고객의 주요 요구사항과 Pain Point
+- 의사결정자 및 주요 이해관계자
+- 경쟁 상황 및 우리의 대응
+- 제안 과정에서 발생한 이슈
+- 최종 결과에 영향을 미친 요인"></textarea>
+                </div>
+
+                <button class="analyze-btn" onclick="analyzeAndLearn()" id="analyzeButton">
+                    🤖 AI 분석 & Framework 개선점 도출
+                </button>
+            </div>
+
+            <!-- 오른쪽: 실시간 패턴 모니터링 -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="icon">📈</span>
+                    실시간 학습 현황
+                </h2>
+
+                <div class="metric-grid">
+                    <div class="metric-card">
+                        <div class="metric-value" id="totalCases">0</div>
+                        <div class="metric-label">총 케이스</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value" id="winRate">0%</div>
+                        <div class="metric-label">성공률</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value" id="patterns">0</div>
+                        <div class="metric-label">발견 패턴</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value" id="improvements">0</div>
+                        <div class="metric-label">개선 제안</div>
+                    </div>
+                </div>
+
+                <div class="result-card" style="margin-top: 20px;">
+                    <div class="result-title">🔍 최근 발견된 주요 패턴</div>
+                    <div class="result-content" id="recentPatterns">
+                        <div style="padding: 10px;">
+                            <span class="pattern-badge">금융권</span>
+                            <span class="pattern-badge">컴플라이언스</span>
+                            <span class="pattern-badge">레퍼런스 중시</span>
+                            <br><br>
+                            <span class="pattern-badge">제조업</span>
+                            <span class="pattern-badge">안정성 우선</span>
+                            <span class="pattern-badge">단계적 구축</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="result-card" style="margin-top: 15px;">
+                    <div class="result-title">💡 Framework 학습 진행률</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 35%"></div>
+                    </div>
+                    <div style="margin-top: 10px; color: #6c757d; font-size: 0.9rem;">
+                        35% 완료 - 15개 케이스 분석 완료
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 로딩 상태 -->
+        <div class="loading" id="loadingSection" style="display: none;">
+            <div class="loading-spinner"></div>
+            <p>AI가 딜 상황을 분석하고 Framework 개선점을 도출중입니다...<br>
+            <small>통상 10-20초 소요됩니다</small></p>
+        </div>
+
+        <!-- 분석 결과 섹션 -->
+        <div class="results-container" id="resultsContainer">
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="icon">🎯</span>
+                    분석 결과 & Framework 개선 제안
+                </h2>
+
+                <div class="analysis-tabs">
+                    <button class="tab-btn active" onclick="switchTab('analysis')">기본 분석</button>
+                    <button class="tab-btn" onclick="switchTab('patterns')">패턴 인사이트</button>
+                    <button class="tab-btn" onclick="switchTab('improvements')">Framework 개선</button>
+                    <button class="tab-btn" onclick="switchTab('todo')">Action Items</button>
+                </div>
+
+                <!-- 기본 분석 탭 -->
+                <div class="tab-content active" id="analysisTab">
+                    <div class="result-card">
+                        <div class="result-title">📊 Win/Loss 핵심 요인</div>
+                        <div class="result-content" id="keyFactors">
+                            분석 결과가 여기에 표시됩니다...
+                        </div>
+                    </div>
+
+                    <div class="result-card">
+                        <div class="result-title">🧠 의사결정 패턴 분석</div>
+                        <div class="result-content" id="decisionPattern">
+                            고객 의사결정 패턴 분석 결과...
+                        </div>
+                    </div>
+
+                    <div class="result-card">
+                        <div class="result-title">⚔️ 경쟁 상황 평가</div>
+                        <div class="result-content" id="competitiveAnalysis">
+                            경쟁사 대비 우위/열위 분석...
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 패턴 인사이트 탭 -->
+                <div class="tab-content" id="patternsTab">
+                    <div class="result-card">
+                        <div class="result-title">🔄 반복 패턴 발견</div>
+                        <div class="result-content" id="recurringPatterns">
+                            유사 케이스에서 발견된 패턴...
+                        </div>
+                    </div>
+
+                    <div class="insight-highlight">
+                        <h4>💡 핵심 인사이트</h4>
+                        <p id="coreInsight">이 케이스는 기존 패턴과 비교했을 때...</p>
+                    </div>
+
+                    <div class="result-card">
+                        <div class="result-title">📈 예측 모델 업데이트</div>
+                        <div class="result-content" id="modelUpdate">
+                            이 케이스로 인한 예측 모델 개선사항...
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Framework 개선 탭 -->
+                <div class="tab-content" id="improvementsTab">
+                    <div class="improvement-grid">
+                        <div class="improvement-card">
+                            <div class="improvement-title">🛠️ 신규 도구 제안</div>
+                            <div class="improvement-desc" id="newTools">
+                                • 금융권 컴플라이언스 체크리스트<br>
+                                • ROI 자동 계산기 업그레이드<br>
+                                • 의사결정자 매핑 템플릿
+                            </div>
+                        </div>
+                        <div class="improvement-card">
+                            <div class="improvement-title">📋 프로세스 개선</div>
+                            <div class="improvement-desc" id="processImprovements">
+                                • 초기 단계 리스크 평가 강화<br>
+                                • 경쟁사 분석 프레임워크 추가<br>
+                                • 고객 검증 단계 세분화
+                            </div>
+                        </div>
+                        <div class="improvement-card">
+                            <div class="improvement-title">📚 교육 컨텐츠</div>
+                            <div class="improvement-desc" id="trainingContent">
+                                • 산업별 특화 영업 가이드<br>
+                                • 실패 케이스 스터디 추가<br>
+                                • 협상 시뮬레이션 시나리오
+                            </div>
+                        </div>
+                        <div class="improvement-card">
+                            <div class="improvement-title">🎯 KPI 최적화</div>
+                            <div class="improvement-desc" id="kpiOptimization">
+                                • 산업별 성과 지표 세분화<br>
+                                • 리드 스코어링 가중치 조정<br>
+                                • 예측 정확도 향상
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Items 탭 -->
+                <div class="tab-content" id="todoTab">
+                    <div class="todo-list">
+                        <h3 style="margin-bottom: 15px;">📝 Framework 개선 Todo List</h3>
+                        <div id="todoItems">
+                            <div class="todo-item">
+                                <input type="checkbox" class="todo-checkbox">
+                                <span class="todo-text">금융권 특화 컴플라이언스 체크리스트 개발</span>
+                                <span class="todo-priority priority-high">긴급</span>
+                            </div>
+                            <div class="todo-item">
+                                <input type="checkbox" class="todo-checkbox">
+                                <span class="todo-text">경쟁사별 대응 전략 매트릭스 업데이트</span>
+                                <span class="todo-priority priority-medium">중요</span>
+                            </div>
+                            <div class="todo-item">
+                                <input type="checkbox" class="todo-checkbox">
+                                <span class="todo-text">의사결정자 프로파일링 템플릿 제작</span>
+                                <span class="todo-priority priority-medium">중요</span>
+                            </div>
+                            <div class="todo-item">
+                                <input type="checkbox" class="todo-checkbox">
+                                <span class="todo-text">산업별 ROI 계산 로직 개선</span>
+                                <span class="todo-priority priority-low">보통</span>
+                            </div>
+                        </div>
+                        <button class="export-btn" onclick="exportTodo()">
+                            📤 Todo List 내보내기
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 샘플 데이터
+        const samples = {
+            win: {
+                companyName: "한국전자(주)",
+                industry: "manufacturing",
+                dealSize: "15억원",
+                salesPeriod: "8개월",
+                dealResult: "win",
+                competitors: "Cisco, Fortinet",
+                description: "국내 대기업 계열사의 SD-WAN 전면 도입 프로젝트였습니다. 초기에는 Cisco와 Fortinet이 강력한 경쟁상대였으나, 고객의 핵심 요구사항인 '국내 지사 50개 지점 통합 관리'와 '클라우드 전환 로드맵 지원'에 집중했습니다.\n\n고객 IT팀장의 주요 관심사는 관리 복잡성 해소였고, CTO는 비용 효율성을 중시했습니다. 우리는 3단계 접근 전략을 사용했습니다: 1) PoC를 통한 성능 검증, 2) 기존 인프라와의 완벽한 호환성 시연, 3) 3년간 TCO 분석을 통한 30% 비용 절감 효과 입증.\n\n결정적 요인은 국내 기술 지원팀의 24/7 대응 체계와 기존 네트워크 장비와의 seamless 연동이었습니다."
+            },
+            loss: {
+                companyName: "KB금융그룹",
+                industry: "finance",
+                dealSize: "25억원",
+                salesPeriod: "12개월",
+                dealResult: "loss",
+                competitors: "Palo Alto Networks, Check Point",
+                description: "금융권 차세대 보안 솔루션 구축 프로젝트에서 Palo Alto Networks에게 패배했습니다. 고객의 주요 요구사항은 '금융권 컴플라이언스 대응'과 '제로 트러스트 아키텍처 구현'이었습니다.\n\n초기에는 우리가 유리한 상황이었습니다. 기술 검증에서 우수한 성능을 보였고, 가격 경쟁력도 있었습니다. 하지만 중간에 몇 가지 문제가 발생했습니다.\n\n첫째, 금융감독원 인증 관련해서 경쟁사보다 6개월 늦은 일정을 제시했습니다. 둘째, 주요 의사결정자인 정보보호팀장과의 관계 구축에 실패했습니다. 그는 이전 직장에서 Palo Alto 솔루션을 사용한 경험이 있어 신뢰도가 높았습니다.\n\n결정적으로, 최종 제안서에서 우리는 기술적 우위에만 집중했는데, 고객은 '검증된 안정성'과 '레퍼런스'를 더 중시했습니다."
+            },
+            pending: {
+                companyName: "대한제조(주)",
+                industry: "manufacturing",
+                dealSize: "8억원",
+                salesPeriod: "4개월",
+                dealResult: "pending",
+                competitors: "Cisco, HPE",
+                description: "자동차 부품 제조업체의 스마트팩토리 네트워크 인프라 구축 프로젝트입니다. 현재 기술 검증 단계를 통과했고, 최종 제안서 제출을 앞두고 있습니다.\n\n고객의 핵심 요구사항은 '생산라인 실시간 모니터링'과 'IoT 기기 5000대 안정적 연결'입니다. CTO는 기술적 완성도를 중시하고, 구매팀장은 비용을 중시합니다.\n\n우리의 강점은 제조업 특화 솔루션과 레퍼런스입니다. 하지만 우려사항도 있습니다: 1) 경쟁사 Cisco가 더 공격적인 가격을 제시할 가능성, 2) 고객사의 기존 IT 인프라가 노후화되어 추가 투자가 필요할 수 있음, 3) 프로젝트 일정이 촉박해서 리스크 회피 성향이 강해질 가능성.\n\n다음 주 최종 프레젠테이션에서는 안정성과 구축 후 지원 서비스를 강조할 계획입니다."
+            }
+        };
+
+        // 전역 변수
+        let analysisData = {};
+        let caseHistory = [];
+        let patternDatabase = {};
+
+        // 샘플 데이터 로드
+        function loadSample(type) {
+            const sample = samples[type];
+            document.getElementById('companyName').value = sample.companyName;
+            document.getElementById('industry').value = sample.industry;
+            document.getElementById('dealSize').value = sample.dealSize;
+            document.getElementById('salesPeriod').value = sample.salesPeriod;
+            document.getElementById('dealResult').value = sample.dealResult;
+            document.getElementById('competitors').value = sample.competitors;
+            document.getElementById('dealDescription').value = sample.description;
+        }
+
+        // 탭 전환
+        function switchTab(tabName) {
+            // 모든 탭 버튼과 컨텐츠 비활성화
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            
+            // 선택된 탭 활성화
+            event.target.classList.add('active');
+            document.getElementById(tabName + 'Tab').classList.add('active');
+        }
+
+        // AI 분석 및 학습 함수
+        async function analyzeAndLearn() {
+            const button = document.getElementById('analyzeButton');
+            const loadingSection = document.getElementById('loadingSection');
+            const resultsContainer = document.getElementById('resultsContainer');
+
+            // 입력값 수집
+            const inputData = {
+                companyName: document.getElementById('companyName').value,
+                industry: document.getElementById('industry').value,
+                dealSize: document.getElementById('dealSize').value,
+                salesPeriod: document.getElementById('salesPeriod').value,
+                dealResult: document.getElementById('dealResult').value,
+                competitors: document.getElementById('competitors').value,
+                description: document.getElementById('dealDescription').value
+            };
+
+            // 입력 검증
+            if (!inputData.description) {
+                alert('딜 상황 설명을 입력해주세요.');
+                return;
+            }
+
+            // UI 상태 변경
+            button.disabled = true;
+            loadingSection.style.display = 'block';
+            resultsContainer.classList.remove('show');
+
+            // 시뮬레이션: 2초 후 결과 표시
+            setTimeout(() => {
+                // 분석 결과 생성
+                generateAnalysisResults(inputData);
+                
+                // 학습 데이터 업데이트
+                updateLearningMetrics(inputData);
+                
+                // UI 업데이트
+                loadingSection.style.display = 'none';
+                resultsContainer.classList.add('show');
+                button.disabled = false;
+            }, 2000);
+        }
+
+        // 분석 결과 생성
+        function generateAnalysisResults(data) {
+            // 기본 분석 결과
+            const keyFactors = generateKeyFactors(data);
+            document.getElementById('keyFactors').innerHTML = keyFactors;
+
+            // 의사결정 패턴
+            const decisionPattern = generateDecisionPattern(data);
+            document.getElementById('decisionPattern').innerHTML = decisionPattern;
+
+            // 경쟁 분석
+            const competitive = generateCompetitiveAnalysis(data);
+            document.getElementById('competitiveAnalysis').innerHTML = competitive;
+
+            // 패턴 인사이트
+            const patterns = generatePatternInsights(data);
+            document.getElementById('recurringPatterns').innerHTML = patterns;
+
+            // 핵심 인사이트
+            const insight = generateCoreInsight(data);
+            document.getElementById('coreInsight').innerHTML = insight;
+
+            // Framework 개선 제안
+            generateImprovementSuggestions(data);
+
+            // Todo 리스트 생성
+            generateTodoItems(data);
+        }
+
+        // 핵심 요인 생성
+        function generateKeyFactors(data) {
+            const factors = {
+                win: [
+                    "✅ 고객 요구사항에 대한 정확한 이해와 맞춤형 솔루션 제공",
+                    "✅ 기술적 우위를 실질적 비즈니스 가치로 번역하여 전달",
+                    "✅ 핵심 의사결정자와의 신뢰 관계 구축 성공",
+                    "✅ 경쟁사 대비 차별화된 가치 제안",
+                    "✅ 리스크 관리 및 단계적 구축 방안 제시"
+                ],
+                loss: [
+                    "❌ 고객의 숨겨진 요구사항(컴플라이언스) 파악 미흡",
+                    "❌ 핵심 의사결정자와의 관계 구축 실패",
+                    "❌ 기술적 우위에만 집중, 고객 가치 어필 부족",
+                    "❌ 경쟁사의 레퍼런스와 신뢰도 과소평가",
+                    "❌ 산업 특화 요구사항 대응 준비 부족"
+                ],
+                pending: [
+                    "⏳ 기술 검증 단계 통과로 1차 관문 성공",
+                    "⏳ 고객 요구사항 이해도 양호",
+                    "⚠️ 가격 경쟁 심화 가능성",
+                    "⚠️ 고객의 리스크 회피 성향 증가 우려",
+                    "💡 안정성과 지원 서비스 중심 어필 필요"
+                ]
+            };
+
+            const result = factors[data.dealResult] || factors.pending;
+            return result.join('<br>');
+        }
+
+        // 의사결정 패턴 생성
+        function generateDecisionPattern(data) {
+            const patterns = {
+                finance: "• 컴플라이언스와 안정성을 최우선시<br>• 검증된 레퍼런스 중요<br>• 의사결정 과정이 보수적이고 신중<br>• 리스크 회피 성향 강함",
+                manufacturing: "• ROI와 생산성 향상 중심<br>• 단계적 구축 선호<br>• 현장 실무진 의견 중요<br>• 기존 시스템과의 호환성 고려",
+                retail: "• 고객 경험 개선 중시<br>• 빠른 구축과 즉각적 효과<br>• 비용 대비 효과 민감<br>• 유연성과 확장성 요구",
+                public: "• 정책 준수와 표준 중시<br>• 입찰 절차와 평가 기준 명확<br>• 국산 솔루션 선호 경향<br>• 장기 지원 계약 중요"
+            };
+
+            return patterns[data.industry] || patterns.manufacturing;
+        }
+
+        // 경쟁 분석 생성
+        function generateCompetitiveAnalysis(data) {
+            if (data.competitors.includes('Cisco')) {
+                return "• Cisco: 글로벌 레퍼런스와 안정성이 강점, 가격이 약점<br>• 대응전략: TCO 관점 비용 효율성 강조, 국내 지원 우위 어필";
+            } else if (data.competitors.includes('Palo Alto')) {
+                return "• Palo Alto: 보안 전문성과 금융권 레퍼런스가 강점<br>• 대응전략: 통합 솔루션의 편의성, 맞춤형 커스터마이징 강조";
+            }
+            return "• 경쟁사 분석 데이터 수집 중...";
+        }
+
+        // 패턴 인사이트 생성
+        function generatePatternInsights(data) {
+            return `
+                <strong>🔄 유사 케이스 패턴 분석:</strong><br>
+                • ${data.industry} 업종 15개 케이스 중 공통 성공 요인<br>
+                • 의사결정자 프로파일 매칭률: 78%<br>
+                • 경쟁 구도 유사도: 85%<br><br>
+                <strong>📊 예측 정확도:</strong><br>
+                • 현재 상황 기반 성공 확률: ${data.dealResult === 'win' ? '82%' : data.dealResult === 'loss' ? '23%' : '65%'}<br>
+                • 주요 리스크 요인: ${data.dealResult === 'loss' ? '컴플라이언스, 레퍼런스' : '가격 경쟁, 일정 압박'}
+            `;
+        }
+
+        // 핵심 인사이트 생성
+        function generateCoreInsight(data) {
+            const insights = {
+                win: "이 케이스는 '고객 중심 접근'과 '단계적 가치 입증'이 성공의 핵심이었습니다. 특히 국내 지원 체계와 기존 인프라 호환성이 결정적 차별화 요소로 작용했습니다.",
+                loss: "기술적 우위만으로는 부족함을 보여주는 케이스입니다. 산업별 특화 요구사항(컴플라이언스)과 의사결정자 개인의 경험/신뢰도가 더 중요한 요소였습니다.",
+                pending: "현재까지는 양호하나, 가격 경쟁과 리스크 관리가 관건입니다. 안정성과 지원 서비스를 강조하고, 단계적 구축 방안으로 리스크를 완화하는 전략이 필요합니다."
+            };
+
+            return insights[data.dealResult] || insights.pending;
+        }
+
+        // Framework 개선 제안 생성
+        function generateImprovementSuggestions(data) {
+            const improvements = {
+                newTools: data.industry === 'finance' ? 
+                    "• 금융권 컴플라이언스 체크리스트<br>• 금융감독원 인증 로드맵 템플릿<br>• 금융 보안 요구사항 매핑 도구" :
+                    "• 제조업 ROI 계산기 v2.0<br>• 스마트팩토리 성숙도 평가 도구<br>• IoT 통합 아키텍처 템플릿",
+                
+                processImprovements: "• 초기 단계 숨겨진 요구사항 발굴 프로세스<br>• 의사결정자 프로파일링 체계화<br>• 산업별 특화 접근 방법론",
+                
+                trainingContent: "• " + data.industry + " 산업 특화 영업 가이드<br>• 실패 케이스 분석 워크샵<br>• 경쟁사별 대응 시뮬레이션",
+                
+                kpiOptimization: "• " + data.industry + " Win Rate 목표 조정<br>• 리드 스코어링 가중치 재설정<br>• 성과 예측 모델 정확도 향상"
+            };
+
+            document.getElementById('newTools').innerHTML = improvements.newTools;
+            document.getElementById('processImprovements').innerHTML = improvements.processImprovements;
+            document.getElementById('trainingContent').innerHTML = improvements.trainingContent;
+            document.getElementById('kpiOptimization').innerHTML = improvements.kpiOptimization;
+        }
+
+        // Todo 리스트 생성
+        function generateTodoItems(data) {
+            const todos = [];
+            
+            if (data.industry === 'finance') {
+                todos.push({
+                    text: '금융권 컴플라이언스 체크리스트 개발',
+                    priority: 'high'
+                });
+            }
+            
+            if (data.dealResult === 'loss') {
+                todos.push({
+                    text: '의사결정자 프로파일링 프로세스 개선',
+                    priority: 'high'
+                });
+                todos.push({
+                    text: '실패 케이스 분석 리포트 작성',
+                    priority: 'medium'
+                });
+            }
+            
+            todos.push({
+                text: data.industry + ' 산업 특화 영업 가이드 업데이트',
+                priority: 'medium'
+            });
+            
+            todos.push({
+                text: '경쟁사 ' + (data.competitors.split(',')[0] || 'N/A') + ' 대응 전략 수립',
+                priority: 'low'
+            });
+
+            // Todo HTML 생성
+            let todoHTML = '';
+            todos.forEach(todo => {
+                const priorityClass = todo.priority === 'high' ? 'priority-high' : 
+                                    todo.priority === 'medium' ? 'priority-medium' : 'priority-low';
+                const priorityText = todo.priority === 'high' ? '긴급' : 
+                                   todo.priority === 'medium' ? '중요' : '보통';
+                
+                todoHTML += `
+                    <div class="todo-item">
+                        <input type="checkbox" class="todo-checkbox">
+                        <span class="todo-text">${todo.text}</span>
+                        <span class="todo-priority ${priorityClass}">${priorityText}</span>
+                    </div>
+                `;
+            });
+
+            document.getElementById('todoItems').innerHTML = todoHTML;
+        }
+
+        // 학습 메트릭 업데이트
+        function updateLearningMetrics(data) {
+            // 총 케이스 수 증가
+            const totalCases = parseInt(document.getElementById('totalCases').textContent) + 1;
+            document.getElementById('totalCases').textContent = totalCases;
+
+            // 성공률 계산 (시뮬레이션)
+            const winRate = data.dealResult === 'win' ? 68 : data.dealResult === 'loss' ? 45 : 56;
+            document.getElementById('winRate').textContent = winRate + '%';
+
+            // 패턴 수 업데이트
+            const patterns = Math.floor(totalCases / 3) + 5;
+            document.getElementById('patterns').textContent = patterns;
+
+            // 개선 제안 수
+            const improvements = Math.floor(totalCases / 2) + 8;
+            document.getElementById('improvements').textContent = improvements;
+
+            // 진행률 업데이트
+            const progress = Math.min(35 + (totalCases * 5), 100);
+            document.querySelector('.progress-fill').style.width = progress + '%';
+        }
+
+        // Todo 내보내기
+        function exportTodo() {
+            const todos = [];
+            document.querySelectorAll('.todo-item').forEach(item => {
+                const text = item.querySelector('.todo-text').textContent;
+                const priority = item.querySelector('.todo-priority').textContent;
+                const checked = item.querySelector('.todo-checkbox').checked;
+                todos.push(`[${checked ? 'X' : ' '}] ${text} (${priority})`);
+            });
+
+            const todoText = 'SmartWAN Framework 개선 Todo List\n' + 
+                           '=' .repeat(40) + '\n' +
+                           '생성일시: ' + new Date().toLocaleString() + '\n\n' +
+                           todos.join('\n');
+
+            // 텍스트 파일로 다운로드
+            const blob = new Blob([todoText], { type: 'text/plain' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'framework_todo_' + Date.now() + '.txt';
+            a.click();
+            window.URL.revokeObjectURL(url);
+        }
+
+        // 페이지 로드 시 초기화
+        document.addEventListener('DOMContentLoaded', function() {
+            // 초기 메트릭 설정
+            document.getElementById('totalCases').textContent = '15';
+            document.getElementById('winRate').textContent = '67%';
+            document.getElementById('patterns').textContent = '8';
+            document.getElementById('improvements').textContent = '12';
+        });
+    </script>
+</body>
+</html>
