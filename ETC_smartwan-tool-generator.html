@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SmartWAN AI 도구 생성기 - 영업 도구 자동 생성 플랫폼</title>
+    <title>SmartWAN 플랫폼 피드백 & 개선 도구</title>
     <style>
         * {
             margin: 0;
@@ -12,1838 +12,872 @@
         }
 
         body {
-            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
-        }
-
-        .main-container {
-            display: flex;
-            height: 100vh;
-        }
-
-        /* 왼쪽 패널 - 설정 영역 */
-        .left-panel {
-            width: 450px;
-            background: white;
-            box-shadow: 5px 0 20px rgba(0,0,0,0.1);
-            overflow-y: auto;
-            padding: 30px;
-        }
-
-        .header {
-            text-align: center;
-            margin-bottom: 30px;
-            padding-bottom: 20px;
-            border-bottom: 2px solid #e5e7eb;
-        }
-
-        .header h1 {
-            color: #1e3a8a;
-            font-size: 1.8rem;
-            margin-bottom: 10px;
-        }
-
-        .header p {
-            color: #64748b;
-            font-size: 0.95rem;
-        }
-
-        .step {
-            margin-bottom: 30px;
-        }
-
-        .step-header {
-            display: flex;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-
-        .step-number {
-            width: 30px;
-            height: 30px;
-            background: linear-gradient(135deg, #3b82f6, #2563eb);
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            margin-right: 12px;
-        }
-
-        .step-title {
-            font-size: 1.1rem;
-            color: #1e40af;
-            font-weight: 600;
-        }
-
-        .template-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin-bottom: 20px;
-        }
-
-        .template-card {
-            border: 2px solid #e2e8f0;
-            border-radius: 10px;
-            padding: 15px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-align: center;
-        }
-
-        .template-card:hover {
-            border-color: #3b82f6;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(59, 130, 246, 0.2);
-        }
-
-        .template-card.selected {
-            background: linear-gradient(135deg, #eff6ff, #dbeafe);
-            border-color: #3b82f6;
-        }
-
-        .template-icon {
-            font-size: 2rem;
-            margin-bottom: 8px;
-        }
-
-        .template-name {
-            font-weight: 600;
-            color: #1e40af;
-            font-size: 0.95rem;
-        }
-
-        .template-desc {
-            color: #64748b;
-            font-size: 0.8rem;
-            margin-top: 4px;
-        }
-
-        .input-group {
-            margin-bottom: 20px;
-        }
-
-        .input-label {
-            display: block;
-            font-weight: 600;
-            color: #1e40af;
-            margin-bottom: 8px;
-            font-size: 0.95rem;
-        }
-
-        .input-field {
-            width: 100%;
-            padding: 10px;
-            border: 2px solid #cbd5e1;
-            border-radius: 8px;
-            font-size: 0.95rem;
-        }
-
-        .input-field:focus {
-            outline: none;
-            border-color: #3b82f6;
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-        }
-
-        textarea.input-field {
-            min-height: 100px;
-            resize: vertical;
-        }
-
-        .feature-list {
-            background: #f8fafc;
-            border-radius: 8px;
-            padding: 15px;
-        }
-
-        .feature-item {
-            display: flex;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-
-        .feature-checkbox {
-            width: 20px;
-            height: 20px;
-            margin-right: 10px;
-            cursor: pointer;
-        }
-
-        .feature-label {
-            color: #475569;
-            cursor: pointer;
-            user-select: none;
-        }
-
-        .generate-btn {
-            width: 100%;
-            background: linear-gradient(135deg, #10b981, #059669);
-            color: white;
-            padding: 15px;
-            border: none;
-            border-radius: 10px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-top: 20px;
-        }
-
-        .generate-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(16, 185, 129, 0.3);
-        }
-
-        .generate-btn:disabled {
-            background: #94a3b8;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        /* 오른쪽 패널 - 프리뷰/코드 영역 */
-        .right-panel {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
             padding: 20px;
         }
 
-        .tabs {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-
-        .tab {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
-
-        .tab.active {
-            background: white;
-            color: #1e3a8a;
-        }
-
-        .preview-container {
-            flex: 1;
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
-            overflow: hidden;
-            position: relative;
-        }
-
-        .preview-header {
-            background: linear-gradient(135deg, #1e3a8a, #3b82f6);
-            color: white;
-            padding: 15px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .preview-title {
-            font-weight: 600;
-        }
-
-        .preview-actions {
-            display: flex;
-            gap: 10px;
-        }
-
-        .action-btn {
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 0.9rem;
-            transition: all 0.3s ease;
-        }
-
-        .action-btn:hover {
-            background: rgba(255, 255, 255, 0.3);
-        }
-
-        .preview-content {
-            height: calc(100% - 60px);
-            position: relative;
-        }
-
-        #previewFrame {
-            width: 100%;
-            height: 100%;
-            border: none;
-            background: white;
-        }
-
-        .code-view {
-            width: 100%;
-            height: 100%;
-            padding: 20px;
-            background: #1e293b;
-            color: #e2e8f0;
-            font-family: 'Courier New', monospace;
-            font-size: 0.9rem;
-            overflow: auto;
-            white-space: pre-wrap;
-            display: none;
-        }
-
-        .code-view.active {
-            display: block;
-        }
-
-        /* 가이드 섹션 */
-        .guide-section {
-            background: #f0f9ff;
-            border: 2px solid #3b82f6;
-            border-radius: 10px;
-            padding: 15px;
-            margin-top: 30px;
-        }
-
-        .guide-title {
-            color: #1e40af;
-            font-weight: 600;
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .guide-content {
-            color: #475569;
-            font-size: 0.9rem;
-            line-height: 1.6;
-        }
-
-        .guide-content ul {
-            margin-left: 20px;
-            margin-top: 8px;
-        }
-
-        /* 로딩 오버레이 */
-        .loading-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(255, 255, 255, 0.95);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-            z-index: 100;
-        }
-
-        .loading-overlay.active {
-            display: flex;
-        }
-
-        .spinner {
-            width: 50px;
-            height: 50px;
-            border: 4px solid #e5e7eb;
-            border-top: 4px solid #3b82f6;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        .loading-text {
-            margin-top: 20px;
-            color: #1e40af;
-            font-weight: 600;
-        }
-
-        /* 배포 모달 */
-        .deploy-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.5);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 200;
-        }
-
-        .deploy-modal.active {
-            display: flex;
-        }
-
-        .deploy-content {
-            background: white;
-            padding: 30px;
-            border-radius: 15px;
-            max-width: 500px;
-            width: 90%;
-        }
-
-        .deploy-title {
-            font-size: 1.5rem;
-            color: #1e3a8a;
-            margin-bottom: 20px;
-        }
-
-        .deploy-options {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .deploy-option {
-            border: 2px solid #e2e8f0;
-            border-radius: 10px;
-            padding: 15px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .deploy-option:hover {
-            border-color: #3b82f6;
-            background: #f0f9ff;
-        }
-
-        .deploy-option-title {
-            font-weight: 600;
-            color: #1e40af;
-            margin-bottom: 5px;
-        }
-
-        .deploy-option-desc {
-            color: #64748b;
-            font-size: 0.9rem;
-        }
-
-        @media (max-width: 768px) {
-            .main-container {
-                flex-direction: column;
-            }
-            
-            .left-panel {
-                width: 100%;
-                height: auto;
-            }
-            
-            .right-panel {
-                height: 600px;
-            }
-        }
-    </style>
-</head>
-<body>
-    <div class="main-container">
-        <!-- 왼쪽 패널 - 설정 영역 -->
-        <div class="left-panel">
-            <div class="header">
-                <h1>🚀 SmartWAN AI 도구 생성기</h1>
-                <p>영업 도구를 3분 만에 자동으로 생성합니다</p>
-            </div>
-
-            <!-- Step 1: 템플릿 선택 -->
-            <div class="step">
-                <div class="step-header">
-                    <div class="step-number">1</div>
-                    <div class="step-title">도구 템플릿 선택</div>
-                </div>
-                
-                <div class="template-grid">
-                    <div class="template-card" onclick="selectTemplate('calculator')">
-                        <div class="template-icon">🧮</div>
-                        <div class="template-name">계산기</div>
-                        <div class="template-desc">ROI, TCO 계산</div>
-                    </div>
-                    
-                    <div class="template-card" onclick="selectTemplate('analyzer')">
-                        <div class="template-icon">📊</div>
-                        <div class="template-name">분석 도구</div>
-                        <div class="template-desc">고객 니즈 분석</div>
-                    </div>
-                    
-                    <div class="template-card" onclick="selectTemplate('comparison')">
-                        <div class="template-icon">⚖️</div>
-                        <div class="template-name">비교 도구</div>
-                        <div class="template-desc">경쟁사 비교</div>
-                    </div>
-                    
-                    <div class="template-card" onclick="selectTemplate('assessment')">
-                        <div class="template-icon">📋</div>
-                        <div class="template-name">평가 도구</div>
-                        <div class="template-desc">준비도 평가</div>
-                    </div>
-                    
-                    <div class="template-card" onclick="selectTemplate('generator')">
-                        <div class="template-icon">📝</div>
-                        <div class="template-name">생성 도구</div>
-                        <div class="template-desc">문서 자동 생성</div>
-                    </div>
-                    
-                    <div class="template-card" onclick="selectTemplate('dashboard')">
-                        <div class="template-icon">📈</div>
-                        <div class="template-name">대시보드</div>
-                        <div class="template-desc">실시간 모니터링</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Step 2: 기본 정보 입력 -->
-            <div class="step">
-                <div class="step-header">
-                    <div class="step-number">2</div>
-                    <div class="step-title">도구 기본 정보</div>
-                </div>
-                
-                <div class="input-group">
-                    <label class="input-label">도구 이름</label>
-                    <input type="text" class="input-field" id="toolName" placeholder="예: SmartWAN ROI 계산기">
-                </div>
-                
-                <div class="input-group">
-                    <label class="input-label">도구 설명</label>
-                    <textarea class="input-field" id="toolDescription" placeholder="이 도구의 목적과 주요 기능을 설명해주세요..."></textarea>
-                </div>
-            </div>
-
-            <!-- Step 3: 기능 선택 -->
-            <div class="step">
-                <div class="step-header">
-                    <div class="step-number">3</div>
-                    <div class="step-title">포함할 기능 선택</div>
-                </div>
-                
-                <div class="feature-list" id="featureList">
-                    <!-- 동적으로 생성됨 -->
-                </div>
-            </div>
-
-            <!-- Step 4: 스타일 선택 -->
-            <div class="step">
-                <div class="step-header">
-                    <div class="step-number">4</div>
-                    <div class="step-title">디자인 스타일</div>
-                </div>
-                
-                <div class="input-group">
-                    <label class="input-label">색상 테마</label>
-                    <select class="input-field" id="colorTheme">
-                        <option value="blue">SKT 블루 (기본)</option>
-                        <option value="green">그린 (성공/긍정)</option>
-                        <option value="purple">퍼플 (프리미엄)</option>
-                        <option value="dark">다크 모드</option>
-                    </select>
-                </div>
-            </div>
-
-            <!-- 생성 버튼 -->
-            <button class="generate-btn" onclick="generateTool()">
-                🎨 도구 자동 생성
-            </button>
-
-            <!-- 가이드 섹션 -->
-            <div class="guide-section">
-                <div class="guide-title">
-                    <span>💡</span>
-                    <span>사용 가이드</span>
-                </div>
-                <div class="guide-content">
-                    <strong>빠른 시작:</strong>
-                    <ul>
-                        <li>템플릿 선택 → 자동으로 관련 기능 표시</li>
-                        <li>도구 이름과 설명 입력</li>
-                        <li>필요한 기능 체크</li>
-                        <li>생성 버튼 클릭 → 3초 내 완성!</li>
-                    </ul>
-                    <br>
-                    <strong>💾 생성된 도구는:</strong>
-                    <ul>
-                        <li>즉시 사용 가능한 HTML 파일</li>
-                        <li>모든 스타일과 기능 포함</li>
-                        <li>별도 설치 없이 실행</li>
-                        <li>GitHub Pages로 바로 배포 가능</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-
-        <!-- 오른쪽 패널 - 프리뷰/코드 영역 -->
-        <div class="right-panel">
-            <div class="tabs">
-                <button class="tab active" onclick="switchView('preview')">👁️ 미리보기</button>
-                <button class="tab" onclick="switchView('code')">📝 소스 코드</button>
-                <button class="tab" onclick="switchView('deploy')">🚀 배포하기</button>
-            </div>
-
-            <div class="preview-container">
-                <div class="preview-header">
-                    <div class="preview-title">생성된 도구 미리보기</div>
-                    <div class="preview-actions">
-                        <button class="action-btn" onclick="refreshPreview()">🔄 새로고침</button>
-                        <button class="action-btn" onclick="downloadCode()">💾 다운로드</button>
-                        <button class="action-btn" onclick="copyCode()">📋 복사</button>
-                    </div>
-                </div>
-                
-                <div class="preview-content">
-                    <iframe id="previewFrame" srcdoc="<h2 style='text-align:center; margin-top:100px; color:#64748b;'>템플릿을 선택하고 정보를 입력한 후<br>'도구 자동 생성' 버튼을 클릭하세요</h2>"></iframe>
-                    <div class="code-view" id="codeView"></div>
-                </div>
-
-                <!-- 로딩 오버레이 -->
-                <div class="loading-overlay" id="loadingOverlay">
-                    <div class="spinner"></div>
-                    <div class="loading-text">AI가 도구를 생성 중입니다...</div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- 배포 모달 -->
-    <div class="deploy-modal" id="deployModal">
-        <div class="deploy-content">
-            <div class="deploy-title">🚀 도구 배포하기</div>
-            
-            <div class="deploy-options">
-                <div class="deploy-option" onclick="deployToGitHub()">
-                    <div class="deploy-option-title">📦 GitHub Pages</div>
-                    <div class="deploy-option-desc">무료 호스팅, 커스텀 도메인 지원</div>
-                </div>
-                
-                <div class="deploy-option" onclick="deployToNetlify()">
-                    <div class="deploy-option-title">⚡ Netlify</div>
-                    <div class="deploy-option-desc">드래그 앤 드롭으로 즉시 배포</div>
-                </div>
-                
-                <div class="deploy-option" onclick="deployToVercel()">
-                    <div class="deploy-option-title">▲ Vercel</div>
-                    <div class="deploy-option-desc">Git 연동, 자동 배포</div>
-                </div>
-                
-                <div class="deploy-option" onclick="downloadForLocal()">
-                    <div class="deploy-option-title">💻 로컬 사용</div>
-                    <div class="deploy-option-desc">HTML 파일로 다운로드</div>
-                </div>
-            </div>
-            
-            <button class="generate-btn" style="margin-top: 20px;" onclick="closeDeployModal()">
-                닫기
-            </button>
-        </div>
-    </div>
-
-    <script>
-        // 전역 변수
-        let selectedTemplate = '';
-        let generatedCode = '';
-        let currentView = 'preview';
-
-        // 템플릿별 기능 정의
-        const templateFeatures = {
-            calculator: [
-                { id: 'input', name: '입력 필드', checked: true },
-                { id: 'calculation', name: '자동 계산', checked: true },
-                { id: 'chart', name: '결과 차트', checked: true },
-                { id: 'export', name: '결과 내보내기', checked: false },
-                { id: 'comparison', name: '시나리오 비교', checked: false },
-                { id: 'save', name: '계산 저장', checked: false }
-            ],
-            analyzer: [
-                { id: 'questionnaire', name: '설문 양식', checked: true },
-                { id: 'scoring', name: '자동 채점', checked: true },
-                { id: 'recommendation', name: '추천 생성', checked: true },
-                { id: 'report', name: '분석 리포트', checked: false },
-                { id: 'benchmark', name: '벤치마크 비교', checked: false },
-                { id: 'history', name: '분석 이력', checked: false }
-            ],
-            comparison: [
-                { id: 'table', name: '비교 테이블', checked: true },
-                { id: 'features', name: '기능 체크리스트', checked: true },
-                { id: 'scoring', name: '점수 비교', checked: true },
-                { id: 'custom', name: '커스텀 항목', checked: false },
-                { id: 'weight', name: '가중치 설정', checked: false },
-                { id: 'winner', name: '승자 분석', checked: false }
-            ],
-            assessment: [
-                { id: 'checklist', name: '체크리스트', checked: true },
-                { id: 'levels', name: '성숙도 레벨', checked: true },
-                { id: 'gaps', name: '갭 분석', checked: true },
-                { id: 'roadmap', name: '개선 로드맵', checked: false },
-                { id: 'priority', name: '우선순위 설정', checked: false },
-                { id: 'action', name: '액션 플랜', checked: false }
-            ],
-            generator: [
-                { id: 'templates', name: '템플릿 선택', checked: true },
-                { id: 'fields', name: '입력 필드', checked: true },
-                { id: 'preview', name: '실시간 미리보기', checked: true },
-                { id: 'formatting', name: '서식 옵션', checked: false },
-                { id: 'variables', name: '변수 치환', checked: false },
-                { id: 'download', name: '다운로드', checked: false }
-            ],
-            dashboard: [
-                { id: 'metrics', name: '핵심 지표', checked: true },
-                { id: 'charts', name: '차트/그래프', checked: true },
-                { id: 'realtime', name: '실시간 업데이트', checked: true },
-                { id: 'filters', name: '필터링', checked: false },
-                { id: 'drill', name: '드릴다운', checked: false },
-                { id: 'alerts', name: '알림 설정', checked: false }
-            ]
-        };
-
-        // 템플릿 선택
-        function selectTemplate(template) {
-            selectedTemplate = template;
-            
-            // 모든 카드 선택 해제
-            document.querySelectorAll('.template-card').forEach(card => {
-                card.classList.remove('selected');
-            });
-            
-            // 선택된 카드 표시
-            event.currentTarget.classList.add('selected');
-            
-            // 해당 템플릿의 기능 표시
-            displayFeatures(template);
-            
-            // 도구 이름 자동 제안
-            suggestToolName(template);
-        }
-
-        // 기능 목록 표시
-        function displayFeatures(template) {
-            const features = templateFeatures[template] || [];
-            const featureList = document.getElementById('featureList');
-            
-            featureList.innerHTML = features.map(feature => `
-                <div class="feature-item">
-                    <input type="checkbox" class="feature-checkbox" id="feature_${feature.id}" 
-                           ${feature.checked ? 'checked' : ''}>
-                    <label class="feature-label" for="feature_${feature.id}">${feature.name}</label>
-                </div>
-            `).join('');
-        }
-
-        // 도구 이름 제안
-        function suggestToolName(template) {
-            const suggestions = {
-                calculator: 'SmartWAN ROI 계산기',
-                analyzer: 'SmartWAN 니즈 분석 도구',
-                comparison: 'SmartWAN 경쟁사 비교 도구',
-                assessment: 'SmartWAN 준비도 평가 도구',
-                generator: 'SmartWAN 제안서 생성기',
-                dashboard: 'SmartWAN 영업 대시보드'
-            };
-            
-            document.getElementById('toolName').value = suggestions[template] || '';
-        }
-
-        // 도구 생성
-        function generateTool() {
-            if (!selectedTemplate) {
-                alert('먼저 템플릿을 선택해주세요!');
-                return;
-            }
-            
-            const toolName = document.getElementById('toolName').value || 'SmartWAN 도구';
-            const toolDescription = document.getElementById('toolDescription').value || '자동 생성된 SmartWAN 영업 도구';
-            const colorTheme = document.getElementById('colorTheme').value;
-            
-            // 선택된 기능 수집
-            const selectedFeatures = [];
-            document.querySelectorAll('.feature-checkbox:checked').forEach(checkbox => {
-                selectedFeatures.push(checkbox.id.replace('feature_', ''));
-            });
-            
-            // 로딩 표시
-            showLoading(true);
-            
-            // AI 생성 시뮬레이션 (실제로는 템플릿 기반 생성)
-            setTimeout(() => {
-                generatedCode = generateToolCode(selectedTemplate, toolName, toolDescription, selectedFeatures, colorTheme);
-                displayGeneratedTool(generatedCode);
-                showLoading(false);
-            }, 2000);
-        }
-
-        // 도구 코드 생성 (템플릿 엔진)
-        function generateToolCode(template, name, description, features, theme) {
-            const themeColors = {
-                blue: { primary: '#3b82f6', secondary: '#1e40af', bg: '#eff6ff' },
-                green: { primary: '#10b981', secondary: '#059669', bg: '#f0fdf4' },
-                purple: { primary: '#8b5cf6', secondary: '#6d28d9', bg: '#f3e8ff' },
-                dark: { primary: '#1e293b', secondary: '#0f172a', bg: '#f1f5f9' }
-            };
-            
-            const colors = themeColors[theme] || themeColors.blue;
-            
-            let htmlContent = `<!DOCTYPE html>
-<html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>${name}</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: linear-gradient(135deg, ${colors.bg} 0%, white 100%);
-            min-height: 100vh;
-            padding: 20px;
-        }
-        
         .container {
             max-width: 1200px;
             margin: 0 auto;
             background: white;
             border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
             overflow: hidden;
         }
-        
+
         .header {
-            background: linear-gradient(135deg, ${colors.secondary} 0%, ${colors.primary} 100%);
+            background: linear-gradient(135deg, #2C3E50 0%, #3498DB 100%);
             color: white;
             padding: 30px;
             text-align: center;
         }
-        
+
         .header h1 {
-            font-size: 2rem;
+            font-size: 2em;
             margin-bottom: 10px;
         }
-        
+
         .header p {
             opacity: 0.9;
+            font-size: 1.1em;
         }
-        
+
         .content {
             padding: 30px;
         }
-        
+
         .section {
             margin-bottom: 30px;
+            padding: 25px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 4px solid #3498DB;
         }
-        
-        .section-title {
-            font-size: 1.5rem;
-            color: ${colors.secondary};
+
+        .section h2 {
+            color: #2C3E50;
             margin-bottom: 20px;
-            font-weight: 600;
+            font-size: 1.5em;
         }
-        
+
         .input-group {
             margin-bottom: 20px;
         }
-        
-        .input-label {
+
+        .input-group label {
             display: block;
             margin-bottom: 8px;
-            color: #475569;
+            color: #555;
             font-weight: 600;
         }
-        
-        .input-field {
+
+        .input-group input,
+        .input-group select,
+        .input-group textarea {
             width: 100%;
-            padding: 10px 15px;
-            border: 2px solid #e2e8f0;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
             border-radius: 8px;
-            font-size: 1rem;
+            font-size: 1em;
+            transition: border-color 0.3s;
         }
-        
-        .input-field:focus {
+
+        .input-group input:focus,
+        .input-group select:focus,
+        .input-group textarea:focus {
             outline: none;
-            border-color: ${colors.primary};
-            box-shadow: 0 0 0 3px ${colors.bg};
+            border-color: #3498DB;
         }
-        
-        .btn {
-            background: linear-gradient(135deg, ${colors.secondary}, ${colors.primary});
+
+        .input-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .tool-usage {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .tool-item {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            border: 2px solid #e0e0e0;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .tool-item:hover {
+            border-color: #3498DB;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .tool-item.selected {
+            background: #3498DB;
+            color: white;
+            border-color: #3498DB;
+        }
+
+        .tool-item .name {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .tool-item .usage {
+            font-size: 0.9em;
+            opacity: 0.8;
+        }
+
+        .preset-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .preset-btn {
+            padding: 10px 20px;
+            background: white;
+            border: 2px solid #3498DB;
+            color: #3498DB;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+        }
+
+        .preset-btn:hover {
+            background: #3498DB;
+            color: white;
+        }
+
+        .analyze-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             border: none;
-            padding: 12px 30px;
-            border-radius: 8px;
-            font-size: 1rem;
-            font-weight: 600;
+            padding: 15px 40px;
+            font-size: 1.1em;
+            border-radius: 30px;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: transform 0.3s;
+            display: block;
+            margin: 30px auto;
+            font-weight: 600;
         }
-        
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+
+        .analyze-btn:hover {
+            transform: scale(1.05);
         }
-        
-        .result-box {
-            background: ${colors.bg};
-            border: 2px solid ${colors.primary};
+
+        .results {
+            display: none;
+            margin-top: 30px;
+        }
+
+        .results.show {
+            display: block;
+        }
+
+        .result-card {
+            background: white;
             border-radius: 10px;
             padding: 20px;
-            margin-top: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
-        
-        .result-title {
-            color: ${colors.secondary};
-            font-weight: 600;
+
+        .result-card h3 {
+            color: #2C3E50;
             margin-bottom: 15px;
-            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
-        
-        .result-value {
-            font-size: 2rem;
-            color: ${colors.primary};
-            font-weight: bold;
-        }
-        
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        
-        th, td {
-            padding: 12px;
-            text-align: left;
-            border-bottom: 1px solid #e2e8f0;
-        }
-        
-        th {
-            background: ${colors.bg};
-            color: ${colors.secondary};
-            font-weight: 600;
-        }
-        
-        .chart-container {
-            width: 100%;
-            height: 300px;
-            background: ${colors.bg};
-            border-radius: 10px;
+
+        .result-card .icon {
+            width: 30px;
+            height: 30px;
+            background: #3498DB;
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 20px 0;
+            color: white;
+            font-weight: bold;
         }
-        
-        @media (max-width: 768px) {
-            .header h1 {
-                font-size: 1.5rem;
-            }
-            
-            .content {
-                padding: 20px;
-            }
+
+        .insight-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .insight-list li {
+            padding: 10px;
+            margin-bottom: 10px;
+            background: #f8f9fa;
+            border-radius: 5px;
+            border-left: 3px solid #3498DB;
+        }
+
+        .priority {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 0.85em;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+
+        .priority.high {
+            background: #ff4757;
+            color: white;
+        }
+
+        .priority.medium {
+            background: #ffa502;
+            color: white;
+        }
+
+        .priority.low {
+            background: #2ed573;
+            color: white;
+        }
+
+        .chart-container {
+            margin: 20px 0;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .bar-chart {
+            display: flex;
+            align-items: flex-end;
+            height: 200px;
+            gap: 10px;
+            padding: 10px;
+        }
+
+        .bar {
+            flex: 1;
+            background: linear-gradient(to top, #3498DB, #667eea);
+            border-radius: 5px 5px 0 0;
+            position: relative;
+            min-height: 20px;
+            transition: all 0.3s;
+        }
+
+        .bar:hover {
+            opacity: 0.8;
+        }
+
+        .bar-label {
+            position: absolute;
+            bottom: -25px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-size: 0.8em;
+            color: #666;
+        }
+
+        .bar-value {
+            position: absolute;
+            top: -25px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-weight: bold;
+            color: #2C3E50;
+        }
+
+        .export-btn {
+            background: #27ae60;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1em;
+            margin-top: 20px;
+            font-weight: 600;
+        }
+
+        .export-btn:hover {
+            background: #229954;
+        }
+
+        .feedback-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .tag {
+            padding: 5px 12px;
+            background: #e0e0e0;
+            border-radius: 15px;
+            font-size: 0.9em;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .tag.selected {
+            background: #3498DB;
+            color: white;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>${name}</h1>
-            <p>${description}</p>
+            <h1>🔄 SmartWAN 플랫폼 피드백 & 개선 도구</h1>
+            <p>사용 데이터를 입력하고 플랫폼 개선 방향을 도출하세요</p>
         </div>
-        
-        <div class="content">`;
-            
-            // 템플릿별 컨텐츠 생성
-            if (template === 'calculator') {
-                htmlContent += generateCalculatorContent(features, colors);
-            } else if (template === 'analyzer') {
-                htmlContent += generateAnalyzerContent(features, colors);
-            } else if (template === 'comparison') {
-                htmlContent += generateComparisonContent(features, colors);
-            } else if (template === 'assessment') {
-                htmlContent += generateAssessmentContent(features, colors);
-            } else if (template === 'generator') {
-                htmlContent += generateGeneratorContent(features, colors);
-            } else if (template === 'dashboard') {
-                htmlContent += generateDashboardContent(features, colors);
-            }
-            
-            htmlContent += `
+
+        <div class="content">
+            <!-- 1. 사용 현황 입력 -->
+            <div class="section">
+                <h2>📊 도구별 사용 현황</h2>
+                <div class="preset-buttons">
+                    <button class="preset-btn" onclick="loadPreset('new_team')">🆕 신규팀</button>
+                    <button class="preset-btn" onclick="loadPreset('active_team')">🔥 활발팀</button>
+                    <button class="preset-btn" onclick="loadPreset('struggling_team')">😰 고전팀</button>
+                    <button class="preset-btn" onclick="loadPreset('expert_team')">🏆 전문팀</button>
+                </div>
+                
+                <div class="tool-usage" id="toolUsage">
+                    <!-- 도구들이 동적으로 생성됨 -->
+                </div>
+            </div>
+
+            <!-- 2. 피드백 수집 -->
+            <div class="section">
+                <h2>💬 사용자 피드백</h2>
+                
+                <div class="input-group">
+                    <label>가장 유용한 도구 TOP 3</label>
+                    <input type="text" id="topTools" placeholder="예: ROI 계산기, 경쟁사 배틀카드, Win/Loss 분석">
+                </div>
+
+                <div class="input-group">
+                    <label>개선이 필요한 부분</label>
+                    <textarea id="improvements" placeholder="어떤 기능이 불편하거나 추가되었으면 좋겠나요?"></textarea>
+                </div>
+
+                <div class="input-group">
+                    <label>주요 문제점 태그 (클릭하여 선택)</label>
+                    <div class="feedback-tags" id="problemTags">
+                        <div class="tag" onclick="toggleTag(this)">📱 UI/UX 불편</div>
+                        <div class="tag" onclick="toggleTag(this)">⚡ 속도 느림</div>
+                        <div class="tag" onclick="toggleTag(this)">📊 데이터 부족</div>
+                        <div class="tag" onclick="toggleTag(this)">🔧 기능 부족</div>
+                        <div class="tag" onclick="toggleTag(this)">📚 학습 곡선</div>
+                        <div class="tag" onclick="toggleTag(this)">🔗 연동 문제</div>
+                        <div class="tag" onclick="toggleTag(this)">📝 문서 부족</div>
+                        <div class="tag" onclick="toggleTag(this)">🎯 정확도 문제</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. 비즈니스 성과 -->
+            <div class="section">
+                <h2>📈 비즈니스 성과 지표</h2>
+                
+                <div class="input-group">
+                    <label>월 평균 사용자 수</label>
+                    <input type="number" id="monthlyUsers" placeholder="예: 25">
+                </div>
+
+                <div class="input-group">
+                    <label>도구 사용 후 성공률 변화 (%)</label>
+                    <input type="number" id="successRate" placeholder="예: 15" min="-100" max="100">
+                </div>
+
+                <div class="input-group">
+                    <label>영업 사이클 단축 (일)</label>
+                    <input type="number" id="cycleReduction" placeholder="예: 7">
+                </div>
+            </div>
+
+            <button class="analyze-btn" onclick="analyzeData()">
+                🔍 분석 및 개선안 도출
+            </button>
+
+            <!-- 분석 결과 -->
+            <div class="results" id="results">
+                <!-- 1. 사용 패턴 분석 -->
+                <div class="result-card">
+                    <h3>
+                        <span class="icon">📊</span>
+                        사용 패턴 분석
+                    </h3>
+                    <div class="chart-container">
+                        <div class="bar-chart" id="usageChart"></div>
+                    </div>
+                    <ul class="insight-list" id="usageInsights"></ul>
+                </div>
+
+                <!-- 2. 우선순위 개선사항 -->
+                <div class="result-card">
+                    <h3>
+                        <span class="icon">🎯</span>
+                        우선순위 개선사항
+                    </h3>
+                    <ul class="insight-list" id="priorityItems"></ul>
+                </div>
+
+                <!-- 3. 플랫폼 발전 로드맵 -->
+                <div class="result-card">
+                    <h3>
+                        <span class="icon">🗺️</span>
+                        플랫폼 발전 로드맵
+                    </h3>
+                    <ul class="insight-list" id="roadmapItems"></ul>
+                </div>
+
+                <!-- 4. 즉시 실행 가능한 액션 -->
+                <div class="result-card">
+                    <h3>
+                        <span class="icon">⚡</span>
+                        즉시 실행 가능한 액션
+                    </h3>
+                    <ul class="insight-list" id="quickActions"></ul>
+                </div>
+
+                <!-- 5. 새로운 도구 제안 -->
+                <div class="result-card">
+                    <h3>
+                        <span class="icon">💡</span>
+                        새로운 도구 제안
+                    </h3>
+                    <ul class="insight-list" id="newToolSuggestions"></ul>
+                </div>
+
+                <button class="export-btn" onclick="exportReport()">
+                    📄 리포트 다운로드
+                </button>
+            </div>
         </div>
     </div>
-    
+
     <script>
-        // 도구 초기화
-        console.log('${name} 초기화 완료');
-        
-        // 기본 기능 구현
-        ${generateJavaScript(template, features)}
-    </script>
-</body>
-</html>`;
-            
-            return htmlContent;
-        }
-
-        // 계산기 컨텐츠 생성
-        function generateCalculatorContent(features, colors) {
-            let content = `
-            <div class="section">
-                <h2 class="section-title">입력 데이터</h2>
-                
-                <div class="input-group">
-                    <label class="input-label">현재 네트워크 비용 (연간)</label>
-                    <input type="number" class="input-field" id="currentCost" placeholder="예: 100000000" oninput="calculate()">
-                </div>
-                
-                <div class="input-group">
-                    <label class="input-label">예상 절감율 (%)</label>
-                    <input type="number" class="input-field" id="savingRate" placeholder="예: 30" value="30" oninput="calculate()">
-                </div>
-                
-                <div class="input-group">
-                    <label class="input-label">SmartWAN 도입 비용</label>
-                    <input type="number" class="input-field" id="implementCost" placeholder="예: 50000000" value="50000000" oninput="calculate()">
-                </div>
-                
-                <button class="btn" onclick="calculate()">ROI 계산하기</button>
-            </div>
-            
-            <div class="section">
-                <h2 class="section-title">계산 결과</h2>
-                
-                <div class="result-box">
-                    <div class="result-title">예상 연간 절감액</div>
-                    <div class="result-value" id="savingAmount">₩ 0</div>
-                </div>
-                
-                <div class="result-box">
-                    <div class="result-title">3년 총 절감액</div>
-                    <div class="result-value" id="totalSaving">₩ 0</div>
-                </div>
-                
-                <div class="result-box">
-                    <div class="result-title">투자 회수 기간</div>
-                    <div class="result-value" id="payback">0 개월</div>
-                </div>
-                
-                <div class="result-box">
-                    <div class="result-title">3년 ROI</div>
-                    <div class="result-value" id="roi">0%</div>
-                </div>
-            </div>`;
-            
-            if (features.includes('chart')) {
-                content += `
-                <div class="section">
-                    <h2 class="section-title">절감 효과 차트</h2>
-                    <div class="chart-container">
-                        <canvas id="savingChart" width="400" height="200"></canvas>
-                    </div>
-                </div>`;
-            }
-            
-            return content;
-        }
-
-        // 분석기 컨텐츠 생성
-        function generateAnalyzerContent(features, colors) {
-            return `
-            <div class="section">
-                <h2 class="section-title">니즈 분석 설문</h2>
-                
-                <div class="input-group">
-                    <label class="input-label">1. 현재 가장 큰 네트워크 과제는?</label>
-                    <select class="input-field" id="challenge">
-                        <option value="">선택하세요</option>
-                        <option value="security">보안 위협 증가</option>
-                        <option value="cost">운영 비용 과다</option>
-                        <option value="performance">성능 저하</option>
-                        <option value="complexity">관리 복잡성</option>
-                    </select>
-                </div>
-                
-                <div class="input-group">
-                    <label class="input-label">2. 원격 근무 직원 비율은?</label>
-                    <select class="input-field" id="remote">
-                        <option value="">선택하세요</option>
-                        <option value="low">0-25%</option>
-                        <option value="medium">25-50%</option>
-                        <option value="high">50-75%</option>
-                        <option value="very-high">75-100%</option>
-                    </select>
-                </div>
-                
-                <div class="input-group">
-                    <label class="input-label">3. 클라우드 마이그레이션 계획은?</label>
-                    <select class="input-field" id="cloud">
-                        <option value="">선택하세요</option>
-                        <option value="none">계획 없음</option>
-                        <option value="considering">검토 중</option>
-                        <option value="planning">1년 내 예정</option>
-                        <option value="ongoing">진행 중</option>
-                    </select>
-                </div>
-                
-                <div class="input-group">
-                    <label class="input-label">4. 회사 규모는?</label>
-                    <select class="input-field" id="companySize">
-                        <option value="">선택하세요</option>
-                        <option value="small">50명 미만</option>
-                        <option value="medium">50-200명</option>
-                        <option value="large">200-1000명</option>
-                        <option value="enterprise">1000명 이상</option>
-                    </select>
-                </div>
-                
-                <button class="btn" onclick="analyzeNeeds()">니즈 분석 실행</button>
-            </div>
-            
-            <div class="section">
-                <h2 class="section-title">분석 결과</h2>
-                
-                <div class="result-box">
-                    <div class="result-title">추천 솔루션</div>
-                    <div id="recommendation">분석을 실행해주세요...</div>
-                </div>
-                
-                <div class="result-box">
-                    <div class="result-title">우선순위 개선 영역</div>
-                    <ul id="priorities"></ul>
-                </div>
-                
-                <div class="result-box">
-                    <div class="result-title">예상 개선 효과</div>
-                    <div id="benefits"></div>
-                </div>
-            </div>`;
-        }
-
-        // 비교 도구 컨텐츠 생성
-        function generateComparisonContent(features, colors) {
-            return `
-            <div class="section">
-                <h2 class="section-title">경쟁사 비교 분석</h2>
-                
-                <table>
-                    <thead>
-                        <tr>
-                            <th>기능</th>
-                            <th>SmartWAN</th>
-                            <th>Cisco SD-WAN</th>
-                            <th>Fortinet SD-WAN</th>
-                            <th>VMware VeloCloud</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Zero Trust 네이티브</td>
-                            <td style="color: #10b981; font-weight: bold;">✅ 완전 지원</td>
-                            <td style="color: #ef4444;">❌ 미지원</td>
-                            <td style="color: #f59e0b;">⚠️ 부분 지원</td>
-                            <td style="color: #ef4444;">❌ 미지원</td>
-                        </tr>
-                        <tr>
-                            <td>한국 로컬 POP</td>
-                            <td style="color: #10b981; font-weight: bold;">✅ 10+ 지점</td>
-                            <td style="color: #f59e0b;">⚠️ 서울 1개</td>
-                            <td style="color: #ef4444;">❌ 없음</td>
-                            <td style="color: #f59e0b;">⚠️ 서울 1개</td>
-                        </tr>
-                        <tr>
-                            <td>24x7 한국어 지원</td>
-                            <td style="color: #10b981; font-weight: bold;">✅ 전담팀</td>
-                            <td style="color: #ef4444;">❌ 영어만</td>
-                            <td style="color: #f59e0b;">⚠️ 제한적</td>
-                            <td style="color: #f59e0b;">⚠️ 제한적</td>
-                        </tr>
-                        <tr>
-                            <td>가격 경쟁력</td>
-                            <td style="color: #10b981; font-weight: bold;">✅ 40% 저렴</td>
-                            <td style="color: #ef4444;">❌ 고가</td>
-                            <td style="color: #f59e0b;">⚠️ 중간 가격</td>
-                            <td style="color: #ef4444;">❌ 고가</td>
-                        </tr>
-                        <tr>
-                            <td>구축 기간</td>
-                            <td style="color: #10b981; font-weight: bold;">✅ 2-4주</td>
-                            <td style="color: #f59e0b;">⚠️ 2-3개월</td>
-                            <td style="color: #f59e0b;">⚠️ 1-2개월</td>
-                            <td style="color: #f59e0b;">⚠️ 2-3개월</td>
-                        </tr>
-                        <tr>
-                            <td>관리 편의성</td>
-                            <td style="color: #10b981; font-weight: bold;">✅ 통합 관리</td>
-                            <td style="color: #f59e0b;">⚠️ 복잡</td>
-                            <td style="color: #10b981;">✅ 양호</td>
-                            <td style="color: #f59e0b;">⚠️ 보통</td>
-                        </tr>
-                    </tbody>
-                </table>
-                
-                <button class="btn" onclick="generateComparisonReport()" style="margin-top: 20px;">📊 비교 리포트 생성</button>
-            </div>
-            
-            <div class="section" id="comparisonResult" style="display: none;">
-                <h2 class="section-title">비교 분석 결과</h2>
-                
-                <div class="result-box">
-                    <div class="result-title">SmartWAN 우위점</div>
-                    <ul>
-                        <li><strong>Zero Trust 보안:</strong> 기본 탑재된 Zero Trust 아키텍처</li>
-                        <li><strong>로컬 최적화:</strong> 한국 특화 POP 및 지원 체계</li>
-                        <li><strong>비용 효율성:</strong> 경쟁사 대비 40% 절약</li>
-                        <li><strong>빠른 구축:</strong> 2-4주 내 완료 가능</li>
-                    </ul>
-                </div>
-                
-                <div class="result-box">
-                    <div class="result-title">종합 점수</div>
-                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
-                        <div style="text-align: center;">
-                            <div style="font-size: 1.5rem; color: #10b981; font-weight: bold;">SmartWAN</div>
-                            <div style="font-size: 2rem; color: #10b981;">95점</div>
-                        </div>
-                        <div style="text-align: center;">
-                            <div style="font-size: 1.5rem; color: #f59e0b;">Cisco</div>
-                            <div style="font-size: 2rem; color: #f59e0b;">75점</div>
-                        </div>
-                        <div style="text-align: center;">
-                            <div style="font-size: 1.5rem; color: #f59e0b;">Fortinet</div>
-                            <div style="font-size: 2rem; color: #f59e0b;">70점</div>
-                        </div>
-                        <div style="text-align: center;">
-                            <div style="font-size: 1.5rem; color: #f59e0b;">VMware</div>
-                            <div style="font-size: 2rem; color: #f59e0b;">68점</div>
-                        </div>
-                    </div>
-                </div>
-            </div>`;
-        }
-
-        // 평가 도구 컨텐츠 생성
-        function generateAssessmentContent(features, colors) {
-            return `
-            <div class="section">
-                <h2 class="section-title">SmartWAN 준비도 평가</h2>
-                
-                <div style="background: #f8fafc; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
-                    <h3 style="color: #1e40af; margin-bottom: 15px;">🏗️ 인프라 준비도</h3>
-                    <label style="display: block; margin-bottom: 10px;">
-                        <input type="checkbox" class="assessment-check" data-category="infra" style="margin-right: 10px;"> 기존 네트워크 인벤토리 완료
-                    </label>
-                    <label style="display: block; margin-bottom: 10px;">
-                        <input type="checkbox" class="assessment-check" data-category="infra" style="margin-right: 10px;"> 대역폭 요구사항 분석 완료
-                    </label>
-                    <label style="display: block; margin-bottom: 10px;">
-                        <input type="checkbox" class="assessment-check" data-category="infra" style="margin-right: 10px;"> 보안 정책 문서화
-                    </label>
-                    <label style="display: block; margin-bottom: 10px;">
-                        <input type="checkbox" class="assessment-check" data-category="infra" style="margin-right: 10px;"> 현재 네트워크 성능 측정 완료
-                    </label>
-                </div>
-                
-                <div style="background: #f0fdf4; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
-                    <h3 style="color: #059669; margin-bottom: 15px;">👥 조직 준비도</h3>
-                    <label style="display: block; margin-bottom: 10px;">
-                        <input type="checkbox" class="assessment-check" data-category="org" style="margin-right: 10px;"> IT 팀 교육 계획 수립
-                    </label>
-                    <label style="display: block; margin-bottom: 10px;">
-                        <input type="checkbox" class="assessment-check" data-category="org" style="margin-right: 10px;"> 변경 관리 프로세스 준비
-                    </label>
-                    <label style="display: block; margin-bottom: 10px;">
-                        <input type="checkbox" class="assessment-check" data-category="org" style="margin-right: 10px;"> 경영진 승인 획득
-                    </label>
-                    <label style="display: block; margin-bottom: 10px;">
-                        <input type="checkbox" class="assessment-check" data-category="org" style="margin-right: 10px;"> 프로젝트 팀 구성 완료
-                    </label>
-                </div>
-                
-                <div style="background: #fef7f0; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
-                    <h3 style="color: #d97706; margin-bottom: 15px;">💼 비즈니스 준비도</h3>
-                    <label style="display: block; margin-bottom: 10px;">
-                        <input type="checkbox" class="assessment-check" data-category="business" style="margin-right: 10px;"> 예산 확보 완료
-                    </label>
-                    <label style="display: block; margin-bottom: 10px;">
-                        <input type="checkbox" class="assessment-check" data-category="business" style="margin-right: 10px;"> ROI 목표 설정
-                    </label>
-                    <label style="display: block; margin-bottom: 10px;">
-                        <input type="checkbox" class="assessment-check" data-category="business" style="margin-right: 10px;"> 구축 일정 계획 수립
-                    </label>
-                    <label style="display: block; margin-bottom: 10px;">
-                        <input type="checkbox" class="assessment-check" data-category="business" style="margin-right: 10px;"> 성공 지표 정의
-                    </label>
-                </div>
-                
-                <button class="btn" onclick="assessReadiness()">준비도 평가하기</button>
-                
-                <div class="result-box" style="display: none;" id="assessmentResult">
-                    <div class="result-title">종합 준비도 점수</div>
-                    <div class="result-value" id="totalScore">0%</div>
-                    
-                    <div style="margin-top: 20px;">
-                        <h4 style="margin-bottom: 10px;">영역별 점수:</h4>
-                        <div id="categoryScores"></div>
-                    </div>
-                    
-                    <div style="margin-top: 20px;">
-                        <h4 style="margin-bottom: 10px;">개선이 필요한 영역:</h4>
-                        <ul id="improvementAreas"></ul>
-                    </div>
-                    
-                    <div style="margin-top: 20px;">
-                        <h4 style="margin-bottom: 10px;">추천 다음 단계:</h4>
-                        <ul id="nextSteps"></ul>
-                    </div>
-                </div>
-            </div>`;
-        }
-
-        // 생성기 컨텐츠 생성
-        function generateGeneratorContent(features, colors) {
-            return `
-            <div class="section">
-                <h2 class="section-title">SmartWAN 제안서 자동 생성</h2>
-                
-                <div class="input-group">
-                    <label class="input-label">고객사명</label>
-                    <input type="text" class="input-field" id="companyName" placeholder="예: ABC 기업">
-                </div>
-                
-                <div class="input-group">
-                    <label class="input-label">업종</label>
-                    <select class="input-field" id="industry">
-                        <option value="">선택하세요</option>
-                        <option value="finance">금융</option>
-                        <option value="manufacturing">제조</option>
-                        <option value="retail">유통</option>
-                        <option value="healthcare">의료</option>
-                        <option value="education">교육</option>
-                        <option value="government">공공</option>
-                    </select>
-                </div>
-                
-                <div class="input-group">
-                    <label class="input-label">회사 규모</label>
-                    <select class="input-field" id="companyScale">
-                        <option value="">선택하세요</option>
-                        <option value="small">50명 미만</option>
-                        <option value="medium">50-200명</option>
-                        <option value="large">200-1000명</option>
-                        <option value="enterprise">1000명 이상</option>
-                    </select>
-                </div>
-                
-                <div class="input-group">
-                    <label class="input-label">주요 요구사항</label>
-                    <textarea class="input-field" id="requirements" rows="4" placeholder="고객의 주요 요구사항과 해결하고자 하는 문제를 입력하세요..."></textarea>
-                </div>
-                
-                <div class="input-group">
-                    <label class="input-label">제안서 유형</label>
-                    <select class="input-field" id="proposalType">
-                        <option value="technical">기술 제안서</option>
-                        <option value="business">사업 제안서</option>
-                        <option value="executive">임원진용 요약</option>
-                    </select>
-                </div>
-                
-                <button class="btn" onclick="generateProposal()">🎯 제안서 생성</button>
-                
-                <div id="proposalPreview" style="display: none; margin-top: 30px;">
-                    <h3 style="color: #1e40af; margin-bottom: 15px;">생성된 제안서 미리보기</h3>
-                    <div style="border: 2px solid #e2e8f0; border-radius: 10px; padding: 20px; background: white; max-height: 400px; overflow-y: auto;">
-                        <div id="proposalContent"></div>
-                    </div>
-                    <div style="margin-top: 15px;">
-                        <button class="btn" onclick="downloadProposal()">📥 Word 다운로드</button>
-                        <button class="btn" onclick="copyProposal()" style="margin-left: 10px;">📋 복사</button>
-                    </div>
-                </div>
-            </div>`;
-        }
-
-        // 대시보드 컨텐츠 생성
-        function generateDashboardContent(features, colors) {
-            return `
-            <div class="section">
-                <h2 class="section-title">SmartWAN 영업 성과 대시보드</h2>
-                
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 30px;">
-                    <div style="background: linear-gradient(135deg, #3b82f6, #2563eb); color: white; padding: 20px; border-radius: 10px;">
-                        <div style="font-size: 0.9rem; opacity: 0.9;">이번 달 성사 건수</div>
-                        <div style="font-size: 2rem; font-weight: bold; margin-top: 10px;" id="dealsCount">12건</div>
-                        <div style="font-size: 0.85rem; margin-top: 5px;">전월 대비 +20%</div>
-                    </div>
-                    
-                    <div style="background: linear-gradient(135deg, #10b981, #059669); color: white; padding: 20px; border-radius: 10px;">
-                        <div style="font-size: 0.9rem; opacity: 0.9;">예상 매출액</div>
-                        <div style="font-size: 2rem; font-weight: bold; margin-top: 10px;" id="revenue">₩ 3.5B</div>
-                        <div style="font-size: 0.85rem; margin-top: 5px;">목표 달성률 87%</div>
-                    </div>
-                    
-                    <div style="background: linear-gradient(135deg, #f59e0b, #d97706); color: white; padding: 20px; border-radius: 10px;">
-                        <div style="font-size: 0.9rem; opacity: 0.9;">진행 중 딜</div>
-                        <div style="font-size: 2rem; font-weight: bold; margin-top: 10px;" id="pipelineDeals">28건</div>
-                        <div style="font-size: 0.85rem; margin-top: 5px;">평균 진행률 65%</div>
-                    </div>
-                    
-                    <div style="background: linear-gradient(135deg, #8b5cf6, #7c3aed); color: white; padding: 20px; border-radius: 10px;">
-                        <div style="font-size: 0.9rem; opacity: 0.9;">Win Rate</div>
-                        <div style="font-size: 2rem; font-weight: bold; margin-top: 10px;" id="winRate">68%</div>
-                        <div style="font-size: 0.85rem; margin-top: 5px;">업계 평균 45%</div>
-                    </div>
-                </div>
-                
-                <div style="background: #f8fafc; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
-                    <h3 style="color: #1e40af; margin-bottom: 15px;">월별 성과 추이</h3>
-                    <div class="chart-container">
-                        <canvas id="performanceChart" width="400" height="200"></canvas>
-                    </div>
-                </div>
-                
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-                    <div style="background: #f8fafc; padding: 20px; border-radius: 10px;">
-                        <h3 style="color: #1e40af; margin-bottom: 15px;">고객별 매출 현황</h3>
-                        <div id="customerRevenue">
-                            <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
-                                <span>삼성전자</span>
-                                <span style="font-weight: bold;">₩ 500M</span>
-                            </div>
-                            <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
-                                <span>LG전자</span>
-                                <span style="font-weight: bold;">₩ 350M</span>
-                            </div>
-                            <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
-                                <span>현대자동차</span>
-                                <span style="font-weight: bold;">₩ 420M</span>
-                            </div>
-                            <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
-                                <span>신한은행</span>
-                                <span style="font-weight: bold;">₩ 280M</span>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div style="background: #f8fafc; padding: 20px; border-radius: 10px;">
-                        <h3 style="color: #1e40af; margin-bottom: 15px;">지역별 영업 성과</h3>
-                        <div id="regionPerformance">
-                            <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
-                                <span>서울/경기</span>
-                                <span style="font-weight: bold;">45%</span>
-                            </div>
-                            <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
-                                <span>부산/울산</span>
-                                <span style="font-weight: bold;">18%</span>
-                            </div>
-                            <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
-                                <span>대구/경북</span>
-                                <span style="font-weight: bold;">15%</span>
-                            </div>
-                            <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
-                                <span>기타 지역</span>
-                                <span style="font-weight: bold;">22%</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <button class="btn" onclick="refreshDashboard()" style="margin-top: 20px;">🔄 데이터 새로고침</button>
-            </div>`;
-        }
-
-        // JavaScript 코드 생성
-        function generateJavaScript(template, features) {
-            let js = '';
-            
-            if (template === 'calculator') {
-                js = `
-        function calculate() {
-            const currentCost = parseFloat(document.getElementById('currentCost').value) || 0;
-            const savingRate = parseFloat(document.getElementById('savingRate').value) || 30;
-            const implementCost = parseFloat(document.getElementById('implementCost').value) || 50000000;
-            
-            if (currentCost === 0) return;
-            
-            const annualSaving = currentCost * (savingRate / 100);
-            const totalSaving = annualSaving * 3;
-            const netSaving = totalSaving - implementCost;
-            const paybackPeriod = implementCost / (annualSaving / 12);
-            const roi = (netSaving / implementCost) * 100;
-            
-            document.getElementById('savingAmount').textContent = '₩ ' + annualSaving.toLocaleString();
-            document.getElementById('totalSaving').textContent = '₩ ' + totalSaving.toLocaleString();
-            document.getElementById('payback').textContent = paybackPeriod.toFixed(1) + ' 개월';
-            document.getElementById('roi').textContent = roi.toFixed(1) + '%';
-        }
-        
-        window.onload = function() {
-            calculate();
-        };`;
-            } else if (template === 'analyzer') {
-                js = `
-        function analyzeNeeds() {
-            const challenge = document.getElementById('challenge').value;
-            const remote = document.getElementById('remote').value;
-            const cloud = document.getElementById('cloud').value;
-            const companySize = document.getElementById('companySize').value;
-            
-            if (!challenge || !remote || !cloud || !companySize) {
-                alert('모든 항목을 선택해주세요.');
-                return;
-            }
-            
-            const recommendation = document.getElementById('recommendation');
-            const priorities = document.getElementById('priorities');
-            const benefits = document.getElementById('benefits');
-            
-            let recommendedSolution = '';
-            let priorityList = [];
-            let benefitList = [];
-            
-            if (challenge === 'security') {
-                recommendedSolution = 'SmartWAN Zero Trust Enterprise - Zero Trust 기반 통합 보안 솔루션이 최적입니다.';
-                priorityList = ['Zero Trust 보안 아키텍처 구축', '엔드포인트 보안 강화', 'ID 기반 접근 제어'];
-            } else if (challenge === 'cost') {
-                recommendedSolution = 'SmartWAN Cost Optimizer - 비용 최적화에 특화된 솔루션을 추천합니다.';
-                priorityList = ['네트워크 운영 비용 절감', 'MPLS 대체를 통한 절약', '중앙 집중식 관리'];
-            } else if (challenge === 'performance') {
-                recommendedSolution = 'SmartWAN Performance Plus - 성능 최적화 중심의 솔루션이 적합합니다.';
-                priorityList = ['WAN 성능 최적화', '트래픽 가속화', 'QoS 정책 구현'];
-            } else {
-                recommendedSolution = 'SmartWAN Unified Manager - 관리 복잡성 해결에 중점을 둔 솔루션입니다.';
-                priorityList = ['중앙 집중식 관리 체계', 'SDN 기반 자동화', '통합 모니터링'];
-            }
-            
-            if (remote === 'high' || remote === 'very-high') {
-                benefitList.push('원격 근무자 연결성 50% 향상');
-                benefitList.push('VPN 성능 개선으로 생산성 증대');
-            }
-            
-            if (cloud === 'planning' || cloud === 'ongoing') {
-                benefitList.push('클라우드 마이그레이션 가속화');
-                benefitList.push('하이브리드 클라우드 최적화');
-            }
-            
-            benefitList.push('네트워크 운영 비용 30-40% 절감');
-            benefitList.push('보안 사고 70% 감소');
-            benefitList.push('운영 효율성 50% 향상');
-            
-            recommendation.innerHTML = recommendedSolution;
-            priorities.innerHTML = priorityList.map(function(item) { return '<li>' + item + '</li>'; }).join('');
-            benefits.innerHTML = benefitList.map(function(item) { return '<li>' + item + '</li>'; }).join('');
-        }`;
-            } else if (template === 'comparison') {
-                js = `
-        function generateComparisonReport() {
-            document.getElementById('comparisonResult').style.display = 'block';
-            document.getElementById('comparisonResult').scrollIntoView({behavior: 'smooth'});
-        }`;
-            } else if (template === 'assessment') {
-                js = `
-        function assessReadiness() {
-            const infraChecks = document.querySelectorAll('input[data-category="infra"]:checked').length;
-            const orgChecks = document.querySelectorAll('input[data-category="org"]:checked').length;
-            const businessChecks = document.querySelectorAll('input[data-category="business"]:checked').length;
-            
-            const infraTotal = document.querySelectorAll('input[data-category="infra"]').length;
-            const orgTotal = document.querySelectorAll('input[data-category="org"]').length;
-            const businessTotal = document.querySelectorAll('input[data-category="business"]').length;
-            
-            const infraScore = Math.round((infraChecks / infraTotal) * 100);
-            const orgScore = Math.round((orgChecks / orgTotal) * 100);
-            const businessScore = Math.round((businessChecks / businessTotal) * 100);
-            
-            const totalScore = Math.round((infraScore + orgScore + businessScore) / 3);
-            
-            const result = document.getElementById('assessmentResult');
-            result.style.display = 'block';
-            result.querySelector('#totalScore').textContent = totalScore + '%';
-            
-            const categoryScores = document.getElementById('categoryScores');
-            categoryScores.innerHTML = '<div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px;"><div style="text-align: center; padding: 10px; background: #f0f9ff; border-radius: 8px;"><div style="font-weight: bold; color: #1e40af;">인프라</div><div style="font-size: 1.5rem; color: #3b82f6;">' + infraScore + '%</div></div><div style="text-align: center; padding: 10px; background: #f0fdf4; border-radius: 8px;"><div style="font-weight: bold; color: #059669;">조직</div><div style="font-size: 1.5rem; color: #10b981;">' + orgScore + '%</div></div><div style="text-align: center; padding: 10px; background: #fef7f0; border-radius: 8px;"><div style="font-weight: bold; color: #d97706;">비즈니스</div><div style="font-size: 1.5rem; color: #f59e0b;">' + businessScore + '%</div></div></div>';
-            
-            const areas = [];
-            if (infraScore < 75) areas.push('인프라 평가 및 현황 분석 필요');
-            if (orgScore < 75) areas.push('조직 변경 관리 및 교육 계획 수립');
-            if (businessScore < 75) areas.push('비즈니스 케이스 및 예산 계획 보완');
-            
-            document.getElementById('improvementAreas').innerHTML = 
-                areas.map(function(area) { return '<li>' + area + '</li>'; }).join('');
-            
-            const nextSteps = [];
-            if (totalScore >= 80) {
-                nextSteps.push('SmartWAN 파일럿 프로젝트 시작');
-                nextSteps.push('상세 구축 계획 수립');
-            } else if (totalScore >= 60) {
-                nextSteps.push('부족한 영역 우선 보완');
-                nextSteps.push('SmartWAN PoC 검토');
-            } else {
-                nextSteps.push('기본 준비사항 점검 및 보완');
-                nextSteps.push('내부 이해관계자 alignment');
-            }
-            
-            nextSteps.push('SKT 영업팀과 상세 논의');
-            
-            document.getElementById('nextSteps').innerHTML = 
-                nextSteps.map(function(step) { return '<li>' + step + '</li>'; }).join('');
-                
-            result.scrollIntoView({behavior: 'smooth'});
-        }`;
-            } else if (template === 'generator') {
-                js = `
-        let generatedProposalText = '';
-        
-        function generateProposal() {
-            const companyName = document.getElementById('companyName').value;
-            const industry = document.getElementById('industry').value;
-            const companyScale = document.getElementById('companyScale').value;
-            const requirements = document.getElementById('requirements').value;
-            const proposalType = document.getElementById('proposalType').value;
-            
-            if (!companyName || !industry || !companyScale) {
-                alert('필수 정보를 모두 입력해주세요.');
-                return;
-            }
-            
-            const preview = document.getElementById('proposalPreview');
-            const content = document.getElementById('proposalContent');
-            
-            preview.style.display = 'block';
-            
-            let industrySpecific = '';
-            if (industry === 'finance') {
-                industrySpecific = '금융권의 엄격한 보안 요구사항과 컴플라이언스 기준을 만족하는';
-            } else if (industry === 'manufacturing') {
-                industrySpecific = '제조업의 생산성 향상과 운영 효율성을 위한';
-            } else if (industry === 'retail') {
-                industrySpecific = '유통업의 다지점 연결과 고객 서비스 향상을 위한';
-            } else {
-                industrySpecific = '귀하의 업종 특성에 최적화된';
-            }
-            
-            let scaleSpecific = '';
-            if (companyScale === 'enterprise') {
-                scaleSpecific = '대규모 엔터프라이즈 환경에 적합한 확장성과 안정성을 제공';
-            } else if (companyScale === 'large') {
-                scaleSpecific = '중대형 기업의 복잡한 네트워크 환경을 효과적으로 관리';
-            } else {
-                scaleSpecific = '효율적인 비용으로 필요한 네트워크 기능을 제공';
-            }
-            
-            generatedProposalText = 'SmartWAN 도입 제안서\\n\\n회사명: ' + companyName + '\\n업종: ' + industry + '\\n\\n1. Executive Summary\\n' + companyName + '의 네트워크 현대화와 디지털 트랜스포메이션을 위한 SmartWAN 솔루션을 제안드립니다.\\n본 솔루션은 ' + industrySpecific + ' Zero Trust 기반의 차세대 네트워크 플랫폼입니다.\\n\\n2. 현황 분석 및 과제\\n• 증가하는 사이버 보안 위협과 복잡한 네트워크 관리\\n• ' + (requirements || '네트워크 성능 최적화 및 보안 강화 필요') + '\\n• 원격 근무 환경 지원과 클라우드 연결성 요구\\n• 운영 비용 절감과 관리 효율성 향상 필요\\n\\n3. 제안 솔루션: SKT SmartWAN\\nSKT SmartWAN은 ' + scaleSpecific + '하는 통합 네트워크 솔루션입니다.\\n\\n주요 특징:\\n• Zero Trust 네이티브 보안 아키텍처\\n• 한국 최적화 POP과 로컬 지원\\n• 기존 대비 40% 비용 절감\\n• 2-4주 내 빠른 구축\\n\\n4. 기대 효과\\n• TCO 30-40% 절감을 통한 연간 수억원 비용 절약\\n• 보안 사고 70% 감소로 리스크 최소화\\n• 네트워크 성능 50% 향상으로 업무 효율성 증대\\n• 통합 관리로 운영 복잡성 해결';
-            
-            content.innerHTML = '<pre style="white-space: pre-wrap; font-family: inherit;">' + generatedProposalText + '</pre>';
-            preview.scrollIntoView({behavior: 'smooth'});
-        }
-        
-        function downloadProposal() {
-            if (!generatedProposalText) return;
-            
-            const blob = new Blob([generatedProposalText], { type: 'text/plain;charset=utf-8' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            const companyName = document.getElementById('companyName').value || 'SmartWAN';
-            a.href = url;
-            a.download = companyName + '_SmartWAN_제안서.txt';
-            a.click();
-            URL.revokeObjectURL(url);
-        }
-        
-        function copyProposal() {
-            if (!generatedProposalText) return;
-            
-            navigator.clipboard.writeText(generatedProposalText).then(function() {
-                alert('제안서가 클립보드에 복사되었습니다!');
-            });
-        }`;
-            } else if (template === 'dashboard') {
-                js = `
-        function refreshDashboard() {
-            const dealsCount = Math.floor(Math.random() * 20) + 10;
-            const revenue = (Math.random() * 2 + 2.5).toFixed(1);
-            const pipelineDeals = Math.floor(Math.random() * 40) + 20;
-            const winRate = Math.floor(Math.random() * 20) + 60;
-            
-            document.getElementById('dealsCount').textContent = dealsCount + '건';
-            document.getElementById('revenue').textContent = '₩ ' + revenue + 'B';
-            document.getElementById('pipelineDeals').textContent = pipelineDeals + '건';
-            document.getElementById('winRate').textContent = winRate + '%';
-            
-            const canvas = document.getElementById('performanceChart');
-            if (canvas) {
-                const ctx = canvas.getContext('2d');
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                
-                ctx.strokeStyle = '#3b82f6';
-                ctx.lineWidth = 3;
-                ctx.beginPath();
-                
-                const points = [];
-                for (let i = 0; i < 12; i++) {
-                    points.push({
-                        x: (i / 11) * (canvas.width - 40) + 20,
-                        y: canvas.height - (Math.random() * 0.6 + 0.2) * (canvas.height - 40) - 20
-                    });
-                }
-                
-                ctx.moveTo(points[0].x, points[0].y);
-                for (let i = 1; i < points.length; i++) {
-                    ctx.lineTo(points[i].x, points[i].y);
-                }
-                ctx.stroke();
-                
-                ctx.fillStyle = '#3b82f6';
-                points.forEach(function(point) {
-                    ctx.beginPath();
-                    ctx.arc(point.x, point.y, 4, 0, Math.PI * 2);
-                    ctx.fill();
-                });
-            }
-        }
-        
-        window.onload = function() {
-            setTimeout(refreshDashboard, 500);
-        };`;
-            }
-            
-            return js;
-        }
-
-        // 생성된 도구 표시
-        function displayGeneratedTool(code) {
-            const iframe = document.getElementById('previewFrame');
-            iframe.srcdoc = code;
-            
-            generatedCode = code;
-            
-            // 코드 뷰에도 표시
-            document.getElementById('codeView').textContent = code;
-        }
-
-        // 뷰 전환
-        function switchView(view) {
-            currentView = view;
-            
-            // 탭 활성화
-            document.querySelectorAll('.tab').forEach(tab => {
-                tab.classList.remove('active');
-            });
-            event.currentTarget.classList.add('active');
-            
-            // 뷰 전환
-            if (view === 'preview') {
-                document.getElementById('previewFrame').style.display = 'block';
-                document.getElementById('codeView').style.display = 'none';
-                closeDeployModal();
-            } else if (view === 'code') {
-                document.getElementById('previewFrame').style.display = 'none';
-                document.getElementById('codeView').style.display = 'block';
-                document.getElementById('codeView').classList.add('active');
-                closeDeployModal();
-            } else if (view === 'deploy') {
-                openDeployModal();
-            }
-        }
-
-        // 로딩 표시
-        function showLoading(show) {
-            const overlay = document.getElementById('loadingOverlay');
-            overlay.classList.toggle('active', show);
-        }
-
-        // 미리보기 새로고침
-        function refreshPreview() {
-            const iframe = document.getElementById('previewFrame');
-            iframe.srcdoc = generatedCode;
-        }
-
-        // 코드 다운로드
-        function downloadCode() {
-            if (!generatedCode) {
-                alert('먼저 도구를 생성해주세요!');
-                return;
-            }
-            
-            const blob = new Blob([generatedCode], { type: 'text/html' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = (document.getElementById('toolName').value || 'smartwan-tool').replace(/\s+/g, '-').toLowerCase() + '.html';
-            a.click();
-            URL.revokeObjectURL(url);
-        }
-
-        // 코드 복사
-        function copyCode() {
-            if (!generatedCode) {
-                alert('먼저 도구를 생성해주세요!');
-                return;
-            }
-            
-            navigator.clipboard.writeText(generatedCode).then(() => {
-                alert('코드가 클립보드에 복사되었습니다!');
-            }).catch(() => {
-                // 폴백: 텍스트 영역 사용
-                const textArea = document.createElement('textarea');
-                textArea.value = generatedCode;
-                document.body.appendChild(textArea);
-                textArea.select();
-                document.execCommand('copy');
-                document.body.removeChild(textArea);
-                alert('코드가 클립보드에 복사되었습니다!');
-            });
-        }
-
-        // 배포 모달
-        function openDeployModal() {
-            document.getElementById('deployModal').classList.add('active');
-        }
-
-        function closeDeployModal() {
-            document.getElementById('deployModal').classList.remove('active');
-        }
-
-        // 배포 옵션들
-        function deployToGitHub() {
-            alert('GitHub Pages 배포 가이드:\n\n1. GitHub 저장소 생성\n2. 생성된 HTML을 index.html로 저장\n3. Settings → Pages에서 활성화\n4. https://[username].github.io/[repo-name] 접속');
-        }
-
-        function deployToNetlify() {
-            alert('Netlify 배포 가이드:\n\n1. netlify.com 접속\n2. Sites 탭에서 파일 드래그 앤 드롭\n3. 자동으로 URL 생성됨\n4. 커스텀 도메인 설정 가능');
-        }
-
-        function deployToVercel() {
-            alert('Vercel 배포 가이드:\n\n1. vercel.com 접속\n2. Import Project 클릭\n3. HTML 파일 업로드\n4. 자동 배포 및 URL 생성');
-        }
-
-        function downloadForLocal() {
-            downloadCode();
-            closeDeployModal();
-        }
+        // 도구 목록
+        const tools = [
+            // 분석 단계
+            { name: '고객 세그먼트 식별기', stage: '분석', usage: 0 },
+            { name: '고객 관계 매퍼', stage: '분석', usage: 0 },
+            { name: 'BANT & Lead Scoring', stage: '분석', usage: 0 },
+            // 영업 단계
+            { name: '경쟁사 배틀카드', stage: '영업', usage: 0 },
+            { name: '영업 스크립트 생성기', stage: '영업', usage: 0 },
+            { name: 'ROI 계산기', stage: '영업', usage: 0 },
+            { name: '고객 인지편향 분석', stage: '영업', usage: 0 },
+            // 제안 단계
+            { name: '제안서 생성기', stage: '제안', usage: 0 },
+            { name: '통합 견적 계산기', stage: '제안', usage: 0 },
+            { name: 'Value Story Builder', stage: '제안', usage: 0 },
+            // 입찰 단계
+            { name: '프레젠테이션 코치', stage: '입찰', usage: 0 },
+            { name: '협상 플레이북', stage: '입찰', usage: 0 },
+            // 관리 단계
+            { name: 'Win/Loss 분석', stage: '관리', usage: 0 },
+            { name: '계정 성장 플래너', stage: '관리', usage: 0 },
+            { name: '팔로업 트래커', stage: '관리', usage: 0 }
+        ];
 
         // 초기화
-        console.log('SmartWAN AI 도구 생성기 준비 완료');
-        
-        // 예시로 계산기 템플릿을 미리 선택
-        setTimeout(() => {
-            const calculatorCard = document.querySelector('[onclick="selectTemplate(\'calculator\')"]');
-            if (calculatorCard) {
-                calculatorCard.click();
+        function initTools() {
+            const container = document.getElementById('toolUsage');
+            container.innerHTML = '';
+            
+            tools.forEach((tool, index) => {
+                const div = document.createElement('div');
+                div.className = 'tool-item';
+                div.innerHTML = `
+                    <div class="name">${tool.name}</div>
+                    <div class="usage">
+                        <select onchange="updateUsage(${index}, this.value)">
+                            <option value="0">미사용</option>
+                            <option value="1">월 1-2회</option>
+                            <option value="2">주 1-2회</option>
+                            <option value="3">주 3-4회</option>
+                            <option value="4">매일 사용</option>
+                        </select>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        // 사용량 업데이트
+        function updateUsage(index, value) {
+            tools[index].usage = parseInt(value);
+        }
+
+        // 프리셋 로드
+        function loadPreset(type) {
+            const presets = {
+                new_team: [1,0,1,2,1,2,0,1,1,0,0,0,1,0,0],
+                active_team: [3,2,3,4,3,4,2,3,2,2,2,2,3,2,2],
+                struggling_team: [1,1,0,1,0,1,0,0,0,0,0,0,1,0,0],
+                expert_team: [4,3,4,4,4,4,3,3,3,3,3,3,4,3,3]
+            };
+
+            const values = presets[type];
+            const selects = document.querySelectorAll('.tool-item select');
+            selects.forEach((select, index) => {
+                select.value = values[index] || 0;
+                tools[index].usage = values[index] || 0;
+            });
+        }
+
+        // 태그 토글
+        function toggleTag(element) {
+            element.classList.toggle('selected');
+        }
+
+        // 데이터 분석
+        function analyzeData() {
+            const topTools = document.getElementById('topTools').value;
+            const improvements = document.getElementById('improvements').value;
+            const monthlyUsers = document.getElementById('monthlyUsers').value || 10;
+            const successRate = document.getElementById('successRate').value || 0;
+            const cycleReduction = document.getElementById('cycleReduction').value || 0;
+            
+            // 선택된 문제점 태그
+            const selectedTags = Array.from(document.querySelectorAll('.tag.selected'))
+                .map(tag => tag.textContent);
+
+            // 사용 패턴 차트 생성
+            createUsageChart();
+            
+            // 인사이트 생성
+            generateUsageInsights();
+            generatePriorityItems(selectedTags, improvements);
+            generateRoadmap();
+            generateQuickActions(selectedTags);
+            generateNewToolSuggestions(topTools, improvements);
+            
+            // 결과 표시
+            document.getElementById('results').classList.add('show');
+            document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // 사용 패턴 차트
+        function createUsageChart() {
+            const stages = ['분석', '영업', '제안', '입찰', '관리'];
+            const stageUsage = {};
+            
+            stages.forEach(stage => {
+                stageUsage[stage] = tools
+                    .filter(t => t.stage === stage)
+                    .reduce((sum, t) => sum + t.usage, 0);
+            });
+            
+            const maxUsage = Math.max(...Object.values(stageUsage));
+            const chartContainer = document.getElementById('usageChart');
+            chartContainer.innerHTML = '';
+            
+            Object.entries(stageUsage).forEach(([stage, usage]) => {
+                const bar = document.createElement('div');
+                bar.className = 'bar';
+                bar.style.height = `${(usage / maxUsage) * 100}%`;
+                bar.innerHTML = `
+                    <div class="bar-value">${usage}</div>
+                    <div class="bar-label">${stage}</div>
+                `;
+                chartContainer.appendChild(bar);
+            });
+        }
+
+        // 사용 패턴 인사이트
+        function generateUsageInsights() {
+            const insights = [];
+            const totalUsage = tools.reduce((sum, t) => sum + t.usage, 0);
+            const avgUsage = totalUsage / tools.length;
+            
+            // 가장 많이 사용되는 도구
+            const mostUsed = tools.sort((a, b) => b.usage - a.usage)[0];
+            if (mostUsed.usage > 0) {
+                insights.push(`🔥 "${mostUsed.name}"이(가) 가장 활발히 사용되고 있습니다 (사용률: ${mostUsed.usage * 25}%)`);
             }
-        }, 500);
+            
+            // 사용률이 낮은 단계
+            const stageUsage = {};
+            ['분석', '영업', '제안', '입찰', '관리'].forEach(stage => {
+                stageUsage[stage] = tools.filter(t => t.stage === stage)
+                    .reduce((sum, t) => sum + t.usage, 0);
+            });
+            
+            const lowStage = Object.entries(stageUsage)
+                .sort((a, b) => a[1] - b[1])[0];
+            if (lowStage[1] < avgUsage * 3) {
+                insights.push(`⚠️ "${lowStage[0]}" 단계의 도구 활용도가 낮습니다. 교육이나 개선이 필요할 수 있습니다`);
+            }
+            
+            // 미사용 도구
+            const unusedTools = tools.filter(t => t.usage === 0);
+            if (unusedTools.length > 0) {
+                insights.push(`💤 ${unusedTools.length}개 도구가 전혀 사용되지 않고 있습니다. 통합이나 제거를 고려하세요`);
+            }
+            
+            // 활용도 패턴
+            if (avgUsage > 2) {
+                insights.push(`✅ 전반적으로 플랫폼이 활발히 사용되고 있습니다 (평균 활용도: ${(avgUsage * 25).toFixed(0)}%)`);
+            } else {
+                insights.push(`📈 플랫폼 활용도를 높이기 위한 사용자 교육이 필요합니다`);
+            }
+            
+            document.getElementById('usageInsights').innerHTML = 
+                insights.map(i => `<li>${i}</li>`).join('');
+        }
+
+        // 우선순위 개선사항
+        function generatePriorityItems(tags, feedback) {
+            const items = [];
+            
+            if (tags.includes('📱 UI/UX 불편')) {
+                items.push({
+                    text: 'UI/UX 전면 개편: 모바일 반응형 디자인 적용 및 다크모드 지원',
+                    priority: 'high'
+                });
+            }
+            
+            if (tags.includes('⚡ 속도 느림')) {
+                items.push({
+                    text: '성능 최적화: 코드 경량화 및 CDN 적용으로 로딩 속도 50% 개선',
+                    priority: 'high'
+                });
+            }
+            
+            if (tags.includes('📊 데이터 부족')) {
+                items.push({
+                    text: '데이터 확충: 업종별 벤치마크 데이터 및 사례 DB 구축',
+                    priority: 'medium'
+                });
+            }
+            
+            if (tags.includes('🔧 기능 부족')) {
+                items.push({
+                    text: 'AI 기능 강화: GPT 기반 자동 제안 및 예측 기능 추가',
+                    priority: 'medium'
+                });
+            }
+            
+            if (tags.includes('📚 학습 곡선')) {
+                items.push({
+                    text: '온보딩 개선: 인터랙티브 튜토리얼 및 동영상 가이드 제작',
+                    priority: 'high'
+                });
+            }
+            
+            if (feedback && feedback.length > 10) {
+                items.push({
+                    text: `사용자 요청 반영: ${feedback.substring(0, 50)}...`,
+                    priority: 'medium'
+                });
+            }
+            
+            // 기본 개선사항
+            if (items.length === 0) {
+                items.push(
+                    { text: '도구 간 데이터 연동 강화', priority: 'high' },
+                    { text: '실시간 협업 기능 추가', priority: 'medium' },
+                    { text: '고급 분석 대시보드 구축', priority: 'low' }
+                );
+            }
+            
+            document.getElementById('priorityItems').innerHTML = items
+                .sort((a, b) => {
+                    const order = { high: 0, medium: 1, low: 2 };
+                    return order[a.priority] - order[b.priority];
+                })
+                .map(item => `
+                    <li>
+                        ${item.text}
+                        <span class="priority ${item.priority}">
+                            ${item.priority === 'high' ? '긴급' : item.priority === 'medium' ? '중요' : '권장'}
+                        </span>
+                    </li>
+                `).join('');
+        }
+
+        // 로드맵 생성
+        function generateRoadmap() {
+            const roadmap = [
+                {
+                    phase: 'Phase 1 (1개월)',
+                    items: [
+                        '🔧 긴급 버그 수정 및 성능 최적화',
+                        '📱 모바일 UI 개선',
+                        '📚 사용자 가이드 업데이트'
+                    ]
+                },
+                {
+                    phase: 'Phase 2 (2-3개월)',
+                    items: [
+                        '🤖 AI 기능 통합 (자동 추천, 예측)',
+                        '🔗 도구 간 데이터 연동 구현',
+                        '📊 고급 분석 대시보드 개발'
+                    ]
+                },
+                {
+                    phase: 'Phase 3 (4-6개월)',
+                    items: [
+                        '🌐 외부 시스템 연동 (CRM, ERP)',
+                        '👥 실시간 협업 기능',
+                        '📈 예측 분석 및 시뮬레이션 도구'
+                    ]
+                }
+            ];
+            
+            document.getElementById('roadmapItems').innerHTML = roadmap
+                .map(phase => `
+                    <li>
+                        <strong>${phase.phase}</strong>
+                        <ul style="margin-top: 10px;">
+                            ${phase.items.map(item => `<li style="margin-left: 20px;">${item}</li>`).join('')}
+                        </ul>
+                    </li>
+                `).join('');
+        }
+
+        // 즉시 실행 가능한 액션
+        function generateQuickActions(tags) {
+            const actions = [
+                '✅ 자주 사용되는 도구 3개를 홈 화면에 바로가기 추가',
+                '✅ 도구별 사용 팁을 툴팁으로 표시',
+                '✅ 최근 사용 기록 및 즐겨찾기 기능 추가',
+                '✅ 데이터 입력 자동완성 기능 활성화'
+            ];
+            
+            if (tags.includes('📚 학습 곡선')) {
+                actions.unshift('✅ 각 도구에 3분 동영상 튜토리얼 링크 추가');
+            }
+            
+            if (tags.includes('📱 UI/UX 불편')) {
+                actions.unshift('✅ 폰트 크기 조절 및 고대비 모드 옵션 추가');
+            }
+            
+            document.getElementById('quickActions').innerHTML = 
+                actions.slice(0, 5).map(a => `<li>${a}</li>`).join('');
+        }
+
+        // 새로운 도구 제안
+        function generateNewToolSuggestions(topTools, feedback) {
+            const suggestions = [];
+            
+            // 사용 패턴 기반 제안
+            const analysisUsage = tools.filter(t => t.stage === '분석')
+                .reduce((sum, t) => sum + t.usage, 0);
+            
+            if (analysisUsage > 10) {
+                suggestions.push({
+                    name: '🎯 AI 고객 인사이트 엔진',
+                    desc: '머신러닝 기반 고객 행동 예측 및 자동 세그먼테이션'
+                });
+            }
+            
+            // 피드백 기반 제안
+            if (feedback.includes('자동') || feedback.includes('AI')) {
+                suggestions.push({
+                    name: '🤖 스마트 영업 어시스턴트',
+                    desc: 'ChatGPT 기반 실시간 영업 코칭 및 스크립트 생성'
+                });
+            }
+            
+            if (feedback.includes('모니터링') || feedback.includes('대시보드')) {
+                suggestions.push({
+                    name: '📊 통합 성과 대시보드',
+                    desc: '모든 도구의 데이터를 한눈에 보는 실시간 BI 대시보드'
+                });
+            }
+            
+            // 기본 제안
+            suggestions.push(
+                {
+                    name: '🔮 영업 기회 예측기',
+                    desc: '과거 데이터 기반 성공 확률 예측 및 최적 전략 추천'
+                },
+                {
+                    name: '📧 스마트 이메일 작성기',
+                    desc: '상황별 맞춤형 영업 이메일 자동 생성 및 A/B 테스트'
+                }
+            );
+            
+            document.getElementById('newToolSuggestions').innerHTML = suggestions
+                .slice(0, 4)
+                .map(s => `
+                    <li>
+                        <strong>${s.name}</strong><br>
+                        <span style="color: #666; font-size: 0.9em;">${s.desc}</span>
+                    </li>
+                `).join('');
+        }
+
+        // 리포트 다운로드
+        function exportReport() {
+            const report = {
+                date: new Date().toLocaleDateString('ko-KR'),
+                usage: tools.map(t => ({ name: t.name, stage: t.stage, usage: t.usage })),
+                insights: Array.from(document.querySelectorAll('#usageInsights li'))
+                    .map(li => li.textContent),
+                priorities: Array.from(document.querySelectorAll('#priorityItems li'))
+                    .map(li => li.textContent.trim()),
+                roadmap: Array.from(document.querySelectorAll('#roadmapItems li'))
+                    .map(li => li.textContent.trim()),
+                quickActions: Array.from(document.querySelectorAll('#quickActions li'))
+                    .map(li => li.textContent),
+                newTools: Array.from(document.querySelectorAll('#newToolSuggestions li'))
+                    .map(li => li.textContent.trim())
+            };
+            
+            const reportText = `SmartWAN 플랫폼 분석 리포트
+생성일: ${report.date}
+
+=== 도구별 사용 현황 ===
+${report.usage.map(t => `- ${t.name} (${t.stage}): ${['미사용', '월 1-2회', '주 1-2회', '주 3-4회', '매일'][t.usage]}`).join('\n')}
+
+=== 주요 인사이트 ===
+${report.insights.join('\n')}
+
+=== 우선순위 개선사항 ===
+${report.priorities.join('\n')}
+
+=== 발전 로드맵 ===
+${report.roadmap.join('\n')}
+
+=== 즉시 실행 가능한 액션 ===
+${report.quickActions.join('\n')}
+
+=== 신규 도구 제안 ===
+${report.newTools.join('\n')}
+`;
+            
+            // 다운로드
+            const blob = new Blob([reportText], { type: 'text/plain;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `SmartWAN_플랫폼_분석리포트_${new Date().toISOString().split('T')[0]}.txt`;
+            a.click();
+            URL.revokeObjectURL(url);
+            
+            alert('리포트가 다운로드되었습니다!');
+        }
+
+        // 페이지 로드 시 초기화
+        window.onload = function() {
+            initTools();
+        };
     </script>
 </body>
 </html>
