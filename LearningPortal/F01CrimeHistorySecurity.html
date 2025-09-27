@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>01. 범죄의 역사로 보는 보안</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+            line-height: 1.8;
+            color: #202124;
+            background: white;
+            padding: 40px 20px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        h1 { font-size: 32px; margin: 0 0 24px; padding-bottom: 12px; border-bottom: 1px solid #e0e0e0; }
+        h2 { font-size: 24px; margin: 36px 0 20px; color: #1a73e8; }
+        h3 { font-size: 20px; margin: 28px 0 16px; color: #333; }
+        h4 { font-size: 17px; margin: 24px 0 12px; font-weight: 600; color: #444; }
+        
+        p { margin: 0 0 16px; text-align: justify; }
+        
+        ul, ol { margin: 0 0 20px 24px; }
+        li { margin: 8px 0; line-height: 1.7; }
+        
+        .box {
+            margin: 24px 0;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid;
+        }
+        
+        .info { background: #e8f0fe; border-color: #1a73e8; }
+        .info strong { color: #174ea6; }
+        
+        .warning { background: #fef7e0; border-color: #f9ab00; }
+        .warning strong { color: #7c4a00; }
+        
+        .success { background: #e6f4ea; border-color: #34a853; }
+        .success strong { color: #137333; }
+        
+        .danger { background: #fce8e6; border-color: #ea4335; }
+        .danger strong { color: #a50e0e; }
+        
+        .num { 
+            display: inline-block;
+            background: #f1f3f4;
+            padding: 2px 10px;
+            border-radius: 4px;
+            font-size: 14px;
+            margin-right: 8px;
+            font-weight: 600;
+        }
+        
+        .term-box {
+            background: #f8f9fa;
+            padding: 16px;
+            margin: 20px 0;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+        }
+        
+        .term-box h4 {
+            margin-top: 0;
+            color: #1a73e8;
+            font-size: 16px;
+        }
+        
+        .timeline {
+            position: relative;
+            padding-left: 30px;
+            margin: 24px 0;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 10px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: #e0e0e0;
+        }
+        
+        .timeline-item {
+            position: relative;
+            margin-bottom: 24px;
+        }
+        
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -24px;
+            top: 8px;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #1a73e8;
+            border: 2px solid white;
+            box-shadow: 0 0 0 2px #e0e0e0;
+        }
+        
+        .year-tag {
+            display: inline-block;
+            background: #1a73e8;
+            color: white;
+            padding: 2px 10px;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        th { 
+            background: #f8f9fa; 
+            font-weight: 600;
+            color: #333;
+        }
+        
+        hr {
+            border: none;
+            height: 1px;
+            background: #e0e0e0;
+            margin: 36px 0;
+        }
+        
+        blockquote {
+            border-left: 3px solid #1a73e8;
+            margin: 20px 0;
+            padding-left: 20px;
+            color: #5f6368;
+            font-style: italic;
+        }
+        
+        .highlight {
+            background: #fff3cd;
+            padding: 2px 6px;
+            border-radius: 3px;
+        }
+        
+        .sub-section {
+            margin-left: 20px;
+            padding-left: 20px;
+            border-left: 2px solid #f0f0f0;
+            margin-top: 16px;
+        }
+        
+        @media print {
+            body { padding: 20px; }
+            .box { page-break-inside: avoid; }
+            h1, h2, h3 { page-break-after: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <h1>01. 범죄의 역사로 보는 보안</h1>
+    
+    <div class="box info">
+        <strong>학습 목표</strong>
+        <p style="margin:12px 0 0">사이버 범죄의 역사적 발전 과정을 통해 보안의 진화를 이해하고, 각 시대별 주요 보안 위협과 대응 방식의 변화를 학습합니다. AI 시대가 가져온 새로운 보안 패러다임을 이해합니다.</p>
+    </div>
+    
+    <h2><span class="num">1.1</span>개요</h2>
+    
+    <p>정보보안의 역사는 기술 발전과 함께 진화해왔습니다. 1960년대 메인프레임 시대부터 현재의 AI 시대까지, 각 시기마다 새로운 위협과 방어 기술이 등장했습니다. 이 장에서는 시대별 주요 사이버 범죄 사례와 그 의미를 살펴봅니다.</p>
+    
+    <h2><span class="num">1.2</span>사이버 범죄의 시대별 변천사</h2>
+    
+    <h3><span class="num">1.2.1</span>태동기 (1960~1970년대)</h3>
+    
+    <div class="box success">
+        <strong>Phone Phreaking의 시대</strong>
+        <p style="margin:12px 0 0">전화 시스템의 취약점을 이용한 초기 해킹 문화가 형성되었습니다. 순수한 기술적 호기심과 시스템 탐구가 주된 동기였습니다.</p>
+    </div>
+    
+    <div class="timeline">
+        <div class="timeline-item">
+            <span class="year-tag">1971년</span>
+            <h4>Captain Crunch (John Draper)</h4>
+            <p>시리얼 상자에서 나온 장난감 호루라기가 2600Hz 톤을 생성한다는 것을 발견하고, 이를 이용해 AT&T 전화 시스템을 무료로 사용할 수 있게 되었습니다. 이는 Phone Phreaking의 시작이었으며, 해커 문화의 기원이 되었습니다.</p>
+        </div>
+        
+        <div class="timeline-item">
+            <span class="year-tag">1975년</span>
+            <h4>Steve Wozniak & Steve Jobs의 Blue Box</h4>
+            <p>애플의 창업자들도 젊은 시절 Blue Box라는 Phone Phreaking 장치를 제작하고 판매했습니다. Wozniak은 기술적 도전을, Jobs는 사업 기회를 보았습니다.</p>
+        </div>
+    </div>
+    
+    <h3><span class="num">1.2.2</span>개인용 컴퓨터 시대 (1980년대)</h3>
+    
+    <p>1980년대는 개인용 컴퓨터의 보급과 함께 최초의 컴퓨터 바이러스가 등장한 시기입니다. 이 시기의 악성코드는 주로 실험적 성격이 강했습니다.</p>
+    
+    <div class="term-box">
+        <h4>📌 용어집: 1980년대 주요 바이러스</h4>
+        
+        <div class="sub-section">
+            <strong>① Elk Cloner (1982년)</strong>
+            <ul>
+                <li>15세 고등학생 Richard Skrenta가 Apple II용 플로피 디스크로 만든 세계 최초의 PC 바이러스</li>
+                <li>처음에는 장난 목적이었으나, 사용자 시스템에 의도치 않게 퍼져나감</li>
+                <li>"컴퓨터도 생물학적 바이러스처럼 감염될 수 있다"는 사실을 대중에게 각인</li>
+                <li>50번째 부팅 시 화면에 시를 표시하는 무해한 동작</li>
+            </ul>
+        </div>
+        
+        <div class="sub-section">
+            <strong>② Brain 바이러스 (1986년)</strong>
+            <ul>
+                <li>파키스탄의 두 형제(Basit와 Amjad Alvi)가 개발한 최초의 IBM PC 부트 섹터 바이러스</li>
+                <li>불법 복제 소프트웨어 사용자를 추적하려는 목적으로 제작</li>
+                <li>감염된 디스크를 통해 퍼져나가며, 제작자의 이름과 연락처까지 코드에 포함</li>
+                <li>"부트 섹터 감염"이라는 새로운 공격 방식을 개척</li>
+            </ul>
+        </div>
+        
+        <div class="sub-section">
+            <strong>③ Morris Worm (1988년)</strong>
+            <ul>
+                <li>Cornell 대학원생 Robert Tappan Morris가 만든 최초의 인터넷 웜</li>
+                <li>인터넷 규모를 측정하려던 실험이 통제를 벗어나 약 6,000대(당시 인터넷의 10%) 감염</li>
+                <li>최초로 Computer Fraud and Abuse Act에 의해 기소된 사례</li>
+                <li>사이버 보안의 중요성을 각인시킨 분수령적 사건</li>
+            </ul>
+        </div>
+    </div>
+    
+    <h3><span class="num">1.2.3</span>인터넷 확산기 (1990년대)</h3>
+    
+    <div class="box warning">
+        <strong>상업적 목적의 악성코드 등장</strong>
+        <p style="margin:12px 0 0">1990년대 후반부터 악성코드가 단순한 장난이나 실험을 넘어 실질적인 피해를 입히는 도구로 변화했습니다.</p>
+    </div>
+    
+    <table>
+        <thead>
+            <tr>
+                <th>연도</th>
+                <th>사건</th>
+                <th>특징</th>
+                <th>영향</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1999</td>
+                <td>Melissa 바이러스</td>
+                <td>이메일을 통한 대량 확산</td>
+                <td>$80백만 피해, 이메일 보안 강화</td>
+            </tr>
+            <tr>
+                <td>2000</td>
+                <td>ILOVEYOU 웜</td>
+                <td>사회공학 기법 활용</td>
+                <td>전 세계 $100억 피해 추정</td>
+            </tr>
+            <tr>
+                <td>2001</td>
+                <td>Code Red</td>
+                <td>웹 서버 대상 공격</td>
+                <td>백악관 웹사이트 공격 시도</td>
+            </tr>
+            <tr>
+                <td>2003</td>
+                <td>SQL Slammer</td>
+                <td>10분 만에 전 세계 확산</td>
+                <td>한국 인터넷 대란 발생</td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <h3><span class="num">1.2.4</span>조직 범죄화 (2000년대)</h3>
+    
+    <p>2000년대는 사이버 범죄가 조직화되고 산업화된 시기입니다. 금전적 이익을 목적으로 한 전문 범죄 조직이 등장했습니다.</p>
+    
+    <div class="box danger">
+        <strong>봇넷과 지하경제의 형성</strong>
+        <p style="margin:12px 0 0">수백만 대의 좀비 PC를 관리하는 봇넷이 등장하고, 다크웹을 통한 사이버 범죄 도구와 정보 거래가 활성화되었습니다.</p>
+    </div>
+    
+    <h4>주요 변화</h4>
+    <ol>
+        <li><strong>금융 범죄의 증가</strong>
+            <ul>
+                <li>온라인 뱅킹 해킹</li>
+                <li>신용카드 정보 대량 탈취</li>
+                <li>피싱 사이트를 통한 개인정보 수집</li>
+            </ul>
+        </li>
+        
+        <li><strong>봇넷의 등장</strong>
+            <ul>
+                <li>Storm 봇넷 (2007): 100만 대 이상 감염</li>
+                <li>Conficker (2008): 1,500만 대 감염 추정</li>
+                <li>DDoS 공격의 상품화</li>
+            </ul>
+        </li>
+        
+        <li><strong>랜섬웨어의 시작</strong>
+            <ul>
+                <li>GPCode (2005): 최초의 현대적 랜섬웨어</li>
+                <li>암호화 기술을 이용한 데이터 인질</li>
+                <li>익명 결제 시스템(비트코인) 등장 전까지는 제한적</li>
+            </ul>
+        </li>
+    </ol>
+    
+    <h3><span class="num">1.2.5</span>국가 차원의 위협 (2010년대)</h3>
+    
+    <div class="box info">
+        <strong>APT (Advanced Persistent Threat)의 등장</strong>
+        <p style="margin:12px 0 0">국가 차원의 지원을 받는 해킹 그룹들이 장기간에 걸쳐 은밀하게 진행하는 지능형 지속 공격이 본격화되었습니다.</p>
+    </div>
+    
+    <div class="timeline">
+        <div class="timeline-item">
+            <span class="year-tag">2010년</span>
+            <h4>Stuxnet</h4>
+            <p>이란 핵시설의 원심분리기를 파괴한 최초의 사이버 무기. 물리적 파괴를 일으킨 첫 사례로 사이버전의 새로운 시대를 열었습니다.</p>
+        </div>
+        
+        <div class="timeline-item">
+            <span class="year-tag">2013년</span>
+            <h4>Target 데이터 유출</h4>
+            <p>4,000만 개 신용카드 정보와 7,000만 개인정보 유출. 공급망 공격의 위험성을 보여준 사례입니다.</p>
+        </div>
+        
+        <div class="timeline-item">
+            <span class="year-tag">2014년</span>
+            <h4>Sony Pictures 해킹</h4>
+            <p>북한 연루 의혹. 기업 전체 시스템 파괴와 내부 정보 유출. 사이버 공격이 물리적 전쟁 행위와 동등한 수준으로 다뤄지기 시작했습니다.</p>
+        </div>
+        
+        <div class="timeline-item">
+            <span class="year-tag">2017년</span>
+            <h4>WannaCry 랜섬웨어</h4>
+            <p>150개국 30만 대 이상 감염. NHS 병원 시스템 마비 등 실생활에 직접적 영향. EternalBlue 취약점 악용.</p>
+        </div>
+        
+        <div class="timeline-item">
+            <span class="year-tag">2020년</span>
+            <h4>SolarWinds 공급망 공격</h4>
+            <p>18,000개 이상 조직 영향. 러시아 APT 그룹 연루. 신뢰할 수 있는 소프트웨어 업데이트를 통한 침투.</p>
+        </div>
+    </div>
+    
+    <h2><span class="num">1.3</span>AI 시대의 보안 (2020년대~현재)</h2>
+    
+    <h3><span class="num">1.3.1</span>AI가 바꾸는 공격 패러다임</h3>
+    
+    <div class="box warning">
+        <strong>AI 기반 공격의 특징</strong>
+        <ul style="margin:12px 0 0">
+            <li>자동화된 취약점 발견과 익스플로잇 생성</li>
+            <li>딥페이크를 활용한 정교한 사회공학 공격</li>
+            <li>머신러닝을 이용한 보안 시스템 우회</li>
+            <li>대규모 맞춤형 피싱 캠페인</li>
+        </ul>
+    </div>
+    
+    <h4>AI 활용 공격 사례</h4>
+    
+    <div class="sub-section">
+        <p><strong>1. DeepLocker (2018, IBM 연구)</strong></p>
+        <p>AI를 이용해 특정 표적만을 식별하고 공격하는 악성코드. 얼굴 인식, 음성 인식, 위치 정보 등을 조합해 표적 확인.</p>
+        
+        <p><strong>2. GPT 기반 피싱 메일</strong></p>
+        <p>대규모 언어 모델을 이용한 맞춤형 피싱 메일 자동 생성. 문법 오류가 없고 맥락에 맞는 내용으로 탐지 어려움.</p>
+        
+        <p><strong>3. Adversarial AI</strong></p>
+        <p>AI 보안 시스템을 속이기 위한 적대적 예제 생성. 악성코드를 정상 파일로 인식하도록 유도.</p>
+    </div>
+    
+    <h3><span class="num">1.3.2</span>AI 기반 방어 기술</h3>
+    
+    <div class="box success">
+        <strong>AI가 강화하는 보안</strong>
+        <ul style="margin:12px 0 0">
+            <li>행동 기반 이상 탐지 (UEBA)</li>
+            <li>제로데이 취약점 예측 및 방어</li>
+            <li>자동화된 위협 대응 (SOAR)</li>
+            <li>예측적 위협 인텔리전스</li>
+        </ul>
+    </div>
+    
+    <table>
+        <thead>
+            <tr>
+                <th>기술</th>
+                <th>설명</th>
+                <th>활용 분야</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>머신러닝 기반 탐지</td>
+                <td>패턴 학습을 통한 이상 행동 식별</td>
+                <td>악성코드 탐지, 침입 탐지</td>
+            </tr>
+            <tr>
+                <td>자연어 처리</td>
+                <td>피싱 메일, 악성 URL 분석</td>
+                <td>이메일 보안, 웹 보안</td>
+            </tr>
+            <tr>
+                <td>컴퓨터 비전</td>
+                <td>딥페이크 탐지, 생체 인증</td>
+                <td>신원 확인, 미디어 검증</td>
+            </tr>
+            <tr>
+                <td>강화학습</td>
+                <td>자동화된 보안 정책 최적화</td>
+                <td>방화벽 규칙, 접근 제어</td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <h2><span class="num">1.4</span>보안 패러다임의 진화</h2>
+    
+    <h3><span class="num">1.4.1</span>전통적 보안 vs AI 시대 보안</h3>
+    
+    <div class="term-box">
+        <h4>패러다임 전환</h4>
+        
+        <table style="margin-top:16px">
+            <thead>
+                <tr>
+                    <th>구분</th>
+                    <th>전통적 접근</th>
+                    <th>AI 시대 접근</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>탐지 방식</td>
+                    <td>시그니처 기반</td>
+                    <td>행동 기반, 이상 탐지</td>
+                </tr>
+                <tr>
+                    <td>대응 속도</td>
+                    <td>수동적, 사후 대응</td>
+                    <td>자동화, 실시간 대응</td>
+                </tr>
+                <tr>
+                    <td>위협 예측</td>
+                    <td>과거 데이터 의존</td>
+                    <td>예측 모델링</td>
+                </tr>
+                <tr>
+                    <td>보안 전략</td>
+                    <td>경계 방어</td>
+                    <td>Zero Trust</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    
+    <h3><span class="num">1.4.2</span>미래 전망</h3>
+    
+    <div class="box info">
+        <strong>Quantum Computing과 보안</strong>
+        <p style="margin:12px 0 0">양자 컴퓨터의 등장은 현재의 암호화 체계를 무력화할 수 있습니다. Post-Quantum Cryptography 연구가 활발히 진행되고 있습니다.</p>
+    </div>
+    
+    <h4>향후 주요 도전 과제</h4>
+    <ol>
+        <li><strong>AI vs AI 전쟁</strong>: 공격과 방어 모두 AI를 활용하는 자동화된 사이버전</li>
+        <li><strong>딥페이크와 신뢰의 위기</strong>: 진위 판별이 어려운 콘텐츠의 범람</li>
+        <li><strong>IoT 보안</strong>: 수십억 개의 연결된 기기가 만드는 새로운 공격 표면</li>
+        <li><strong>개인정보와 프라이버시</strong>: AI의 데이터 의존성과 개인정보 보호의 균형</li>
+        <li><strong>규제와 거버넌스</strong>: AI 보안 기술의 윤리적 사용과 국제 협력</li>
+    </ol>
+    
+    <hr>
+    
+    <h2><span class="num">1.5</span>핵심 메시지</h2>
+    
+    <div class="box success">
+        <strong>역사가 주는 교훈</strong>
+        <p style="margin:12px 0 0">사이버 보안의 역사는 공격과 방어의 끊임없는 진화 과정입니다. 각 시대의 기술 발전은 새로운 위협을 만들었지만, 동시에 새로운 방어 방법도 제시했습니다.</p>
+    </div>
+    
+    <blockquote>
+        <p>"과거의 기억으로 현재의 경계에서 미래를 바라본다"</p>
+        <p>- 보안의 역사를 이해하는 것은 미래의 위협에 대비하는 첫걸음입니다.</p>
+    </blockquote>
+    
+    <div class="box warning">
+        <strong>현재 우리의 위치</strong>
+        <p style="margin:12px 0 0">AI가 공격과 방어 양쪽에서 동시에 활용되는 시대에 살고 있습니다. 중요한 것은 기술 자체가 아니라, "인간과 AI가 어떻게 협력하여 불확실한 환경에서 최적의 의사결정을 내릴 것인가"입니다.</p>
+    </div>
+    
+    <p style="margin-top:32px; padding:20px; background:#f8f9fa; border-radius:8px;">
+        <strong>다음 장 예고:</strong><br>
+        <em>2장 "급진적 변화의 시점에서"에서는 디지털 전환과 클라우드 시대가 가져온 보안 환경의 급격한 변화, 경계 기반 보안의 한계와 Zero Trust 모델의 등장, 그리고 현대 기업이 직면한 새로운 보안 과제들을 다룹니다.</em>
+    </p>
+</body>
+</html>

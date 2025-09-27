@@ -107,6 +107,54 @@
             box-shadow: 0 5px 15px rgba(30, 58, 138, 0.3);
         }
 
+        /* 확장 가능한 버튼 스타일 */
+        .nav-button.expandable.expanded {
+            background: linear-gradient(135deg, #1e3a8a, #3b82f6);
+            color: white;
+            border-color: #1e3a8a;
+            margin-bottom: 0;
+            border-bottom-left-radius: 0;
+            border-bottom-right-radius: 0;
+        }
+
+        /* 서브메뉴 스타일 */
+        .submenu {
+            background: #f0f7ff;
+            border: 2px solid #3b82f6;
+            border-top: none;
+            border-bottom-left-radius: 10px;
+            border-bottom-right-radius: 10px;
+            margin-bottom: 12px;
+            padding: 8px;
+        }
+
+        /* 하위 버튼 스타일 */
+        .sub-button {
+            margin-left: 20px;
+            margin-bottom: 8px;
+            padding: 12px 15px;
+            font-size: 0.92rem;
+            background: white;
+            border: 1px solid #cbd5e1;
+        }
+
+        .sub-button:hover {
+            transform: translateX(3px);
+            background: #e0f2fe;
+            border-color: #3b82f6;
+        }
+
+        .sub-button.active {
+            background: #3b82f6;
+            color: white;
+            border-color: #1e3a8a;
+        }
+
+        .sub-button .title {
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
         .nav-button .icon {
             display: inline-block;
             width: 30px;
@@ -232,6 +280,50 @@
             max-width: 600px;
         }
 
+        /* AI 소개 페이지 스타일 */
+        .ai-intro-content {
+            padding: 40px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .ai-intro-content h2 {
+            color: #1e3a8a;
+            margin-bottom: 20px;
+            font-size: 2rem;
+        }
+
+        .ai-intro-content h3 {
+            color: #3b82f6;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .ai-intro-content p {
+            color: #4b5563;
+            line-height: 1.8;
+            margin-bottom: 15px;
+        }
+
+        .ai-intro-content .chapter-list {
+            background: #f0f7ff;
+            border-left: 4px solid #3b82f6;
+            padding: 20px;
+            margin: 30px 0;
+        }
+
+        .ai-intro-content .chapter-item {
+            margin: 15px 0;
+            padding-left: 10px;
+        }
+
+        .ai-intro-content .chapter-item strong {
+            color: #1e3a8a;
+            display: block;
+            margin-bottom: 5px;
+        }
+
         /* 반응형 디자인 */
         @media (max-width: 768px) {
             .sidebar {
@@ -254,6 +346,11 @@
 
             .nav-button {
                 padding: 12px 15px;
+            }
+
+            .sub-button {
+                margin-left: 10px;
+                padding: 10px 12px;
             }
         }
 
@@ -315,13 +412,34 @@
             <div class="sidebar">
                 <h2>📖 교육 자료</h2>
 
-                <button class="nav-button" onclick="loadContent('01-WP.html', 'SmartWAN 백서', 'SmartWAN 솔루션 전반에 대한 기술 백서')">
-                    <span class="icon">📄</span>
-                    <div class="title"> AI 기본 (강의자료)</div>
-                    <div class="desc">기반 철학</div>
-                    <div class="tooltip">클릭하여 백서 보기</div>
+                <!-- AI 기본 교육 (확장 가능) -->
+                <button class="nav-button expandable" onclick="toggleSubmenu(this, 'ai-intro')">
+                    <span class="icon">🎓</span>
+                    <div class="title">보안과 AI의 공진화 - 기본교육</div>
+                    <div class="desc">AI와 보안의 상호 진화 과정</div>
+                    <div class="tooltip">클릭하여 하위 메뉴 보기</div>
                 </button>
                 
+                <div id="ai-intro-submenu" class="submenu" style="display: none;">
+                    <button class="nav-button sub-button" onclick="loadContent('F01CrimeHistorySecurity.html', '범죄의 역사로 보는 보안', 'AI 시대 이전의 보안 패러다임과 범죄의 진화')">
+                        <span class="icon">📚</span>
+                        <div class="title">범죄의 역사로 보는 보안</div>
+                    </button>
+                    <button class="nav-button sub-button" onclick="loadContent('F02RadicalChangePoint.html', '급진적 변화의 시점에서', '기술 혁신이 가져온 보안 환경의 급격한 변화')">
+                        <span class="icon">🔄</span>
+                        <div class="title">급진적 변화의 시점에서</div>
+                    </button>
+                    <button class="nav-button sub-button" onclick="loadContent('F03AmidOfChaos.html', '변화의 원인 AI', 'AI가 보안에 미치는 양면적 영향과 대응 전략')">
+                        <span class="icon">🤖</span>
+                        <div class="title">변화의 원인 AI</div>
+                    </button>
+                    <button class="nav-button sub-button" onclick="loadContent('F04Finale.html', '결론', '보안과 네트워크를 바라보는 새로운 관점')">
+                        <span class="icon">🎯</span>
+                        <div class="title">결론</div>
+                    </button>
+                </div>
+                
+                <!-- 기존 버튼들 -->
                 <button class="nav-button" onclick="loadContent('01-WP.html', 'SmartWAN 백서', 'SmartWAN 솔루션 전반에 대한 기술 백서')">
                     <span class="icon">📄</span>
                     <div class="title">백서 (White Paper)</div>
@@ -374,6 +492,65 @@
                             백서, 데이터시트, 매뉴얼, XDR 관련 자료 등 다양한 학습 콘텐츠가 준비되어 있습니다.
                         </div>
                     </div>
+                    
+                    <!-- AI 소개 페이지 (숨김 상태) -->
+                    <div id="ai-intro-page" class="ai-intro-content" style="display: none;">
+                        <h2>🎓 보안과 AI의 공진화 - 기본교육</h2>
+                        
+                        <h3>📌 교육 목적</h3>
+                        <p>
+                            이 교육 과정은 AI 기술이 사이버 보안에 미치는 영향과 이에 대응하는 새로운 보안 패러다임을 이해하는 것을 목표로 합니다. 
+                            과거의 보안 역사부터 현재 AI 시대의 도전과제까지, 보안과 AI가 어떻게 상호 진화하고 있는지를 체계적으로 학습합니다.
+                        </p>
+                        
+                        <h3>🎯 학습 목표</h3>
+                        <p>
+                            • 사이버 범죄의 역사적 발전 과정 이해<br>
+                            • AI 기술이 가져온 보안 패러다임의 변화 인식<br>
+                            • AI를 활용한 공격과 방어 기술의 이해<br>
+                            • 미래 지향적 보안 전략 수립 능력 배양
+                        </p>
+                        
+                        <div class="chapter-list">
+                            <h3>📚 교육 과정 구성</h3>
+                            
+                            <div class="chapter-item">
+                                <strong>1장. 범죄의 역사로 보는 보안</strong>
+                                사이버 범죄의 역사적 발전 과정을 통해 보안의 진화를 이해합니다. 
+                                초기 해커 문화부터 조직화된 사이버 범죄까지의 변천사를 살펴보고, 
+                                각 시대별 주요 보안 위협과 대응 방식의 변화를 학습합니다.
+                            </div>
+                            
+                            <div class="chapter-item">
+                                <strong>2장. 급진적 변화의 시점에서</strong>
+                                디지털 전환과 클라우드 시대가 가져온 보안 환경의 급격한 변화를 분석합니다. 
+                                경계 기반 보안의 한계와 Zero Trust 모델의 등장, 
+                                그리고 현대 기업이 직면한 새로운 보안 과제들을 다룹니다.
+                            </div>
+                            
+                            <div class="chapter-item">
+                                <strong>3장. 변화의 원인 AI</strong>
+                                AI 기술이 사이버 보안에 미치는 양면적 영향을 심층 분석합니다. 
+                                AI를 활용한 지능형 위협과 자동화된 공격, 
+                                그리고 이에 대응하는 AI 기반 방어 시스템의 원리와 한계를 학습합니다.
+                            </div>
+                            
+                            <div class="chapter-item">
+                                <strong>4장. 결론 - 새로운 관점</strong>
+                                보안과 네트워크를 바라보는 패러다임의 전환을 제시합니다. 
+                                확률론적 보안 사고와 적응형 방어 전략, 
+                                그리고 인간과 AI의 협업을 통한 미래 보안 체계를 전망합니다.
+                            </div>
+                        </div>
+                        
+                        <h3>💡 핵심 메시지</h3>
+                        <p>
+                            "과거의 기억으로 현재의 경계에서 미래를 바라본다"<br><br>
+                            보안은 더 이상 단순한 방어가 아닌, 지속적인 학습과 적응의 과정입니다. 
+                            AI와 인간이 협력하여 불확실한 위협에 대응하는 새로운 보안 패러다임을 이해하고 실천해야 합니다.
+                        </p>
+                    </div>
+                    
                     <iframe id="content-frame" style="display: none;" src=""></iframe>
                     <div id="loading" class="loading" style="display: none;">
                         <div class="loading-spinner"></div>
@@ -385,14 +562,84 @@
 
         <!-- 뒤로가기 버튼 -->
         <a href="https://choitimo.github.io/index.html" class="back-button">
-            ← 프레임웍으로 돌아가기
+            ← 프레임워크로 돌아가기
         </a>
     </div>
 
     <script>
         let currentContent = null;
+        let currentSubmenu = null;
+
+        // 서브메뉴 토글 함수
+        function toggleSubmenu(button, contentId) {
+            const submenu = document.getElementById(contentId + '-submenu');
+            const isExpanding = submenu.style.display === 'none';
+            
+            // 모든 서브메뉴 닫기
+            document.querySelectorAll('.submenu').forEach(menu => {
+                menu.style.display = 'none';
+            });
+            
+            // 모든 expandable 버튼의 expanded 클래스 제거
+            document.querySelectorAll('.nav-button.expandable').forEach(btn => {
+                btn.classList.remove('expanded');
+            });
+            
+            // 모든 버튼의 active 클래스 제거
+            document.querySelectorAll('.nav-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            if (isExpanding) {
+                // 선택한 서브메뉴 열기
+                submenu.style.display = 'block';
+                button.classList.add('expanded');
+                currentSubmenu = contentId;
+                
+                // AI 소개 페이지 표시
+                if (contentId === 'ai-intro') {
+                    showAIIntroPage();
+                }
+            } else {
+                // 모두 닫혀있으면 웰컴 화면 표시
+                currentSubmenu = null;
+                showWelcome();
+            }
+        }
+
+        // AI 소개 페이지 표시
+        function showAIIntroPage() {
+            document.getElementById('welcome').style.display = 'none';
+            document.getElementById('ai-intro-page').style.display = 'block';
+            document.getElementById('content-frame').style.display = 'none';
+            document.getElementById('loading').style.display = 'none';
+            
+            document.getElementById('content-title').textContent = '보안과 AI의 공진화 - 기본교육';
+            document.getElementById('content-desc').textContent = 'AI와 보안의 상호 진화 과정을 체계적으로 학습합니다';
+        }
+
+        // 웰컴 화면 표시
+        function showWelcome() {
+            document.getElementById('welcome').style.display = 'flex';
+            document.getElementById('ai-intro-page').style.display = 'none';
+            document.getElementById('content-frame').style.display = 'none';
+            document.getElementById('loading').style.display = 'none';
+            
+            document.getElementById('content-title').textContent = '교육 자료를 선택하세요';
+            document.getElementById('content-desc').textContent = '좌측 메뉴에서 원하는 교육 자료를 선택하여 학습을 시작하세요';
+        }
 
         function loadContent(url, title, description) {
+            // 모든 서브메뉴 닫기 (다른 메인 버튼 클릭 시)
+            if (!event.currentTarget.classList.contains('sub-button')) {
+                document.querySelectorAll('.submenu').forEach(menu => {
+                    menu.style.display = 'none';
+                });
+                document.querySelectorAll('.nav-button.expandable').forEach(btn => {
+                    btn.classList.remove('expanded');
+                });
+            }
+            
             // 기존 active 클래스 제거
             document.querySelectorAll('.nav-button').forEach(btn => {
                 btn.classList.remove('active');
@@ -401,12 +648,21 @@
             // 현재 버튼에 active 클래스 추가
             event.currentTarget.classList.add('active');
             
+            // 하위 버튼인 경우 상위 버튼도 active 유지
+            if (event.currentTarget.classList.contains('sub-button')) {
+                const parentButton = event.currentTarget.closest('.submenu').previousElementSibling;
+                if (parentButton) {
+                    parentButton.classList.add('expanded');
+                }
+            }
+            
             // 헤더 정보 업데이트
             document.getElementById('content-title').textContent = title;
             document.getElementById('content-desc').textContent = description;
             
-            // Welcome 화면 숨기기
+            // Welcome 화면과 AI 소개 페이지 숨기기
             document.getElementById('welcome').style.display = 'none';
+            document.getElementById('ai-intro-page').style.display = 'none';
             
             // 로딩 표시
             document.getElementById('loading').style.display = 'block';
@@ -434,24 +690,6 @@
                 `;
             };
         }
-
-        // 키보드 단축키 지원
-        document.addEventListener('keydown', function(e) {
-            const buttons = document.querySelectorAll('.nav-button');
-            
-            // 숫자 키 1-5로 콘텐츠 선택
-            if (e.key >= '1' && e.key <= '6') {
-                const index = parseInt(e.key) - 1;
-                if (buttons[index]) {
-                    buttons[index].click();
-                }
-            }
-            
-            // ESC 키로 메인으로 돌아가기
-            if (e.key === 'Escape') {
-                window.location.href = 'index-education-portal.html';
-            }
-        });
 
         // 페이지 로드 시 URL 파라미터 확인
         window.addEventListener('load', function() {
