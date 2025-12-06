@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SmartWAN 플랫폼 피드백 & 개선 도구</title>
+    <title>T-Markov 플랫폼 피드백 & 개선 도구</title>
     <style>
         * {
             margin: 0;
@@ -338,7 +338,7 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>🔄 SmartWAN 플랫폼 피드백 & 개선 도구</h1>
+            <h1>🔄 T-Markov 플랫폼 피드백 & 개선 도구</h1>
             <p>사용 데이터를 입력하고 플랫폼 개선 방향을 도출하세요</p>
         </div>
 
@@ -840,7 +840,7 @@
                     .map(li => li.textContent.trim())
             };
             
-            const reportText = `SmartWAN 플랫폼 분석 리포트
+            const reportText = `T-Markov 플랫폼 분석 리포트
 생성일: ${report.date}
 
 === 도구별 사용 현황 ===
@@ -867,7 +867,7 @@ ${report.newTools.join('\n')}
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = `SmartWAN_플랫폼_분석리포트_${new Date().toISOString().split('T')[0]}.txt`;
+            a.download = `T-Markov_플랫폼_분석리포트_${new Date().toISOString().split('T')[0]}.txt`;
             a.click();
             URL.revokeObjectURL(url);
             
