@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SmartWAN 제안서 선택 도구</title>
+    <title>T-Markov 제안서 선택 도구</title>
     <style>
         * {
             margin: 0;
@@ -381,7 +381,7 @@
     <div class="container">
         <div class="header">
             <div class="skt-badge">SKT Enterprise</div>
-            <h1>📄 SmartWAN 제안서 생성기</h1>
+            <h1>📄 T-Markov 제안서 생성기</h1>
             <p>고객 상황에 최적화된 제안서를 찾아드립니다</p>
         </div>
 
@@ -520,7 +520,7 @@
             <div class="result-section" id="resultSection">
                 <div class="result-header">
                     <div class="result-title">🎯 최적의 제안서를 찾았습니다!</div>
-                    <div class="result-subtitle">고객님의 상황에 가장 적합한 SmartWAN 제안서입니다</div>
+                    <div class="result-subtitle">고객님의 상황에 가장 적합한 T-Markov 제안서입니다</div>
                 </div>
 
                 <div class="selection-summary" id="selectionSummary">
@@ -577,10 +577,10 @@
         // 제안서 데이터베이스
         const proposals = {
             iot_korean: {
-                name: "SmartWAN IoT/AIoT 고객 전용 제안서",
+                name: "T-Markov IoT/AIoT 고객 전용 제안서",
                 type: "IoT/제조업 특화",
-                url: "https://choitimo.github.io/PRESO/SKT SmartWAN Introduction_nonNDA_AIoT_KR.pdf",
-                description: "스마트팩토리, AIoT 환경에 최적화된 SmartWAN 솔루션 제안서입니다. IoT 디바이스 연결성과 실시간 데이터 처리를 중점적으로 다룹니다.",
+                url: "https://choitimo.github.io/PRESO/SKT T-Markov Introduction_nonNDA_AIoT_KR.pdf",
+                description: "스마트팩토리, AIoT 환경에 최적화된 T-Markov 솔루션 제안서입니다. IoT 디바이스 연결성과 실시간 데이터 처리를 중점적으로 다룹니다.",
                 features: [
                     "IoT 게이트웨이 통합 아키텍처",
                     "실시간 데이터 처리 및 엣지 컴퓨팅",
@@ -590,10 +590,10 @@
                 ]
             },
             enterprise_korean: {
-                name: "SmartWAN 일반 엔터프라이즈 제안서",
+                name: "T-Markov 일반 엔터프라이즈 제안서",
                 type: "표준 기업용",
-                url: "https://choitimo.github.io/PRESO/SKT SmartWAN Introduction_nonNDA_General_KR.pdf",
-                description: "일반 기업 환경에 적합한 표준 SmartWAN 솔루션 제안서입니다. 엔터프라이즈 네트워킹의 모든 측면을 포괄적으로 다룹니다.",
+                url: "https://choitimo.github.io/PRESO/SKT T-Markov Introduction_nonNDA_General_KR.pdf",
+                description: "일반 기업 환경에 적합한 표준 T-Markov 솔루션 제안서입니다. 엔터프라이즈 네트워킹의 모든 측면을 포괄적으로 다룹니다.",
                 features: [
                     "SD-WAN 기본 아키텍처",
                     "ZTNA 보안 솔루션",
@@ -603,10 +603,10 @@
                 ]
             },
             saas_korean: {
-                name: "SmartWAN SaaS/Cloud 고객 제안서",
+                name: "T-Markov SaaS/Cloud 고객 제안서",
                 type: "클라우드 중심",
-                url: "https://choitimo.github.io/PRESO/SKT SmartWAN Introduction_nonNDA_SaaS-Cloud_KR.pdf",
-                description: "SaaS 및 클라우드 서비스를 중심으로 하는 기업을 위한 SmartWAN 제안서입니다. 클라우드 연결성과 성능 최적화에 중점을 둡니다.",
+                url: "https://choitimo.github.io/PRESO/SKT T-Markov Introduction_nonNDA_SaaS-Cloud_KR.pdf",
+                description: "SaaS 및 클라우드 서비스를 중심으로 하는 기업을 위한 T-Markov 제안서입니다. 클라우드 연결성과 성능 최적화에 중점을 둡니다.",
                 features: [
                     "멀티클라우드 액세스 최적화",
                     "SaaS 애플리케이션 가속",
@@ -616,10 +616,10 @@
                 ]
             },
             vdi_korean: {
-                name: "SmartWAN VDI/위성 통신 제안서",
+                name: "T-Markov VDI/위성 통신 제안서",
                 type: "VDI/위성 특화",
-                url: "https://choitimo.github.io/PRESO/SKT SmartWAN Introduction_nonNDA_VDISAT_KR.pdf",
-                description: "VDI 환경과 위성 통신이 필요한 특수 환경을 위한 SmartWAN 제안서입니다. 원격지 연결과 가상화 환경 최적화를 다룹니다.",
+                url: "https://choitimo.github.io/PRESO/SKT T-Markov Introduction_nonNDA_VDISAT_KR.pdf",
+                description: "VDI 환경과 위성 통신이 필요한 특수 환경을 위한 T-Markov 제안서입니다. 원격지 연결과 가상화 환경 최적화를 다룹니다.",
                 features: [
                     "VDI 성능 최적화",
                     "위성 통신 통합",
@@ -629,10 +629,10 @@
                 ]
             },
             general_english: {
-                name: "SmartWAN General Proposal (English)",
+                name: "T-Markov General Proposal (English)",
                 type: "Global Standard",
-                url: "https://choitimo.github.io/PRESO/SKT SmartWAN Introduction_nonNDA_EN.pdf",
-                description: "English version of SmartWAN solution proposal for global customers. Comprehensive coverage of enterprise networking solutions.",
+                url: "https://choitimo.github.io/PRESO/SKT T-Markov Introduction_nonNDA_EN.pdf",
+                description: "English version of T-Markov solution proposal for global customers. Comprehensive coverage of enterprise networking solutions.",
                 features: [
                     "Global SD-WAN Architecture",
                     "Zero Trust Security Framework",
@@ -642,9 +642,9 @@
                 ]
             },
             exhibition: {
-                name: "SmartWAN 전시회/캐주얼 프레젠테이션",
+                name: "T-Markov 전시회/캐주얼 프레젠테이션",
                 type: "라이트 버전",
-                url: "https://choitimo.github.io/PRESO/[Disp Light][SmartWAN]_BFV20V11W_Static.pdf",
+                url: "https://choitimo.github.io/PRESO/[Disp Light][T-Markov]_BFV20V11W_Static.pdf",
                 description: "전시회나 간단한 데모를 위한 라이트 버전 제안서입니다. 핵심 기능과 장점을 시각적으로 전달합니다.",
                 features: [
                     "비주얼 중심 구성",
