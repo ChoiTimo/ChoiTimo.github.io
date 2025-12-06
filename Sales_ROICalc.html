@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SmartWAN ROI Calculator v5</title>
+    <title>T-Markov ROI Calculator v5</title>
     <style>
         * {
             margin: 0;
@@ -376,7 +376,7 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>🚀 SmartWAN ROI Calculator v5</h1>
+            <h1>🚀 T-Markov ROI Calculator v5</h1>
             <p>네트워크 투자 수익률을 정확하게 분석하세요</p>
         </div>
 
@@ -466,7 +466,7 @@
                     <input type="number" id="breach-probability" min="0" max="100" placeholder="예: 10">
                 </div>
                 <div class="form-group">
-                    <label for="breach-probability-reduction">SmartWAN 도입 시 보안 사고 확률 감소율 <span class="unit">(%)</span></label>
+                    <label for="breach-probability-reduction">T-Markov 도입 시 보안 사고 확률 감소율 <span class="unit">(%)</span></label>
                     <input type="number" id="breach-probability-reduction" min="0" max="100" placeholder="예: 90">
                 </div>
                 
@@ -478,7 +478,7 @@
                 
                 <div id="results" class="hidden">
                     <div class="roi-summary">
-                        <h3>SmartWAN 도입 효과</h3>
+                        <h3>T-Markov 도입 효과</h3>
                         <div class="roi-value" id="roi-percentage">0%</div>
                         <div class="roi-period">3년 투자 수익률</div>
                     </div>
@@ -505,7 +505,7 @@
                     <div style="margin-top: 30px;">
                         <h3 style="color: #1e293b;">투자 회수 과정</h3>
                         <p class="result-description">
-                            SmartWAN 도입으로 예상되는 3년간의 투자 비용과 절감액 비교입니다.
+                            T-Markov 도입으로 예상되는 3년간의 투자 비용과 절감액 비교입니다.
                         </p>
                         <table class="process-table">
                             <thead>
@@ -579,9 +579,9 @@
                                 <div class="bar-label">현재 솔루션</div>
                                 <div class="bar-value" id="current-total">0</div>
                             </div>
-                            <div class="bar" id="smartwan-bar">
-                                <div class="bar-label">SmartWAN</div>
-                                <div class="bar-value" id="smartwan-total">0</div>
+                            <div class="bar" id="T-Markov-bar">
+                                <div class="bar-label">T-Markov</div>
+                                <div class="bar-value" id="T-Markov-total">0</div>
                             </div>
                         </div>
                     </div>
@@ -654,11 +654,11 @@
             const multiplier = industryMultipliers[industry];
             const sizeMultiplier = sizeMultipliers[companySize];
 
-            // 3. SmartWAN 관련 비용 계산 (만원 단위)
+            // 3. T-Markov 관련 비용 계산 (만원 단위)
             // 직원당 월 5천원, 법인당 월 100만원으로 현실적 조정
-            const smartwanLicenseCostMonthly = (employees * 0.5) + (locations * 100);
-            const smartwanInitialCost = smartwanLicenseCostMonthly * 3; // 초기 설치비 (3개월분)
-            const smartwanAnnualOperatingCost = smartwanLicenseCostMonthly * 12;
+            const T-MarkovLicenseCostMonthly = (employees * 0.5) + (locations * 100);
+            const T-MarkovInitialCost = T-MarkovLicenseCostMonthly * 3; // 초기 설치비 (3개월분)
+            const T-MarkovAnnualOperatingCost = T-MarkovLicenseCostMonthly * 12;
 
             // 4. 절감 효과 계산 (연간, 만원 단위)
             
@@ -692,8 +692,8 @@
             const totalAnnualSavings = productivitySavings + operationalSavings + downtimeSavings + riskSavings + networkCostSavings;
             
             // 첫해 투자비용 (초기 설치 + 운영비)
-            const firstYearInvestment = smartwanInitialCost + smartwanAnnualOperatingCost;
-            const annualInvestment = smartwanAnnualOperatingCost;
+            const firstYearInvestment = T-MarkovInitialCost + T-MarkovAnnualOperatingCost;
+            const annualInvestment = T-MarkovAnnualOperatingCost;
             
             // 3년간 총 비용과 절감액
             const threeYearInvestment = firstYearInvestment + (annualInvestment * 2);
@@ -750,16 +750,16 @@
             const currentThreeYearCost = (currentCost * 12 * 3) + (downtimeCost * downtimeHours * 3);
             const currentTotal = Math.round(currentThreeYearCost / 10000); // 억원 단위
             
-            // SmartWAN 3년 총 비용: 투자비용
-            const smartwanTotal = Math.round(threeYearInvestment / 10000); // 억원 단위
+            // T-Markov 3년 총 비용: 투자비용
+            const T-MarkovTotal = Math.round(threeYearInvestment / 10000); // 억원 단위
             
             document.getElementById('current-total').textContent = currentTotal.toLocaleString('ko-KR');
-            document.getElementById('smartwan-total').textContent = smartwanTotal.toLocaleString('ko-KR');
+            document.getElementById('T-Markov-total').textContent = T-MarkovTotal.toLocaleString('ko-KR');
 
-            const maxValue = Math.max(currentTotal, smartwanTotal);
+            const maxValue = Math.max(currentTotal, T-MarkovTotal);
             if (maxValue > 0) {
                 document.getElementById('current-bar').style.height = (currentTotal / maxValue * 100) + '%';
-                document.getElementById('smartwan-bar').style.height = (smartwanTotal / maxValue * 100) + '%';
+                document.getElementById('T-Markov-bar').style.height = (T-MarkovTotal / maxValue * 100) + '%';
             }
 
             // 9. 업종별 혜택 업데이트
