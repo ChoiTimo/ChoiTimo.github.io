@@ -497,6 +497,158 @@
             border-color: #f59e0b;
         }
 
+        /* ========== 접근 제한 모달 스타일 ========== */
+        .access-modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .access-modal-overlay.show {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from { 
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .access-modal {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 450px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+            animation: slideUp 0.3s ease;
+        }
+
+        .access-modal-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #e0f2fe, #bae6fd);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 2.5rem;
+        }
+
+        .access-modal h3 {
+            color: #1e3a8a;
+            font-size: 1.4rem;
+            margin-bottom: 12px;
+            font-weight: 700;
+        }
+
+        .access-modal p {
+            color: #64748b;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+
+        .access-modal-email {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+            padding: 12px 20px;
+            border-radius: 10px;
+            color: #1e40af;
+            font-weight: 600;
+            font-size: 0.95rem;
+            margin-bottom: 20px;
+            border: 2px solid #bae6fd;
+        }
+
+        .access-modal-buttons {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .modal-btn {
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+        }
+
+        .modal-btn-primary {
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            color: white;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+        }
+
+        .modal-btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+        }
+
+        .modal-btn-secondary {
+            background: #f1f5f9;
+            color: #64748b;
+        }
+
+        .modal-btn-secondary:hover {
+            background: #e2e8f0;
+        }
+
+        .access-modal-note {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #e5e7eb;
+            font-size: 0.85rem;
+            color: #94a3b8;
+        }
+
+        .access-modal-note span {
+            color: #10b981;
+        }
+
+        /* 제한된 버튼 스타일 */
+        .launch-btn.restricted {
+            background: linear-gradient(135deg, #94a3b8, #64748b);
+            position: relative;
+        }
+
+        .launch-btn.restricted::after {
+            content: '🔒';
+            margin-left: 8px;
+        }
+
+        .launch-btn.restricted:hover {
+            background: linear-gradient(135deg, #64748b, #475569);
+            box-shadow: 0 5px 15px rgba(100, 116, 139, 0.3);
+        }
+
         /* 반응형 디자인 */
         @media (max-width: 1024px) {
             .main-container {
@@ -567,10 +719,49 @@
             .portal-info {
                 text-align: center;
             }
+
+            .access-modal {
+                padding: 30px 20px;
+            }
+
+            .access-modal-buttons {
+                flex-direction: column;
+            }
+
+            .modal-btn {
+                width: 100%;
+            }
         }
     </style>
 </head>
 <body>
+    <!-- 접근 제한 모달 -->
+    <div class="access-modal-overlay" id="accessModal">
+        <div class="access-modal">
+            <div class="access-modal-icon">📋</div>
+            <h3>내부 전용 도구입니다</h3>
+            <p>
+                해당 도구는 SKT 내부 임직원 전용으로 제공됩니다.<br>
+                접근 권한이 필요하시면 아래로 문의해 주세요.
+            </p>
+            <div class="access-modal-email">
+                <span>📧</span>
+                <span>juyongchoi@sktelecom.com</span>
+            </div>
+            <div class="access-modal-buttons">
+                <button class="modal-btn modal-btn-primary" onclick="sendAccessRequest()">
+                    📩 문의 메일 보내기
+                </button>
+                <button class="modal-btn modal-btn-secondary" onclick="closeAccessModal()">
+                    닫기
+                </button>
+            </div>
+            <div class="access-modal-note">
+                <span>✓</span> 문의 시 소속과 사용 목적을 함께 알려주시면 빠른 처리가 가능합니다.
+            </div>
+        </div>
+    </div>
+
     <div class="main-container">
         <!-- 왼쪽 패널: 기존 콘텐츠 -->
         <div class="left-panel">
@@ -606,13 +797,13 @@
                             <div class="quick-access-grid">
                                 <button class="quick-btn" onclick="openInIframe('https://choitimo.github.io/Analy_customer_segment.html', '고객 세그먼트 분석')">📊 고객 세그먼트 분석</button>
                                 <button class="quick-btn" onclick="openInIframe('https://choitimo.github.io/Analy_bant_lead_scoring_unified.html', 'BANT & Lead Scoring')">🎯 BANT & Lead Scoring</button>
-                                <button class="quick-btn" onclick="openInIframe('https://choitimo.github.io/battlecard/battlecard-main.html', '경쟁사 배틀카드')">⚔️ 경쟁사 배틀카드</button>
-                                <button class="quick-btn" onclick="openInIframe('https://choitimo.github.io/Sales_ROICalc.html', 'ROI 계산기')">💰 ROI 계산기</button>
+                                <button class="quick-btn" onclick="showAccessModal('경쟁사 배틀카드')">⚔️ 경쟁사 배틀카드 🔒</button>
+                                <button class="quick-btn" onclick="showAccessModal('ROI 계산기')">💰 ROI 계산기 🔒</button>
                                 <button class="quick-btn" onclick="openInIframe('https://choitimo.github.io/Propose_T-Markov-proposal-selector.html', '제안서 생성기')" style="background: linear-gradient(135deg, #f59e0b, #f97316); box-shadow: 0 8px 20px rgba(249, 115, 22, 0.3);">📑 제안서 생성기 ⭐</button>
-                                <button class="quick-btn" onclick="openInIframe('https://choitimo.github.io/Propose_major_quote_calculator.html', '통합 견적 계산기')" style="background: linear-gradient(135deg, #10b981, #059669); box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);">💰 통합 견적 계산기 🆕</button>
+                                <button class="quick-btn" onclick="showAccessModal('통합 견적 계산기')" style="background: linear-gradient(135deg, #94a3b8, #64748b);">💰 통합 견적 계산기 🔒</button>
                                 <button class="quick-btn" onclick="openInIframe('https://choitimo.github.io/Propose_simple_value_story_builder.html', 'Value Story Builder')">📖 Value Story Builder</button>
-                                <button class="quick-btn" onclick="openInIframe('https://choitimo.github.io/Propose_ztna-pricing-calculator.html', 'ZTNA 견적 시뮬레이터')">💵 ZTNA 견적 시뮬레이터</button>
-                                <button class="quick-btn" onclick="openInIframe('https://choitimo.github.io/BIDDING_negotiation_playbook.html', '협상 플레이북')">🤝 협상 플레이북</button>
+                                <button class="quick-btn" onclick="showAccessModal('ZTNA 견적 시뮬레이터')">💵 ZTNA 견적 시뮬레이터 🔒</button>
+                                <button class="quick-btn" onclick="showAccessModal('협상 플레이북')">🤝 협상 플레이북 🔒</button>
                                 <button class="quick-btn" onclick="openInIframe('https://choitimo.github.io/AS_ai_winloss_analyzer.html', 'Win/Loss 분석')">📈 Win/Loss 분석</button>
                             </div>
                         </div>
@@ -756,7 +947,7 @@
                                     <li>기능별 비교 매트릭스</li>
                                     <li>고객 반박 대응 스크립트</li>
                                 </ul>
-                                <button class="launch-btn" onclick="openInIframe('https://choitimo.github.io/battlecard/battlecard-main.html', '경쟁사 배틀카드')">도구 실행</button>
+                                <button class="launch-btn restricted" onclick="showAccessModal('경쟁사 배틀카드')">도구 실행</button>
                             </div>
 
                             <div class="tool-card">
@@ -786,7 +977,7 @@
                                     <li>3년 투자 수익률 분석</li>
                                     <li>경쟁사 대비 TCO 비교</li>
                                 </ul>
-                                <button class="launch-btn" onclick="openInIframe('https://choitimo.github.io/Sales_ROICalc.html', 'ROI 계산기')">도구 실행</button>
+                                <button class="launch-btn restricted" onclick="showAccessModal('ROI 계산기')">도구 실행</button>
                             </div>
 
                             <div class="tool-card">
@@ -831,10 +1022,10 @@
                                 <button class="launch-btn" onclick="openInIframe('https://choitimo.github.io/Propose_T-Markov-proposal-selector.html', '제안서 생성기')" style="background: linear-gradient(135deg, #f97316, #ea580c);">도구 실행</button>
                             </div>
 
-                            <div class="tool-card" style="background: linear-gradient(135deg, #d1fae5, #a7f3d0); border-color: #10b981;">
+                            <div class="tool-card" style="background: linear-gradient(135deg, #f1f5f9, #e2e8f0); border-color: #94a3b8;">
                                 <div class="tool-title">
                                     <span class="tool-icon">💰</span>
-                                    통합 견적 계산기 <span style="background: #10b981; color: white; padding: 2px 8px; border-radius: 12px; font-size: 0.8rem; margin-left: 10px;">NEW</span>
+                                    통합 견적 계산기 <span style="background: #64748b; color: white; padding: 2px 8px; border-radius: 12px; font-size: 0.8rem; margin-left: 10px;">🔒</span>
                                 </div>
                                 <div class="tool-title-en">Major Quote Calculator</div>
                                 <div class="tool-description">T-Markov 솔루션의 종합적인 견적을 산출하고 상세 비용 분석 제공</div>
@@ -843,7 +1034,7 @@
                                     <li>TCO 분석 및 비교</li>
                                     <li>견적서 자동 생성 및 출력</li>
                                 </ul>
-                                <button class="launch-btn" onclick="openInIframe('https://choitimo.github.io/Propose_major_quote_calculator.html', '통합 견적 계산기')" style="background: linear-gradient(135deg, #10b981, #059669);">도구 실행</button>
+                                <button class="launch-btn restricted" onclick="showAccessModal('통합 견적 계산기')">도구 실행</button>
                             </div>
 
                             <div class="tool-card">
@@ -873,7 +1064,7 @@
                                     <li>기능별 옵션 선택 및 계산</li>
                                     <li>맞춤형 견적서 생성</li>
                                 </ul>
-                                <button class="launch-btn" onclick="openInIframe('https://choitimo.github.io/Propose_ztna-pricing-calculator.html', 'ZTNA 견적 시뮬레이터')">도구 실행</button>
+                                <button class="launch-btn restricted" onclick="showAccessModal('ZTNA 견적 시뮬레이터')">도구 실행</button>
                             </div>
                         </div>
                     </div>
@@ -915,7 +1106,7 @@
                                     <li>가격 협상 대응 스크립트</li>
                                     <li>계약 조건 체크리스트</li>
                                 </ul>
-                                <button class="launch-btn" onclick="openInIframe('https://choitimo.github.io/BIDDING_negotiation_playbook.html', '협상 플레이북')">도구 실행</button>
+                                <button class="launch-btn restricted" onclick="showAccessModal('협상 플레이북')">도구 실행</button>
                             </div>
                         </div>
                     </div>
@@ -1031,6 +1222,86 @@
 
     <script>
         let currentUrl = '';
+        let currentToolName = '';
+
+        // 접근 제한 모달 표시
+        function showAccessModal(toolName) {
+            currentToolName = toolName;
+            const modal = document.getElementById('accessModal');
+            modal.classList.add('show');
+            
+            // 배경 스크롤 방지
+            document.body.style.overflow = 'hidden';
+        }
+
+        // 접근 제한 모달 닫기
+        function closeAccessModal() {
+            const modal = document.getElementById('accessModal');
+            modal.classList.remove('show');
+            
+            // 배경 스크롤 복원
+            document.body.style.overflow = '';
+        }
+
+        // 문의 메일 보내기
+        function sendAccessRequest() {
+            const subject = encodeURIComponent(`[T-Markov] ${currentToolName} 접근 권한 요청`);
+            const body = encodeURIComponent(`안녕하세요,
+
+T-Markov 프레임워크의 "${currentToolName}" 도구에 대한 접근 권한을 요청드립니다.
+
+[소속]
+- 회사/부서: 
+- 성명: 
+- 연락처: 
+
+[사용 목적]
+
+
+감사합니다.`);
+            
+            window.location.href = `mailto:juyongchoi@sktelecom.com?subject=${subject}&body=${body}`;
+            
+            // 모달 닫기
+            setTimeout(() => {
+                closeAccessModal();
+            }, 500);
+        }
+
+        // 모달 외부 클릭 시 닫기
+        document.getElementById('accessModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeAccessModal();
+            }
+        });
+
+        // ESC 키로 모달 닫기
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                const modal = document.getElementById('accessModal');
+                if (modal.classList.contains('show')) {
+                    closeAccessModal();
+                } else {
+                    closeIframe();
+                }
+            }
+            
+            // 숫자 키로 단계 이동
+            if (e.key >= '1' && e.key <= '5') {
+                const phaseId = 'phase' + e.key;
+                scrollToSection(phaseId);
+            }
+            
+            // 6 키로 기타 참고 이동
+            if (e.key === '6') {
+                scrollToSection('phase6');
+            }
+            
+            // 0 키로 개요 이동
+            if (e.key === '0') {
+                scrollToSection('overview');
+            }
+        });
 
         // iframe에서 도구 열기
         function openInIframe(url, title) {
@@ -1125,30 +1396,6 @@
             sections.forEach(section => {
                 observer.observe(section);
             });
-        });
-
-        // 키보드 단축키 지원
-        document.addEventListener('keydown', function(e) {
-            // Esc 키로 iframe 닫기
-            if (e.key === 'Escape') {
-                closeIframe();
-            }
-            
-            // 숫자 키로 단계 이동
-            if (e.key >= '1' && e.key <= '5') {
-                const phaseId = 'phase' + e.key;
-                scrollToSection(phaseId);
-            }
-            
-            // 6 키로 기타 참고 이동
-            if (e.key === '6') {
-                scrollToSection('phase6');
-            }
-            
-            // 0 키로 개요 이동
-            if (e.key === '0') {
-                scrollToSection('overview');
-            }
         });
     </script>
 </body>
