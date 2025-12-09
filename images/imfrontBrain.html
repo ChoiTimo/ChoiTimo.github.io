@@ -1,0 +1,1640 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <title>서울시 50플러스포털 | [50+포털]행복한 두뇌를 위한 다섯 가지 습관</title>
+  
+
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+	
+	<meta name="description" content="4050 중장년층을위한경력설계, 직무훈련, 40대직업전환, 보람일자리, 인턴십등일자리지원정보제공">
+	<meta name="naver-site-verification" content="840220ee824101ee7191773e7c961e368605d546">
+	<meta name="google-site-verification" content="DzlCwSmU1o7jlHBuWg3ZKLoQzDM7A6t8tpy_2aj2v8c">
+	<meta property="og:url" content="https://www.50plus.or.kr/">
+	<meta property="og:image" content="https://www.50plus.or.kr/upload/im/2025/09/6db04c6a-f224-4aa5-938d-5c95a16ba7a3.png">
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+<link type="text/css" rel="stylesheet" href="/css/font-awesome.min.css">
+<link type="text/css" rel="stylesheet" href="/css/simple-line-icons.min.css">
+<link type="text/css" rel="stylesheet" href="/css/bootstrap-custom.min.css">
+<link type="text/css" rel="stylesheet" href="/css/main.css">
+<link type="text/css" rel="stylesheet" href="/css/main-sub.css">
+<link rel="apple-touch-icon" sizes="57x57" href="/images/apple-icon-57x57.png">
+<link rel="apple-touch-icon" sizes="60x60" href="/images/apple-icon-60x60.png">
+<link rel="apple-touch-icon" sizes="72x72" href="/images/apple-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="76x76" href="/images/apple-icon-76x76.png">
+<link rel="apple-touch-icon" sizes="114x114" href="/images/apple-icon-114x114.png">
+<link rel="apple-touch-icon" sizes="120x120" href="/images/apple-icon-120x120.png">
+<link rel="apple-touch-icon" sizes="144x144" href="/images/apple-icon-144x144.png">
+<link rel="apple-touch-icon" sizes="152x152" href="/images/apple-icon-152x152.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-icon-180x180.png">
+<link rel="icon" type="image/png" sizes="192x192"  href="/images/android-icon-192x192.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="96x96" href="/images/favicon-96x96.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+<link rel="manifest" href="/images/manifest.json">
+<meta name="msapplication-TileColor" content="#ffffff">
+<meta name="msapplication-TileImage" content="/images/ms-icon-144x144.png">
+<meta name="theme-color" content="#ffffff">
+
+
+
+<script src="//www.seoul.go.kr/seoulgnb/gnb.js"></script>
+
+
+
+
+    <script>
+        var anyidAdaptor = anyidAdaptor || {};
+        /*이용기관 수정 영역 Start*/
+        anyidAdaptor.orgLogin = function(data){
+            //정부 통합인증SDK_연계가이드 4.4.1.3 이용기관 로그인(토글 off) 참조
+            //제공되는 라이브러리 메소드로 인증데이터 decrypt 이후 자체 로그인 로직 개발
+            const params = new URLSearchParams(location.search);
+            var obj ={
+                ssob : data.ssob
+                , tag : params.get("tx")
+            }
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "/anyIdCallBack.do", true);
+            xhr.setRequestHeader("Content-Type", "application/json");
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    var response = JSON.parse(xhr.responseText);
+                    if (response.status == "success") {
+                        console.log("response    >>>>>   ", JSON.stringify(response));
+                        window.location.href = params.get("endPoint");
+                    } else {
+                    }
+                }
+            };
+            xhr.send(JSON.stringify(obj));
+            
+        }
+        /*이용기관 수정 영역 End*/
+        
+        
+        /*이용기관 문구수정 영역 Start*/
+        anyidAdaptor.JoinConfirm = function(portalJoinUri, memberData){
+            anyidAdaptor.receiveAnyIdJoin(portalJoinUri, memberData);
+        }
+        /*이용기관 문구수정 영역 End*/
+        
+        
+        
+
+        anyidAdaptor.portalJoinUri = "null";
+        anyidAdaptor.certData = null;
+        anyidAdaptor.ssoByPass = "0";
+        anyidAdaptor.niRegYn = "null";
+        anyidAdaptor.agencyContextPath = "";
+        
+        
+        anyidAdaptor.success = function(data){
+            if(anyidAdaptor.ssoByPass != 0 || !data.useSso) {
+                anyidAdaptor.orgLogin(data);
+            } else {
+                anyidAdaptor.certData = data;
+                anyidAdaptor.userCheck();
+            }  
+        }
+        
+        anyidAdaptor.userCheck = function(){
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", anyidAdaptor.agencyContextPath + "/oidc/userCheck", true);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    var response = JSON.parse(xhr.responseText);
+                    if (response.success) {
+                        anyidAdaptor.ssoLogin();
+                    } else {
+                        setTimeout(function() {
+                            anyidAdaptor.receiveAnyIdJoin(response.uri, response.data);
+                        }, 100);  
+                    }
+                }
+            };
+
+            let jsonObject = new Object();
+            jsonObject.txId = anyidAdaptor.certData.txId;
+            jsonObject.ssob = anyidAdaptor.certData.ssob;
+            jsonObject.userSeCd = anyidAdaptor.certData.userSeCd;
+            
+            let jsonStr = JSON.stringify(jsonObject);
+            let encodedString = btoa(jsonStr);
+            
+            var data = "data=" + encodedString + "&txId=" + anyidAdaptor.certData.txId;
+            xhr.send(data);
+            
+        }
+
+        //anyid가입
+        anyidAdaptor.receiveAnyIdJoin = function(portalJoinUri, memberData){
+        
+            var url = portalJoinUri+encodeURIComponent(memberData);
+            anyidAdaptor.popup(url,"openAnyIdRegistUserIdv",700,740);
+
+            window.addEventListener("message", function(event) {
+                var result;
+                try {
+                    result = JSON.parse(event.data);
+                } catch (error) {
+                    console.error("Received message is not valid JSON:", error);
+                    return;
+                }
+                
+                if(!result.funcName || (result.funcName !== "trmsAgreComplete" && result.funcName !== "registUserComplete")) {
+                    return;
+                }
+                if(result.status === "success") {
+                    
+                    anyidAdaptor.ssoLogin();
+                    
+                }else{
+                    
+                    anyidAdaptor.orgLogin(anyidAdaptor.certData);
+                }
+
+            }, false);
+        }
+
+        // 팝업 호출
+        anyidAdaptor.popup = function(url, name, width, height){
+            let left = (screen.width) ? (screen.width-width)/2 : 0;
+            let top = (screen.height) ? (screen.height-height)/2 : 0;
+            let popup=window.open(url, name ,"resizable=yes,toolbar=no,scrollbars=yes,location=no,top="+top+"px,left="+left+"px,width="+width+"px,height="+height+"px");
+            if(popup){
+                popup.focus();
+            }
+        }
+
+        anyidAdaptor.ssoLogin = function(){
+            let jsonObject = new Object();
+            jsonObject.txId = anyidAdaptor.certData.txId;
+            jsonObject.ssob = anyidAdaptor.certData.ssob;
+            jsonObject.userSeCd = anyidAdaptor.certData.userSeCd;
+            jsonObject.afData = anyidAdaptor.certData.afData;
+            let jsonStr = JSON.stringify(jsonObject);
+            let encodedString = btoa(jsonStr);
+            var baseUrl = window.location.origin + anyidAdaptor.agencyContextPath + "/oidc/ssoLogin";
+            var urlWithParams = baseUrl + "?data=" + encodedString;
+            window.location.href = urlWithParams;
+        }
+        
+        anyidAdaptor.ssoLoginPageSub = function(baseUrl, endPoint, acrValues){
+            var subUrl = "";
+            
+            if (endPoint && endPoint.trim() !== "") {
+                subUrl = "?endPoint=" + encodeURIComponent(endPoint);
+            }
+            
+            if (!acrValues && acrValues.trim() == "") {
+                acrValues = "3";
+            }
+            
+            if (acrValues && acrValues.trim() !== "") {
+                if(subUrl == ""){
+                    subUrl = "?";
+                }else{
+                    subUrl = subUrl + "&";
+                }
+                subUrl = subUrl + "acrValues=" + acrValues;
+            }
+            window.location.replace(baseUrl+subUrl);
+        }
+        
+        /**/
+        anyidAdaptor.ssoLogout = function(endPoint) {
+            endPoint = typeof endPoint !== 'undefined' ? endPoint : "/";
+            var baseUrl = window.location.origin + anyidAdaptor.agencyContextPath + "/oidc/ssoLogout";
+            baseUrl = baseUrl + "?endPoint=" + encodeURIComponent(endPoint);
+            window.location.replace(baseUrl);
+        }
+        /**/
+        anyidAdaptor.reAuthLevel = function(endPoint, acrValues){
+            endPoint = typeof endPoint !== 'undefined' ? endPoint : "/";
+            var baseUrl = window.location.origin + anyidAdaptor.agencyContextPath + "/oidc/reAuthLevel";
+            anyidAdaptor.ssoLoginPageSub(baseUrl, endPoint, acrValues);
+
+        }
+        /**/
+        anyidAdaptor.ssoLoginPage = function(endPoint, acrValues){
+            endPoint = typeof endPoint !== 'undefined' ? endPoint : "/";
+            var baseUrl = window.location.origin + anyidAdaptor.agencyContextPath + "/oidc/auth";
+            anyidAdaptor.ssoLoginPageSub(baseUrl, endPoint, acrValues);
+        }
+        
+        /**/
+        anyidAdaptor.ssoSvcToSvc = function(url, endPoint){
+            var baseUrl = url + "/oidc/svcToSvc?endPoint=" + encodeURIComponent(endPoint);
+            window.open(baseUrl, "_blank");
+        }
+
+
+    </script>
+
+<meta property="og:url"  content="https://www.50plus.or.kr/detail.do?id=8405015">
+  <meta property="og:type" content="post">
+  <meta property="og:title" content='행복한 두뇌를 위한 다섯 가지 습관'>
+  <meta property="og:description"  content='뇌과학자들은 행복이 특별한 사건보다는 매일의 일상에서 온다고 이야기한다. 행복한 두뇌를 위한 다섯 가지 습관으로 행복을 찾아보자.'>
+  <meta property="og:image"  content="/upload/im/2020/06/40e975db-f320-4122-833b-9e661a800142.jpg">
+  </head>
+
+<body class="site-portal">
+<!-- BEGIN HEADER -->
+<!-- 관리자 미리보기 분기 -->
+<div id="skipnavigation">
+  <ul>
+    <li><a href="#visual-box">본문 바로가기</a></li>
+    <li><a href="#main-gnb">주 메뉴 바로가기</a></li>
+  </ul>
+</div>
+<header class="page-header">
+  <nav class="navbar">
+    <div class="top-nav">
+      <div id='seoul-common-gnb'></div>
+    </div>
+    <div class="only-mobile" style="margin: 25px;"></div>
+    <div class="container-header container--nav">
+      <button type="button" class="navbar-toggle collapsed navbar-toggle--foundation" data-toggle="collapse"
+              data-target="#bs-example-navbar-collapse-1" aria-expanded="false" style="top: 0px !important;">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <button type="button" class="navbar-toggle collapsed navbar-toggle--search" data-toggle="collapse"
+              data-target="#search-collapse" aria-expanded="false" style="top: 0px !important;">
+        <span class="sr-only">Toggle navigation</span>
+        <img class="navbar-toggle--search-btn" src="/images/homepage/foundation/foundation-search-btn.png" alt="검색 버튼">
+      </button>
+      <div class="portal-logo-wrapper only-mobile">
+        <a class="main-nav-logo--portal" href="/">
+          <img class="main-nav-logo__img" src="/upload/im/2025/01/03c4a065-5174-4c8a-a313-aedc789a7b2b.png" alt="서울시50플러스포털 www.50plus.or.kr" style="height: auto; width: 70%;">
+        </a>
+      </div>
+      <div class="portal-logo-wrapper only-web">
+      	<h1>
+        <a class="main-nav-logo--portal" href="/">
+        	<img class="main-nav-logo__img" src="/upload/im/2025/01/03c4a065-5174-4c8a-a313-aedc789a7b2b.png" alt="서울시50플러스포털 www.50plus.or.kr" style="height: auto; width: 88%; margin: 30px 0px;">
+            </a>
+        </h1>
+      </div>
+      <div class="main-nav-middle-right" style="margin: 3.5% 0% 0% 0%;">
+         <div class="signin-center-group">
+          <!-- 기업회원 -->
+            <a href="login.do" class="signin-center-group__link">
+                <img class="signin-center-group__link__icon" src="/images/homepage/icon-login.png" alt="">로그인
+              </a>
+              <a href="/joinSel.do?flag=join" class="signin-center-group__link">
+                <img class="signin-center-group__link__icon" src="/images/homepage/icon-signin.png" alt="">회원가입[개인/기업]
+              </a>
+            <a href="/org/index.do" class="signin-center-group__link signin-center-group__link--color signin-center-group__link--color--first">
+            재단
+          </a>
+          <div class="signin-center-group-box-wrapper">
+            <div class="dropdown signin-center-group__button-wrapper">
+              <a href="#" class="signin-center-group__link signin-center-group__link--color center-group--campus" id="campusDd" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                캠퍼스
+              </a>
+              <div class="dropdown-menu nav-dropdown-menu nav-dropdown-menu--campus" role="menu" aria-labelledby="campusDd">
+                <div class="dropdown-menu-inner-wrapper">
+                  <ul>
+                  <li><a href="/swc/index.do">서부</a></li>
+                    <li><a href="/scc/index.do">중부</a></li>
+                    <li><a href="/ssc/index.do">남부</a></li>
+                    <li><a href="/snc/index.do">북부</a></li>
+                    <li><a href="/sec/index.do">동부</a></li>
+                    </ul>
+                </div>
+              </div>
+            </div>
+            <div class="dropdown signin-center-group__button-wrapper">
+              <a href="#" class="signin-center-group__link signin-center-group__link--color center-group--center" id="centerDd" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                센터
+              </a>
+              <div class="dropdown-menu nav-dropdown-menu nav-dropdown-menu--center" role="menu" aria-labelledby="centerDd">
+                <div class="dropdown-menu-inner-wrapper" style="float: right;">
+                <ul>
+                <li><a href="/djc/index.do">동작</a></li>
+                  <li><a href="/ydp/index.do">영등포</a></li>
+                  <li><a href="/nwc/index.do">노원</a></li>
+                  <li><a href="/sdm/index.do">서대문</a></li>
+                  <li><a href="/sbc/index.do">성북</a></li>
+                  <li><a href="/gch/index.do">금천</a></li>
+                  <li><a href="/gsc/index.do">강서</a></li>
+                  <li><a href="/sch/index.do">서초</a></li>
+                  <li><a href="/gdc/index.do">강동</a></li>
+                  <li><a href="/ycp/index.do">양천</a></li>
+                  <li><a href="/sdc/index.do">성동</a></li>
+                  <li><a href="/gbc/index.do">강북</a></li>
+                  <li><a href="/gnc/index.do">관악</a></li>
+                  <li><a href="/ddc/index.do">동대문</a></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="dropdown signin-center-group__button-wrapper">
+              <a href="/s40/index.do" class="signin-center-group__link signin-center-group__link--color signin-center-group__link--color">
+            40대
+          </a>
+            </div>
+            <div class="dropdown signin-center-group__button-wrapper">
+              <a href="/sjc/index.do" class="signin-center-group__link signin-center-group__link--color signin-center-group__link--color">
+            시니어
+          </a>
+          </div>
+          <div class="dropdown signin-center-group__button-wrapper">
+            <a href="/job/index.do" class="signin-center-group__link signin-center-group__link--color signin-center-group__link--color">박람회</a>
+          </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="only-mobile" style="margin: 15px;"></div>
+    <div class="collapse navbar-collapse navbar-collapse--mobile-search" id="search-collapse">
+      <form action="search.do" class="main-nav-search-form main-nav-search-form--mobile">
+        <label for="searchmobileq" class="hidden-label">검색</label>
+        <input type="hidden" name="searchPage" value="por">
+        <!-- <input type="hidden" name="orgCd" value="fpp"> -->
+        <input type="text" id="searchmobileq" name="query" class="mobile-nav-search-input" placeholder="검색어를 입력해주세요.">
+        <button type="submit" class="mobile-search-submit-btn">검색</button>
+      </form>
+    </div>
+    <div class="only-mobile">
+   		<ul class="mobile-session-btn-group clearfix">
+         <li class="mobile-session-li mobile-session-li--first">
+               <a href="login.do" class="mobile-session__link">
+                 <img class="mobile-session__link__icon" src="/images/homepage/icon-login.png" alt="">로그인
+               </a>
+               </li>
+             <li class="mobile-session-divide-line"></li>
+             <li class="mobile-session-li">
+               <a href="/joinSel.do?flag=join" class="mobile-session__link">
+                 <img class="mobile-session__link__icon" src="/images/homepage/icon-signin.png" alt="">회원가입[개인/기업]
+               </a>
+             </li>
+           </ul>
+    </div>
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <div class="container-header container--nav visible-xs-block">
+        <div class="mobile-org-button-group clearfix" role="tablist" aria-multiselectable="true" id="org-button-group">
+          <ul class="mobile-top-org-button-group clearfix">
+            <li class="mobile-org-btn" style="width: 14.28%;"><a href="/" class="mobile-org-btn__link mobile-org-btn__link--first">포털</a></li>
+            <li class="mobile-org-btn" style="width: 14.28%;"><a href="/org/index.do" class="mobile-org-btn__link">재단</a></li>
+            <li class="mobile-org-btn" style="width: 14.28%;"><button class="mobile-org-btn__link mobile-org-btn__link--campus collapsed" data-parent="#org-button-group" data-toggle="collapse"
+                    data-target="#mobile-campus-collapse" aria-expanded="false" role="tab">캠퍼스</button></li>
+            <li class="mobile-org-btn" style="width: 14.28%;"><button class="mobile-org-btn__link mobile-org-btn__link--center collapsed" data-parent="#org-button-group" data-toggle="collapse"
+                    data-target="#mobile-center-collapse" aria-expanded="false" role="tab">센터</button></li>
+            <li class="mobile-org-btn" style="width: 14.28%;"><a href="/s40/index.do" class="mobile-org-btn__link">40대</a></li>
+            <li class="mobile-org-btn" style="width: 14.28%;"><a href="/sjc/index.do" class="mobile-org-btn__link">시니어</a></li>
+            <li class="mobile-org-btn" style="width: 14.28%;"><a href="/job/index.do" class="mobile-org-btn__link">박람회</a></li>
+          </ul>
+
+            <div class="sub-org-toggle-panel panel">
+              <ul class="mobile-campus-button-group clearfix collapse" id="mobile-campus-collapse">
+                <li class="mobile-suborg-li mobile-suborg-li--campus"><a href="/swc/index.do" class="mobile-suborg-btn">서부</a></li>
+                  <li class="mobile-suborg-li mobile-suborg-li--campus"><a href="/scc/index.do" class="mobile-suborg-btn">중부</a></li>
+                  <li class="mobile-suborg-li mobile-suborg-li--campus"><a href="/ssc/index.do" class="mobile-suborg-btn">남부</a></li>
+                  <li class="mobile-suborg-li mobile-suborg-li--campus"><a href="/snc/index.do" class="mobile-suborg-btn">북부</a></li>
+                  <li class="mobile-suborg-li mobile-suborg-li--campus"><a href="/sec/index.do" class="mobile-suborg-btn">동부</a></li>
+                  </ul>
+            </div>
+            <div class="sub-org-toggle-panel panel">
+              <ul class="mobile-campus-button-group clearfix collapse panel" id="mobile-center-collapse">
+                <li class="mobile-suborg-li mobile-suborg-li--center"><a href="/djc/index.do" class="mobile-suborg-btn">동작</a></li>
+                  <li class="mobile-suborg-li mobile-suborg-li--center"><a href="/ydp/index.do" class="mobile-suborg-btn">영등포</a></li>
+                  <li class="mobile-suborg-li mobile-suborg-li--center"><a href="/nwc/index.do" class="mobile-suborg-btn">노원</a></li>
+                  <li class="mobile-suborg-li mobile-suborg-li--center"><a href="/sdm/index.do" class="mobile-suborg-btn">서대문</a></li>
+                  <li class="mobile-suborg-li mobile-suborg-li--center"><a href="/sbc/index.do" class="mobile-suborg-btn">성북</a></li>
+                  <li class="mobile-suborg-li mobile-suborg-li--center"><a href="/gch/index.do" class="mobile-suborg-btn">금천</a></li>
+                  <li class="mobile-suborg-li mobile-suborg-li--center"><a href="/gsc/index.do" class="mobile-suborg-btn">강서</a></li>
+                  <li class="mobile-suborg-li mobile-suborg-li--center"><a href="/sch/index.do" class="mobile-suborg-btn">서초</a></li>
+                  <li class="mobile-suborg-li mobile-suborg-li--center"><a href="/gdc/index.do" class="mobile-suborg-btn">강동</a></li>
+                  <li class="mobile-suborg-li mobile-suborg-li--center"><a href="/ycp/index.do" class="mobile-suborg-btn">양천</a></li>
+                  <li class="mobile-suborg-li mobile-suborg-li--center"><a href="/sdc/index.do" class="mobile-suborg-btn">성동</a></li>
+                  <li class="mobile-suborg-li mobile-suborg-li--center"><a href="/gbc/index.do" class="mobile-suborg-btn">강북</a></li>
+                  <li class="mobile-suborg-li mobile-suborg-li--center"><a href="/gnc/index.do" class="mobile-suborg-btn">관악</a></li>
+                  <li class="mobile-suborg-li mobile-suborg-li--center"><a href="/ddc/index.do" class="mobile-suborg-btn">동대문</a></li>
+                  </ul>
+            </div>
+        </div>
+      </div>
+      <div class="mobile-nav-menu-wrapper">
+        <ul class="main-menu-nav-mobile" role="tablist">
+          <li class="mobile-nav-li" role="tab" id="headingPOR_NEWS">
+              <a role="button" data-toggle="collapse" data-parent="#faq-accordion" href="#collapsePOR_NEWS"
+                 aria-expanded="true" aria-controls="collapsePOR_NEWS" class="collapsed">
+                <h4 class="mobile-nav-li__text">50플러스소식</h4>
+                <img src="/images/icon-arrow-up-light-active.png" class="mobile-nav-li__arrow arrow--active" alt="메뉴열기">
+                <img src="/images/icon-arrow-down-light.png" class="mobile-nav-li__arrow arrow--close" alt="메뉴닫기">
+              </a>
+              <div id="collapsePOR_NEWS" class="panel-collapse collapse faq-box__answer-wrapper"
+                   role="tabpanel"
+                   aria-labelledby="headingPOR_NEWS">
+                <ul class="mobile-nav-sub-ul">
+                  <li class="mobile-nav-sub-li">
+                        <a class="mobile-nav-sub-li__link" href="/support.do">사업 모집공고</a>
+                        </li>
+                    <li class="mobile-nav-sub-li">
+                        <a class="mobile-nav-sub-li__link" href="/notice_recruit.do">공지사항</a>
+                        </li>
+                    <li class="mobile-nav-sub-li">
+                        <a class="mobile-nav-sub-li__link" href="/library.do">정책연구자료</a>
+                        </li>
+                    <li class="mobile-nav-sub-li">
+                        <a class="mobile-nav-sub-li__link" href="/library_prom.do">홍보자료</a>
+                        </li>
+                    </ul>
+              </div>
+            </li>
+          <li class="mobile-nav-li" role="tab" id="headingPOR_COUNSEL">
+              <a role="button" data-toggle="collapse" data-parent="#faq-accordion" href="#collapsePOR_COUNSEL"
+                 aria-expanded="true" aria-controls="collapsePOR_COUNSEL" class="collapsed">
+                <h4 class="mobile-nav-li__text">경력설계</h4>
+                <img src="/images/icon-arrow-up-light-active.png" class="mobile-nav-li__arrow arrow--active" alt="메뉴열기">
+                <img src="/images/icon-arrow-down-light.png" class="mobile-nav-li__arrow arrow--close" alt="메뉴닫기">
+              </a>
+              <div id="collapsePOR_COUNSEL" class="panel-collapse collapse faq-box__answer-wrapper"
+                   role="tabpanel"
+                   aria-labelledby="headingPOR_COUNSEL">
+                <ul class="mobile-nav-sub-ul">
+                  <li class="mobile-nav-sub-li">
+                        <a class="mobile-nav-sub-li__link" href="/counseling.do">경력설계 상담안내</a>
+                        </li>
+                    <li class="mobile-nav-sub-li">
+                        <a class="mobile-nav-sub-li__link" href="/TRIP.do">집단상담 프로그램</a>
+                        </li>
+                    <li class="mobile-nav-sub-li">
+                        <a class="mobile-nav-sub-li__link" href="/counsel.do"
+                             target="_self">경력설계 상담신청</a>
+                        </li>
+                    </ul>
+              </div>
+            </li>
+          <li class="mobile-nav-li" role="tab" id="headingPOR_WORK">
+              <a role="button" data-toggle="collapse" data-parent="#faq-accordion" href="#collapsePOR_WORK"
+                 aria-expanded="true" aria-controls="collapsePOR_WORK" class="collapsed">
+                <h4 class="mobile-nav-li__text">취업지원</h4>
+                <img src="/images/icon-arrow-up-light-active.png" class="mobile-nav-li__arrow arrow--active" alt="메뉴열기">
+                <img src="/images/icon-arrow-down-light.png" class="mobile-nav-li__arrow arrow--close" alt="메뉴닫기">
+              </a>
+              <div id="collapsePOR_WORK" class="panel-collapse collapse faq-box__answer-wrapper"
+                   role="tabpanel"
+                   aria-labelledby="headingPOR_WORK">
+                <ul class="mobile-nav-sub-ul">
+                  <li class="mobile-nav-sub-li">
+                        <a class="mobile-nav-sub-li__link" href="/job_guidance.do">일자리 사업 안내</a>
+                        </li>
+                    <li class="mobile-nav-sub-li">
+                        <a class="mobile-nav-sub-li__link" href="https://50plus.or.kr/appList.do"
+                             target="_self">가치동행일자리　　　(구. 보람일자리)</a>
+                        </li>
+                    <li class="mobile-nav-sub-li">
+                        <a class="mobile-nav-sub-li__link" href="https://50plus.or.kr/in_appList.do"
+                             target="_self">일자리 사업신청</a>
+                        </li>
+                    <li class="mobile-nav-sub-li">
+                        <a class="mobile-nav-sub-li__link" href="/createJob.do">창업지원</a>
+                        </li>
+                    <li class="mobile-nav-sub-li">
+                        <a class="mobile-nav-sub-li__link" href="/JobStory.do">일자리 참여후기</a>
+                        </li>
+                    </ul>
+              </div>
+            </li>
+          <li class="mobile-nav-li" role="tab" id="headingPOR_EDU">
+              <a role="button" data-toggle="collapse" data-parent="#faq-accordion" href="#collapsePOR_EDU"
+                 aria-expanded="true" aria-controls="collapsePOR_EDU" class="collapsed">
+                <h4 class="mobile-nav-li__text">역량개발</h4>
+                <img src="/images/icon-arrow-up-light-active.png" class="mobile-nav-li__arrow arrow--active" alt="메뉴열기">
+                <img src="/images/icon-arrow-down-light.png" class="mobile-nav-li__arrow arrow--close" alt="메뉴닫기">
+              </a>
+              <div id="collapsePOR_EDU" class="panel-collapse collapse faq-box__answer-wrapper"
+                   role="tabpanel"
+                   aria-labelledby="headingPOR_EDU">
+                <ul class="mobile-nav-sub-ul">
+                  <li class="mobile-nav-sub-li">
+                        <a class="mobile-nav-sub-li__link" href="/Educational_Information.do">교육안내</a>
+                        </li>
+                    <li class="mobile-nav-sub-li">
+                        <a class="mobile-nav-sub-li__link" href="education.do?cost=ALL&state=JOIN&type=ALL"
+                             target="_self">교육신청</a>
+                        </li>
+                    <li class="mobile-nav-sub-li">
+                        <a class="mobile-nav-sub-li__link" href="/Job_change_educational.do">40대 직업캠프</a>
+                        </li>
+                    <li class="mobile-nav-sub-li">
+                        <a class="mobile-nav-sub-li__link" href="/job_training.do">교육 참여후기</a>
+                        </li>
+                    </ul>
+              </div>
+            </li>
+          <li class="mobile-nav-li" role="tab" id="headingPOR_COMMUNITY">
+              <a role="button" data-toggle="collapse" data-parent="#faq-accordion" href="#collapsePOR_COMMUNITY"
+                 aria-expanded="true" aria-controls="collapsePOR_COMMUNITY" class="collapsed">
+                <h4 class="mobile-nav-li__text">기업지원</h4>
+                <img src="/images/icon-arrow-up-light-active.png" class="mobile-nav-li__arrow arrow--active" alt="메뉴열기">
+                <img src="/images/icon-arrow-down-light.png" class="mobile-nav-li__arrow arrow--close" alt="메뉴닫기">
+              </a>
+              <div id="collapsePOR_COMMUNITY" class="panel-collapse collapse faq-box__answer-wrapper"
+                   role="tabpanel"
+                   aria-labelledby="headingPOR_COMMUNITY">
+                <ul class="mobile-nav-sub-ul">
+                  <li class="mobile-nav-sub-li">
+                        <a class="mobile-nav-sub-li__link" href="/joinComGuide.do">기업지원 안내</a>
+                        </li>
+                    <li class="mobile-nav-sub-li">
+                        <a class="mobile-nav-sub-li__link" href="https://50plus.or.kr/joinCom.do?flag=1"
+                             target="_self">기업 회원가입</a>
+                        </li>
+                    </ul>
+              </div>
+            </li>
+          <li class="mobile-nav-li" role="tab" id="headingPOR_LIFE">
+              <a role="button" data-toggle="collapse" data-parent="#faq-accordion" href="#collapsePOR_LIFE"
+                 aria-expanded="true" aria-controls="collapsePOR_LIFE" class="collapsed">
+                <h4 class="mobile-nav-li__text">중장년정보몽땅</h4>
+                <img src="/images/icon-arrow-up-light-active.png" class="mobile-nav-li__arrow arrow--active" alt="메뉴열기">
+                <img src="/images/icon-arrow-down-light.png" class="mobile-nav-li__arrow arrow--close" alt="메뉴닫기">
+              </a>
+              <div id="collapsePOR_LIFE" class="panel-collapse collapse faq-box__answer-wrapper"
+                   role="tabpanel"
+                   aria-labelledby="headingPOR_LIFE">
+                <ul class="mobile-nav-sub-ul">
+                  <li class="mobile-nav-sub-li">
+                        <a class="mobile-nav-sub-li__link" href="/PolicyInfo_Job.do">일자리</a>
+                        </li>
+                    <li class="mobile-nav-sub-li">
+                        <a class="mobile-nav-sub-li__link" href="/PolicyInfo_Welfare-Health.do">복지·건강</a>
+                        </li>
+                    <li class="mobile-nav-sub-li">
+                        <a class="mobile-nav-sub-li__link" href="/PolicyInfo_Edu-Culture.do">교육·문화</a>
+                        </li>
+                    <li class="mobile-nav-sub-li">
+                        <a class="mobile-nav-sub-li__link" href="/external-news.do">외부기관 모집정보</a>
+                        </li>
+                    <li class="mobile-nav-sub-li">
+                        <a class="mobile-nav-sub-li__link" href="/Magazine.do">중장년 매거진</a>
+                        </li>
+                    </ul>
+              </div>
+            </li>
+          </ul>
+        <ul class="site-info-button-group">
+          <li class="site-info-button"><a href="clean.do" class="site-info-button-group__link--first">부패·공익신고센터</a></li>
+          <li class="site-info-button"><a href="faq.do" class="site-info-button-group__link site-info-button-group__link">자주하는질문</a></li>
+          <li class="site-info-button"><a href="navigator.do" class="site-info-button-group__link">50+정보사이트</a></li>
+          <li class="site-info-button"><a href="manual.do" class="site-info-button-group__link">포털 사용설명서</a></li>
+          <li class="site-info-button"><a href="org/eng.do" class="site-info-button-group__link" target="_blank">ENG</a></li>
+        </ul>
+      </div>
+      <div class="main-menu-nav" id="main-gnb">
+        <div class="container-header container--nav">
+          <button type="button" class="main-menu-nav__hamberger" tabindex="-1">
+            <img class="main-menu-nav__hamberger__icon" src="/images/homepage/icon-hamberger.png" alt="전체 메뉴">
+          </button>
+          <ul class="main-menus main-menus--portal clearfix">
+            <li class="main-menu-li" >
+                <a href="#" class="main-menu-li__link main-menu-li__link--portal" id="0">50플러스소식</a>
+                <ul aria-labelledby="0">
+                  <li class="main-menu-sub-li main-menu-sub-li--portal">
+                        <a class="main-menu-sub-li__link" href="/support.do">사업 모집공고</a>
+                        </li>
+                    <li class="main-menu-sub-li main-menu-sub-li--portal">
+                        <a class="main-menu-sub-li__link" href="/notice_recruit.do">공지사항</a>
+                        </li>
+                    <li class="main-menu-sub-li main-menu-sub-li--portal">
+                        <a class="main-menu-sub-li__link" href="/library.do">정책연구자료</a>
+                        </li>
+                    <li class="main-menu-sub-li main-menu-sub-li--portal">
+                        <a class="main-menu-sub-li__link" href="/library_prom.do">홍보자료</a>
+                        </li>
+                    </ul>
+              </li>
+            <li class="main-menu-li" >
+                <a href="#" class="main-menu-li__link main-menu-li__link--portal" id="1">경력설계</a>
+                <ul aria-labelledby="1">
+                  <li class="main-menu-sub-li main-menu-sub-li--portal">
+                        <a class="main-menu-sub-li__link" href="/counseling.do">경력설계 상담안내</a>
+                        </li>
+                    <li class="main-menu-sub-li main-menu-sub-li--portal">
+                        <a class="main-menu-sub-li__link" href="/TRIP.do">집단상담 프로그램</a>
+                        </li>
+                    <li class="main-menu-sub-li main-menu-sub-li--portal">
+                        <a class="main-menu-sub-li__link" href="/counsel.do"
+                             target="_self">경력설계 상담신청</a>
+                        </li>
+                    </ul>
+              </li>
+            <li class="main-menu-li" >
+                <a href="#" class="main-menu-li__link main-menu-li__link--portal" id="2">취업지원</a>
+                <ul aria-labelledby="2">
+                  <li class="main-menu-sub-li main-menu-sub-li--portal">
+                        <a class="main-menu-sub-li__link" href="/job_guidance.do">일자리 사업 안내</a>
+                        </li>
+                    <li class="main-menu-sub-li main-menu-sub-li--portal">
+                        <a class="main-menu-sub-li__link" href="https://50plus.or.kr/appList.do"
+                             target="_self">가치동행일자리　　　(구. 보람일자리)</a>
+                        </li>
+                    <li class="main-menu-sub-li main-menu-sub-li--portal">
+                        <a class="main-menu-sub-li__link" href="https://50plus.or.kr/in_appList.do"
+                             target="_self">일자리 사업신청</a>
+                        </li>
+                    <li class="main-menu-sub-li main-menu-sub-li--portal">
+                        <a class="main-menu-sub-li__link" href="/createJob.do">창업지원</a>
+                        </li>
+                    <li class="main-menu-sub-li main-menu-sub-li--portal">
+                        <a class="main-menu-sub-li__link" href="/JobStory.do">일자리 참여후기</a>
+                        </li>
+                    </ul>
+              </li>
+            <li class="main-menu-li" >
+                <a href="#" class="main-menu-li__link main-menu-li__link--portal" id="3">역량개발</a>
+                <ul aria-labelledby="3">
+                  <li class="main-menu-sub-li main-menu-sub-li--portal">
+                        <a class="main-menu-sub-li__link" href="/Educational_Information.do">교육안내</a>
+                        </li>
+                    <li class="main-menu-sub-li main-menu-sub-li--portal">
+                        <a class="main-menu-sub-li__link" href="education.do?cost=ALL&state=JOIN&type=ALL"
+                             target="_self">교육신청</a>
+                        </li>
+                    <li class="main-menu-sub-li main-menu-sub-li--portal">
+                        <a class="main-menu-sub-li__link" href="/Job_change_educational.do">40대 직업캠프</a>
+                        </li>
+                    <li class="main-menu-sub-li main-menu-sub-li--portal">
+                        <a class="main-menu-sub-li__link" href="/job_training.do">교육 참여후기</a>
+                        </li>
+                    </ul>
+              </li>
+            <li class="main-menu-li" >
+                <a href="#" class="main-menu-li__link main-menu-li__link--portal" id="4">기업지원</a>
+                <ul aria-labelledby="4">
+                  <li class="main-menu-sub-li main-menu-sub-li--portal">
+                        <a class="main-menu-sub-li__link" href="/joinComGuide.do">기업지원 안내</a>
+                        </li>
+                    <li class="main-menu-sub-li main-menu-sub-li--portal">
+                        <a class="main-menu-sub-li__link" href="https://50plus.or.kr/joinCom.do?flag=1"
+                             target="_self">기업 회원가입</a>
+                        </li>
+                    </ul>
+              </li>
+            <li class="main-menu-li" style="width: 13.8%;">
+                <a href="#" class="main-menu-li__link main-menu-li__link--portal" id="5">중장년정보몽땅</a>
+                <ul aria-labelledby="5">
+                  <li class="main-menu-sub-li main-menu-sub-li--portal">
+                        <a class="main-menu-sub-li__link" href="/PolicyInfo_Job.do">일자리</a>
+                        </li>
+                    <li class="main-menu-sub-li main-menu-sub-li--portal">
+                        <a class="main-menu-sub-li__link" href="/PolicyInfo_Welfare-Health.do">복지·건강</a>
+                        </li>
+                    <li class="main-menu-sub-li main-menu-sub-li--portal">
+                        <a class="main-menu-sub-li__link" href="/PolicyInfo_Edu-Culture.do">교육·문화</a>
+                        </li>
+                    <li class="main-menu-sub-li main-menu-sub-li--portal">
+                        <a class="main-menu-sub-li__link" href="/external-news.do">외부기관 모집정보</a>
+                        </li>
+                    <li class="main-menu-sub-li main-menu-sub-li--portal">
+                        <a class="main-menu-sub-li__link" href="/Magazine.do">중장년 매거진</a>
+                        </li>
+                    </ul>
+              </li>
+            <li class="main-menu-sub-wrapper clearfix">
+              <div class="main-menu-sub-wrapper__background"></div>
+            </li>
+          </ul>
+          <button type="button" class="main-menu-nav__search" data-toggle="collapse"
+                  data-target="#search-collapse-web" aria-expanded="false">
+            <img class="main-menu-nav__search__icon" src="/images/homepage/btn-search.png" alt="검색 버튼">
+          </button>
+        </div>
+        <div class="container-header container--nav web-search-collape-wrapper">
+          <div class="collapse web-search-collape" id="search-collapse-web">
+            <form action="search.do" class="main-nav-search-form--web">
+              <label for="searchq" class="hidden-label">검색</label>
+              <input type="hidden" name="searchPage" value="por">
+              <input type="text" id="searchq" name="query" class="main-button-search-input" placeholder="검색어를 입력해주세요.">
+              <button type="submit" class="web-search-submit-btn">검색</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div id="visual-box"></div>
+<!-- END HEADER -->
+
+<!-- BEGIN HEADER -->
+
+
+
+<div class="breadcromb-wrapper" >
+  <div class="container">
+    <div class="breadcromb-li"><a href="index.do" class="breadcromb-li__link"><img class="breadcromb-li__img--home" src="/images/icon-breadcromb-home.png" alt="홈"></a></div>
+    <div class="breadcromb-li"><img class="breadcromb-li__img" src="/images/icon-polygon-right.png" alt=""></div>
+    
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+            
+          
+        
+   		
+   			<div class="breadcromb-li">중장년정보몽땅</div>
+	        <div class="breadcromb-li"><img class="breadcromb-li__img" src="/images/icon-polygon-right.png" alt=""></div>
+	        <div class="breadcromb-li breadcromb-li--current"><a href="Magazine.do" class="breadcromb-li__link">중장년 매거진</a></div>
+   		
+      
+      
+    
+  </div>
+</div><!-- END HEADER -->
+
+<!-- BEGIN CONTENTS -->
+<script src="/js/wn_search/search.js"></script>
+<!-- <script src="//developers.band.us/js/share/band-button.js?v=23112017"></script> -->
+<input type="hidden" name="LINK_TITLE" 		id="LINK_TITLE" 	value='행복한 두뇌를 위한 다섯 가지 습관'>
+<input type="hidden" name="LINK_DESC" 		id="LINK_DESC" 		value='건강'>
+<input type="hidden" name="LINK_IMAGE_URL" 	id="LINK_IMAGE_URL" value='https://www.50plus.or.kr/upload/im/2020/06/40e975db-f320-4122-833b-9e661a800142.jpg'>
+<div class="container">
+  <h2 class="show-title">행복한 두뇌를 위한 다섯 가지 습관</h2>
+  <div class="share-btn-group clearfix">
+    <a href="#" class="share-btn" id="btn-facebook" title="페이스북 공유 새창열림">
+      <img class="share-btn__img" src="/images/icon-facebook.png" alt="페이스북 공유">
+    </a>
+    <a href="#" id="kakao-link-btn" class="share-btn" title="카카오톡 공유 새창열림">
+      <img class="share-btn__img" src="/images/icon-kakao.png" alt="카카오톡 공유">
+    </a>
+    <a href="#" class="share-btn twitter-share" data-js="twitter-share" title="트위터 공유 새창열림">
+      <img class="share-btn__img" src="/images/icon-twitter.png" alt="트위터 공유">
+    </a>
+    <a href="javascript:shareBand('50+포털','행복한 두뇌를 위한 다섯 가지 습관')" class="band-share-btn-wrapper" title="밴드 공유 새창열림">
+      <img src="/images/icon-pinterest.png" alt="밴드 공유">
+    </a>
+    <!-- <p class="alt-text" title="새창열림">다음 버튼은 밴드 공유이며 새창으로 열립니다.</p>
+    <div class="band-share-btn-wrapper" title="새창열림">
+      <script src="//developers.band.us/js/share/band-button.js?v=23112017"></script>
+      <script>
+          new ShareBand.makeButton({"lang":"ko","type":"c"});
+      </script>
+    </div> -->
+    <div id="like-btn"></div>
+      </div>
+
+  <div class="post-content">
+    <p><span style="font-size:16px"><span style="font-family:맑은 고딕"><img alt="" src="/upload/im/2020/06/c12beca9-ca83-4327-9839-93350a4bf4df.jpg" style="height:961px; width:750px" /></span></span></p>
+
+<p><span style="font-size:16px"><span style="font-family:맑은 고딕"><strong>&ldquo;행복은 기쁨의 강도가 아니라 빈도에 있다&rdquo;</strong>는 이야기를 들어보았을 것이다. <span style="font-size:16px"><span style="font-family:맑은 고딕">뇌과학자들은 행복이 특별한 사건보다는 매일의 일상에서 온다고 이야기한다.&nbsp;</span></span></span></span></p>
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+
+<p><span style="font-size:22px"><span style="font-family:맑은 고딕"><span style="color:#000000"><strong>행복한 사람들에겐&nbsp;행복한 습관이 있다.</strong></span></span></span></p>
+
+<p><span style="font-size:16px"><span style="font-family:맑은 고딕">기분이 좋으면 두뇌는 도파민과 세로토닌, 옥시토닌, 엔도르핀 등 네 가지 호르몬을 방출한다. 행복을 책임지는 호르몬 4중주. 삶의 어느 단계에서든 행복 호르몬의 4중주가 더 많이, 자주 들려오는 <span style="color:#d14841">두뇌를 위한 다섯 가지 습관을 소개한다.</span></span></span></p>
+
+<p>&nbsp;</p>
+
+<p><span style="font-size:16px"><span style="font-family:맑은 고딕"><span style="color:#d14841"><img alt="" src="/upload/im/2020/06/b7a1cf52-2185-404b-8b70-0ff29717c34e.jpg" style="height:563px; width:750px" /></span></span></span></p>
+
+<p>&nbsp;</p>
+
+<p><span style="font-size:22px"><span style="font-family:맑은 고딕"><strong><span style="color:#000000">1.&nbsp;행복한 두뇌는 &#39;몰입한다&#39;</span></strong></span></span></p>
+
+<p><span style="font-size:16px"><span style="font-family:맑은 고딕">세계적인 베스트셀러 &lt;몰입의 즐거움&gt;을 쓴 심리학자 미하이 칙센트미하이는 몰입을 &lsquo;주위의 모든 잡념과 방해물을 차단하고 원하는 어느 한 곳에 자신의 모든 정신을 집중하는 일&rsquo;이라고 정의했다.</span></span></p>
+
+<p>&nbsp;</p>
+
+<p><span style="font-size:16px"><span style="font-family:맑은 고딕"><span style="color:#e25041">산책과 등산, 식물 돌보기, 독서, 영화 관람 등 어떤 것에 몰입하는 경험은 본질적 만족감을 선사한다.</span></span></span></p>
+
+<p><span style="font-size:16px"><span style="font-family:맑은 고딕">몰입할 수 있는 대상을 찾고, 몰입할 수 있는 기회를 자주 만들자. 쓰면 쓸수록 고도로 연결되는 두뇌는 행복감을 선사하는 새로운 대상을 계속 발견해 낼 것이다.</span></span></p>
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+
+<p><span style="font-size:22px"><span style="font-family:맑은 고딕"><span style="color:#000000"><strong>2. 행복한 두뇌는 &#39;감사한다&#39;</strong></span></span></span></p>
+
+<p><span style="font-size:16px"><span style="font-family:맑은 고딕">최근의 연구에 따르면 일상의 작은 사건들에 감사를 표현하는 사람들은 자기 자신과 자신의 삶에 대해 더욱 긍정적으로 느끼고, 행복감도 높다.</span></span></p>
+
+<p><span style="font-size:16px"><span style="font-family:맑은 고딕"><span style="color:#e25041">감사를 표현하는 일은 자부심을 향상시키고, 두뇌에도 지속적인 변화를 일으킨다.</span></span></span></p>
+
+<p>&nbsp;</p>
+
+<p><span style="font-size:16px"><span style="font-family:맑은 고딕">심리학자 엘리 콥 박사는 &ldquo;감사를 잘 표현하는 사람들은 학습, 이성적 사고, 의사 결정과 관련한 뇌 영역인 중전두피질에서 더 큰 신경 민감성을 보인다&rdquo;고 말한다.</span></span></p>
+
+<p>&nbsp;</p>
+
+<p><span style="font-size:16px"><span style="font-family:맑은 고딕"><img alt="" src="/upload/im/2020/06/cb4f9023-0f0b-487e-a24d-0968eaa114f8.jpg" style="height:439px; width:750px" /></span></span></p>
+
+<p>&nbsp;</p>
+
+<p><span style="font-size:22px"><span style="font-family:맑은 고딕"><span style="color:#000000"><strong>3. 행복한 두뇌는 &#39;깊은 관계를 맺는다&#39;</strong></span></span></span></p>
+
+<p><span style="font-size:16px"><span style="font-family:맑은 고딕">가족과 친구, 직장 동료 등과의 돈독한 사회적 관계는 행복한 삶을 만드는 가장 중요한 요소 중 하나다. <span style="font-size:16px"><span style="font-family:맑은 고딕">육체, 정신적 건강과 수명에까지 큰 영향을 미친다.</span></span></span></span></p>
+
+<p>&nbsp;</p>
+
+<p><span style="font-size:16px"><span style="font-family:맑은 고딕">하버드 의과대학에서 성인 724명의 삶을 75년간 추적한 연구의 결론 역시 동일했다. 연구 책임자인 로버트 월딩거 박사는 수만 페이지 분량의 연구에서 얻은 가장 큰 교훈이<span style="color:#e25041">&nbsp;&lsquo;좋은 관계가 우리를 더 행복하고 건강하게 만든다는 것&rsquo;</span>이라고 설명한다.</span></span></p>
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+
+<p><span style="font-size:22px"><span style="font-family:맑은 고딕"><span style="color:#000000"><strong>4. 행복한 두뇌는 &#39;현재에 집중한다&#39;</strong></span></span></span></p>
+
+<p><span style="font-size:16px"><span style="font-family:맑은 고딕">대부분의 시간을 과거를 후회하거나, 미래를 걱정하는 데 쓰는 사람들이 행복하기란 불가능한 일에 가깝다. 과거와 미래에 신경 쓰는 동안 우리가 살고 있는 현재는 어쩔 도리 없이 흘러가버린다. 지금 찾을 수 있는 작은 즐거움에 집중하자.</span></span></p>
+
+<p>&nbsp;</p>
+
+<p><span style="font-size:16px"><span style="font-family:맑은 고딕"><span style="color:#e25041">가장 평범한 기쁨이 때로 가장 특별한 행복을 맛볼 수 있게 한다.</span> 물론 행복이 추구해야 할 목표라기보다는 살아가는 과정에서 느끼는 부산물인 것처럼 &lsquo;기쁨&rsquo; 자체에 천착하는 것도 여러 부작용을 일으킬 수 있다. 지금의 삶에 집중하자.</span></span></p>
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+
+<p><span style="font-size:22px"><span style="font-family:맑은 고딕"><span style="color:#000000"><strong>5. 행복한 두뇌는 &#39;모험을 즐긴다&#39;</strong></span></span></span></p>
+
+<p><span style="font-size:16px"><span style="font-family:맑은 고딕">사람들은 이전에 해 보지 못한, 즐거운 모험을 할 때 자연스럽게 흥분하고, 감사한 마음을 받고, 스트레스를 덜 받는다. <span style="color:#e25041">일상의 삶도 충분히 모험이 될 수 있다.&nbsp;</span>매일 출근하는 방법을 바꿀 수도 있고, 평소 읽는 책과는 전혀 다른 분야의 책을 사서 읽을 수도 있다.</span></span></p>
+
+<p>&nbsp;</p>
+
+<p><span style="font-size:16px"><span style="font-family:맑은 고딕">자연은 언제나 훌륭한 모험의 대상이다. 숲과 공원, 해변 등 자연 속에서 일주일에 2시간 정도 시간을 보내면 놀랄만큼 신체, 정신 건강이 나아진다는 연구 결과도 있다.</span></span></p>
+
+<p>&nbsp;</p>
+
+<p><span style="font-family:맑은 고딕">[상기 이미지 및 원고 출처 : <a href="https://plan4u.shinhan.com/meetthepension" target="_blank">신한 미래설계포유</a>]</span></p>
+
+<p>&nbsp;</p>
+
+<p><a href="https://plan4u.shinhan.com/meetthepension" target="_blank"><img alt="" src="/upload/im/2020/05/66f5a227-06b8-4198-a7a5-ef2ac778917b.png" style="height:117px; width:750px" /></a></p>
+</div>
+
+  <!-- BEGIN TAGS -->
+  <!-- 개인정보 제3자제공 게시판 작업 -->
+  
+
+
+<div class="show-tags">
+  <h4 class="show-tags__label">태그<span class="show-tags__label__double">:</span></h4>
+  
+    <a href="javascript:void(0);" onClick="BoardtagSearchJquery('건강','fpp');">
+      <p class="board-card-tag">건강
+        
+          ,
+        
+      </p>
+    </a>
+  
+    <a href="javascript:void(0);" onClick="BoardtagSearchJquery('두뇌','fpp');">
+      <p class="board-card-tag">두뇌
+        
+          ,
+        
+      </p>
+    </a>
+  
+    <a href="javascript:void(0);" onClick="BoardtagSearchJquery('습관','fpp');">
+      <p class="board-card-tag">습관
+        
+          ,
+        
+      </p>
+    </a>
+  
+    <a href="javascript:void(0);" onClick="BoardtagSearchJquery('행복','fpp');">
+      <p class="board-card-tag">행복
+        
+      </p>
+    </a>
+  
+</div>
+<div class="show-tags">
+  <h4 class="show-tags__label">연관키워드<span class="show-tags__label__double">:</span></h4>
+  건강
+</div><!-- END TAGS -->
+
+  <!-- BEGIN RELATIVECONTENTS -->
+  <div class="relation-contents">
+  <h3 class="section-title">연관컨텐츠</h3>
+  <div class="relative-cards gutter-20 clearfix">
+    <div class="gutter-20__li grid-4">
+        <a href="detail.do?id=130544" class="embed-responsive embed-responsive-4by3">
+          <div class="relative-card__medai board-card__media background-image"
+                 style="background-image: url(/upload/im/2018/01/e2dc6d78-2ea7-487d-a708-b75efdc46a23.jpg),url('/images/bg-card-defaul-2.jpg')"><p class="alt-text">비인두암, 대장암, 위암과 싸우는 노신사와 종양내과 전문의의 라뽀</p></div>
+          </a>
+        <div class="relative-card__info">
+          <h5 class="relative-card__info__title">
+            <a href="detail.do?id=130544" class="board-card__link">비인두암, 대장암, 위암과 싸우는 노신사와 종양내과 전문의의 라뽀</a></h5>
+          <div class="board-card__info__tags">
+            <a href="javascript:void(0);" onClick="BoardtagSearchJquery('대장암','fpp');">
+                <p class="board-card-tag">#대장암</p>
+              </a>
+            <a href="javascript:void(0);" onClick="BoardtagSearchJquery('비인두암','fpp');">
+                <p class="board-card-tag">#비인두암</p>
+              </a>
+            <a href="javascript:void(0);" onClick="BoardtagSearchJquery('암극복수기공모전','fpp');">
+                <p class="board-card-tag">#암극복수기공모전</p>
+              </a>
+            <a href="javascript:void(0);" onClick="BoardtagSearchJquery('위암','fpp');">
+                <p class="board-card-tag">#위암</p>
+              </a>
+            </div>
+        </div>
+      </div>
+    <div class="gutter-20__li grid-4">
+        <a href="detail.do?id=123241" class="embed-responsive embed-responsive-4by3">
+          <div class="relative-card__medai board-card__media background-image"
+                 style="background-image: url(/upload/im/2018/01/0b5b957f-7bba-4574-bb1a-9c30b7ea9f9b.jpg),url('/images/bg-card-defaul-2.jpg')"><p class="alt-text">정퇴자, 조퇴자, 졸퇴자가 말하는 독서 &#039;피가 되고 살이 되는 이야기&#039;</p></div>
+          </a>
+        <div class="relative-card__info">
+          <h5 class="relative-card__info__title">
+            <a href="detail.do?id=123241" class="board-card__link">정퇴자, 조퇴자, 졸퇴자가 말하는 독서 &#039;피가 되고 살이 되는 이야기&#039;</a></h5>
+          <div class="board-card__info__tags">
+            <a href="javascript:void(0);" onClick="BoardtagSearchJquery('#정퇴자#조퇴자#졸퇴자#독서#은퇴자의공부법#윤석윤#최병일#윤영선','fpp');">
+                <p class="board-card-tag">##정퇴자#조퇴자#졸퇴자#독서#은퇴자의공부법#윤석윤#최병일#윤영선</p>
+              </a>
+            </div>
+        </div>
+      </div>
+    <div class="gutter-20__li grid-4">
+        <a href="detail.do?id=136599" class="embed-responsive embed-responsive-4by3">
+          <div class="relative-card__medai board-card__media background-image"
+                 style="background-image: url(/upload/im/2018/01/00ab46ed-f45e-442d-b402-93a020341c4c.jpg),url('/images/bg-card-defaul-2.jpg')"><p class="alt-text">스윙 크기 감각훈련은 8번 아이언이 적당</p></div>
+          </a>
+        <div class="relative-card__info">
+          <h5 class="relative-card__info__title">
+            <a href="detail.do?id=136599" class="board-card__link">스윙 크기 감각훈련은 8번 아이언이 적당</a></h5>
+          <div class="board-card__info__tags">
+            <a href="javascript:void(0);" onClick="BoardtagSearchJquery('골프','fpp');">
+                <p class="board-card-tag">#골프</p>
+              </a>
+            <a href="javascript:void(0);" onClick="BoardtagSearchJquery('스윙','fpp');">
+                <p class="board-card-tag">#스윙</p>
+              </a>
+            <a href="javascript:void(0);" onClick="BoardtagSearchJquery('스포츠','fpp');">
+                <p class="board-card-tag">#스포츠</p>
+              </a>
+            <a href="javascript:void(0);" onClick="BoardtagSearchJquery('아이언','fpp');">
+                <p class="board-card-tag">#아이언</p>
+              </a>
+            <a href="javascript:void(0);" onClick="BoardtagSearchJquery('취미','fpp');">
+                <p class="board-card-tag">#취미</p>
+              </a>
+            </div>
+        </div>
+      </div>
+    <div class="gutter-20__li grid-4">
+        <a href="detail.do?id=122164" class="embed-responsive embed-responsive-4by3">
+          <div class="relative-card__medai board-card__media background-image"
+                 style="background-image: url(/upload/im/2018/01/dfd917bd-9ed1-4dad-a41f-bd8218c56aab.jpg),url('/images/bg-card-defaul-2.jpg')"><p class="alt-text">초개(草芥) 그리고 말[馬]</p></div>
+          </a>
+        <div class="relative-card__info">
+          <h5 class="relative-card__info__title">
+            <a href="detail.do?id=122164" class="board-card__link">초개(草芥) 그리고 말[馬]</a></h5>
+          <div class="board-card__info__tags">
+            <a href="javascript:void(0);" onClick="BoardtagSearchJquery('#초개#말#이재준#김영태#이제하','fpp');">
+                <p class="board-card-tag">##초개#말#이재준#김영태#이제하</p>
+              </a>
+            </div>
+        </div>
+      </div>
+    </div>
+
+</div><!-- END RELATIVECONTENTS -->
+
+  <!-- BEGIN COMMENT -->
+  <!-- END COMMENT -->
+  </div>
+<script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
+<!-- <script src="//developers.band.us/js/share/band-button.js?v=23112017"></script> -->
+<script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '167602457163977',
+      status     : true,
+      xfbml      : true,
+      version    : 'v2.11'
+    });
+  };
+
+  (function(d, s, id){
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) {return;}
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/en_US/sdk.js";
+    fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));
+
+  document.getElementById('btn-facebook').onclick = function() {
+    FB.ui({
+      method: 'share',
+      mobile_iframe: true,
+      display: 'popup',
+      href: 'https://www.50plus.or.kr/detail.do?id=8405015',
+    }, function(response){});
+  }
+  /*
+  Kakao.init('7ec0f2137f1e5f80fb7481b19b3308ac');
+  function shareStory() {
+    var constent = (function () {뇌과학자들은 행복이 특별한 사건보다는 매일의 일상에서 온다고 이야기한다. 행복한 두뇌를 위한 다섯 가지 습관으로 행복을 찾아보자.}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1];
+    Kakao.Story.share({
+      url: 'https://www.50plus.or.kr/detail.do?id=8405015',
+      text: constent
+    });
+  }
+  */
+  Kakao.init('825ca9c1ed6f2ae6e6a437fb517110a9');
+  Kakao.Link.createDefaultButton({
+      container: '#kakao-link-btn',
+      objectType: 'feed',
+      content: {
+        title: document.getElementById("LINK_TITLE").value,
+        description: document.getElementById("LINK_DESC").value,
+        imageUrl: document.getElementById("LINK_IMAGE_URL").value,
+        link: {
+          mobileWebUrl: window.location.href,
+          webUrl: window.location.href
+        }
+      },
+      buttons: [
+        {
+          title: 'VIEW',
+          link: {
+            mobileWebUrl: window.location.href,
+            webUrl: window.location.href
+          }
+        }
+      ]
+  });
+  var twitterShare = document.querySelector('[data-js="twitter-share"]');
+
+  twitterShare.onclick = function(e) {
+    e.preventDefault();
+    var twitterWindow = window.open('https://twitter.com/share?url=' + document.URL, 'twitter-popup', 'height=350,width=600');
+    if(twitterWindow.focus) { twitterWindow.focus(); }
+    return false;
+  }
+  
+  function shareBand(org,title){
+	var var_org = encodeURIComponent(org);
+	var var_title = encodeURIComponent(title);
+	var var_url = encodeURIComponent(document.URL);
+	window.open('https://band.us/plugin/share?body=['+var_org+']'+var_title+encodeURIComponent('\n')+var_url+'&route='+var_url, 'band-popup', 'height=350,width=600');
+  }
+  
+	function fn_fileDown(saveFile, realFile) {      	
+		var url = window.location.pathname + window.location.search;
+		var vfrm = document.createElement("form");
+	    vfrm.method = "post";
+	    vfrm.target = "_self";
+	    vfrm.id = "tempFileForm";
+
+	    var vipinput1 = document.createElement("input");
+	    vipinput1.setAttribute("type" , "hidden");
+	    vipinput1.setAttribute("name" , "SAVE_FILE_NM");
+	    vipinput1.setAttribute("value", saveFile);
+	    vfrm.appendChild(vipinput1);
+	    
+	    var vipinput2 = document.createElement("input");
+	    vipinput2.setAttribute("type" , "hidden");
+	    vipinput2.setAttribute("name" , "REALFILENM");
+	    vipinput2.setAttribute("value", realFile);
+	    vfrm.appendChild(vipinput2);
+	    
+	    var vipinput3 = document.createElement("input");
+	    vipinput3.setAttribute("type" , "hidden");
+	    vipinput3.setAttribute("name" , "URL");
+	    vipinput3.setAttribute("value", url);
+	    vfrm.appendChild(vipinput3);
+	    
+	    document.body.appendChild(vfrm);
+		
+	    vfrm.target = "_self";
+	    vfrm.action = "/getfileDown.do";
+	    vfrm.submit();
+	    
+		$("#tempFileForm").remove();
+	}	
+</script><!-- END CONTENTS -->
+
+<!-- BEGIN FOOTER -->
+<!-- 관리자 미리보기 분기 -->
+<script>
+	if(document.title == '서울시 50플러스포털'){
+		document.title = '서울시 50플러스포털 | 4060 중장년 생애설계, 직업교육, 일자리 지원';
+	}
+	
+	function BrowserChk(){		
+		var agt = navigator.userAgent.toLowerCase();		
+		if(agt.indexOf("msie") != -1){			
+			var rv = -1;
+			if(navigator.appName == 'Microsoft Internet Explorer'){
+				var ua = navigator.userAgent;
+				var re = new RegExp("MSIE ([0-9]{1,}[\.0-9]{0,})");
+				
+				if(re.exec(ua) !=null) rv = parseFloat(RegExp.$1);
+			}
+			return 'Internet Explorer '+rv;
+		}
+	}
+	var a =  navigator.userAgent.toLowerCase();
+	var edge = a.search("edge/")>-1;	
+		if(edge ==true){
+			alert("Internet Explorer Edge는 지원하지 않는 브라우저입니다.\nInternet Explorer10 또는 11버전을 사용해주세요");
+		}else{
+			if (navigator.userAgent.indexOf('MSIE') !== -1 || navigator.appVersion.indexOf('Trident/') > 0) {
+			var rv = 0;
+			var ua = navigator.userAgent;
+			var re = new RegExp("MSIE ([0-9]{1,}[\.0-9]{0,})");				
+				if (re.exec(ua) != null) rv = parseFloat(RegExp.$1);			
+				if (rv != 0 && rv <= 9) {				
+					alert("Internet Explorer 10 부터 지원합니다.\nInternet Explorer를 10또는 11로 업그레이드 해주세요."); 
+				}
+			}
+		}
+	
+		function onfocusTg(idx){
+			document.getElementById('onfocusTg_'+idx).scrollIntoView({behavior: "auto", block: "start"});
+		}
+		
+</script>
+<!-- <span itemscope="" itemtype="http://schema.org/Organization">
+			<link itemprop="url" href="https://50plus.or.kr">
+			<a itemprop="sameAs" href="https://www.facebook.com/seoul50plus"></a>
+			<a itemprop="sameAs" href="https://www.youtube.com/channel/UCmS3tLqfw5g1glIQ4J1HfrA"></a>
+			<a itemprop="sameAs" href="https://pf.kakao.com/_KUxgyxl"></a>
+			<a itemprop="sameAs" href="https://blog.naver.com/seoul50plus"></a>
+		</span> -->
+		<footer class="footer-wrapper">
+		  <div class="foonter-menu-wrapper">
+		    <div class="container container--nav">
+		      <div class="footer-left-menus">
+		        <a href="terms.do" class="footer-left__link footer-left__link--first">이용약관</a>
+		        <div class="footer-left__link footer-left__link--division">|</div>
+		        <a href="privacy.do" class="footer-left__link" style="color:#0072E3;">개인정보처리방침</a>
+		        <div class="footer-left__link footer-left__link--division">|</div>
+		        <a href="privacyVideo.do" class="footer-left__link" style="color:#0072E3;">영상정보처리기기 운영 관리 방침</a>
+		        <div class="footer-left__link footer-left__link--division">|</div>
+		        <a href="sitemap.do" class="footer-left__link active">사이트맵</a>
+		      </div>
+		      <div class="footer-left-menus2" style="display:block;">
+		        <a href="clean.do" class="footer-left__link footer-left__link--first">부패·공익신고센터</a>
+		        <div class="footer-left__link footer-left__link--division">|</div>
+		        <a href="faq.do" class="footer-left__link">자주하는질문</a>
+		        <div class="footer-left__link footer-left__link--division">|</div>
+		        <a href="org/eng.do" class="footer-left__link">ENG</a>
+		        <div class="footer-left__link footer-left__link--division">|</div>
+		        <a href="apiCenterMain.do" class="footer-left__link">50+API센터</a>
+		      </div>
+		      <div class="footer-right-menus2">
+		        <div class="footer-sns-group-wrapper">
+		          <p class="sns-group-lable-text marginR10">중장년 정보 및 재단소식을<br>쉽고 빠르게 받아보세요!</p>
+		          <a href="https://pf.kakao.com/_KUxgyxl" class="sns-link-icon kakao" target="_blank" title="카카오 새창열기" style="margin-right: 5px; margin-top: 4px; background-color: rgba( 255, 255, 255, 0.5 );">
+		              <img src="/images/homepage/icon-kakao-new.png" alt="kakao">
+		            </a>
+		          <a href="https://www.youtube.com/channel/UCmS3tLqfw5g1glIQ4J1HfrA" class="sns-link-icon youtube" target="_blank" title="유튜브 새창열기" style="margin-right: 5px; margin-top: 4px; background-color: rgba( 255, 255, 255, 0.5 );">
+		              <img src="/images/homepage/icon-youtube-new.png" alt="youtube">
+		            </a>
+		          <a href="https://blog.naver.com/seoul50plus" class="sns-link-icon blog" target="_blank" title="네이버 블로그 새창열기" style="margin-right: 5px; margin-top: 4px; background-color: rgba( 255, 255, 255, 0.5 );">
+		              <img src="/images/homepage/icon-blog-new.png" alt="naver blog">
+		            </a>
+		          <!-- <a href="javascript:addNewsLetter();" id="newsFocus" class="footer-newslet-btn">뉴스레터 구독신청</a> -->
+		        </div>
+		      </div>
+		      <!-- <div class="footer-right-menus-btn">
+		          
+		      </div> -->
+		    </div>
+		  </div>
+		  <div class="container mainList">
+		    <div class="logo-family-group clearfix">
+		      <table style="width: 100%;">
+			      <tr>
+				      <td rowspan=2 style="vertical-align: top;">
+				      	<div class="logo-group">
+					        <address class="footer-address" style="display: inline-block; margin-top: 0px;">
+						        <span class="footer-address-title-new">
+						           서울시 50플러스포털</span>
+						        <span>
+						          <br>(우04147)서울시 마포구 백범로31길 21, 서울복지타운 1층 사업자등록번호 : 219-82-61209<br>대표전화 : <a href="tel:［대표］☎02-460-5050/［아이디/패스워드문의］☎1661-5516" class="footer-link"><strong>［대표］☎02-460-5050/［아이디/패스워드문의］☎1661-5516</strong></a>
+						              	<br>이메일 : <a href="mailto:help@50plus.or.kr" class="footer-link"><strong>help@50plus.or.kr</strong></a><br class="visible-xs">
+						            <br>Copyright © 2017 <strong>Seoul 50 Plus Foundation</strong><br class="visible-xs"> All right reserved.
+						        </span>
+						      </address>
+					      </div>
+				      </td>
+				      <td>
+				      <div class="family-group">
+				      	<div class="footer-family-btn-group dropup" style="display: inline-block; float: unset;">
+					      <button type="button" class="footer-family-btn dropdown-toggle" onclick="location.href='booking.do'">시설 대관신청</button>
+					    </div>
+				        <div class="footer-family-btn-group dropup" style="display: inline-block; float: unset;" >
+				          <button type="button" class="footer-family-btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+				                  aria-expanded="false">
+				            패밀리사이트
+				            <i class="fa fa-caret-up pull-right" aria-hidden="true"></i>
+				            <span class="sr-only">Toggle Dropdown</span>
+				          </button>
+				          <div class="dropdown-menu footer-family-dropup">
+				            <a href="http://www.seoul.go.kr/main/index.html" class="footer-family-dropup__link"
+				               target="_blank">서울특별시청</a>
+				            <a href="/" class="footer-family-dropup__link"
+				               target="_blank">50플러스포털</a>
+				            <a href="/swc" class="footer-family-dropup__link" target="_blank">서울시50플러스 서부캠퍼스</a>
+				            <a href="/scc" class="footer-family-dropup__link" target="_blank">서울시50플러스 중부캠퍼스</a>
+				            <a href="/ssc" class="footer-family-dropup__link" target="_blank">서울시50플러스 남부캠퍼스</a>
+				            <a href="/snc" class="footer-family-dropup__link" target="_blank">서울시50플러스 북부캠퍼스</a>
+				            <a href="/sec" class="footer-family-dropup__link" target="_blank">서울시50플러스 동부캠퍼스</a>
+				            <a href="/nwc" class="footer-family-dropup__link" target="_blank">노원50플러스센터</a>
+				            <a href="/dsc" class="footer-family-dropup__link" target="_blank">도심권50플러스센터</a>
+				            <a href="/djc" class="footer-family-dropup__link" target="_blank">동작50플러스센터</a>
+				            <a href="/ydp" class="footer-family-dropup__link" target="_blank">영등포50플러스센터</a>
+				            <a href="/sdm" class="footer-family-dropup__link" target="_blank">서대문50플러스센터</a>
+				            <a href="/sbc" class="footer-family-dropup__link" target="_blank">성북50플러스센터</a>
+				            <a href="/gch" class="footer-family-dropup__link" target="_blank">금천50플러스센터</a>
+				            <a href="/gsc" class="footer-family-dropup__link" target="_blank">강서50플러스센터</a>
+				            <a href="/sch" class="footer-family-dropup__link" target="_blank">서초50플러스센터</a>
+				            <a href="/gdc" class="footer-family-dropup__link" target="_blank">강동50플러스센터</a>
+				            <a href="/ycp" class="footer-family-dropup__link" target="_blank">양천50플러스센터</a>
+				            <a href="/sdc" class="footer-family-dropup__link" target="_blank">성동50플러스센터</a>
+				            <a href="/gbc" class="footer-family-dropup__link" target="_blank">강북50플러스센터</a>
+				            <a href="/gnc" class="footer-family-dropup__link" target="_blank">관악50플러스센터</a>
+		            		<a href="/sjc" class="footer-family-dropup__link" target="_blank">시니어일자리지원센터</a>
+		            		<a href="/s40" class="footer-family-dropup__link" target="_blank">40대직업캠프</a>
+		            		<a href="/ddc" class="footer-family-dropup__link" target="_blank">동대문50플러스센터</a>
+		            		<a href="/job" class="footer-family-dropup__link" target="_blank">서울시 시니어 일자리 박람회</a>
+				            <a href="https://113366.com/rian" class="footer-family-dropup__link" target="_blank">원격지원서비스</a>
+				          </div>
+				        </div>
+				      </div>
+				    </td>
+			      </tr>
+				  <tr>
+					 <td>
+					 <div class="family-group" style="margin-top: 10px;">
+						<div class="address-copyright">
+						<a title="pdf 파일보기" href="/images/homepage/accessibility_20250313.pdf" target="_blank" style="float:right;"><img src="/images/homepage/accessibility-mark_20250313.png" width="87" height="62" alt="(사)한국장애인단체총연합회 한국웹접근성 평가원 웹 접근성 우수사이트 인증마크(WA인증마크)"></a>
+						<a href='http://www.seoul.go.kr' style="float:right;"><img class='footer-logo-img' src='/images/homepage/seoul-city-footer-logo-new.png' alt='서울특별시 로고' style="margin-top: 10px;"></a>
+						<a href='/' style="width:30%; float:right; margin-right: 9%;"><img class='footer-logo-img' src='/images/homepage/50plus-footer-logo-new.png' alt='서울특별시 50플러스재단' style="margin-top: 10px;"></a>
+						</div>
+					</div>
+				 	</td>
+			    </tr>
+		      </table>
+		    </div>
+		  </div>
+		  
+		  
+		  
+		  <div class="container subList">
+		    <div class="logo-family-group clearfix" style="margin: 65px 3% 0px;">
+		      <div class="family-group" style="margin-top: 10px;">
+		        <div class="footer-family-btn-group dropup" style="display: inline-block; text-align: center;">
+		          <button type="button" class="footer-family-btn dropdown-toggle" onclick="location.href='booking.do'" style="width: 48%">
+		            시설 대관신청
+		          </button>
+		          <button type="button" class="footer-family-btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+		                  aria-expanded="false" style="width: 48%;">
+		            패밀리사이트
+		            <i class="fa fa-caret-up pull-right" aria-hidden="true"></i>
+		            <span class="sr-only">Toggle Dropdown</span>
+		          </button>
+		          <div class="dropdown-menu footer-family-dropup">
+		            <a href="http://www.seoul.go.kr/main/index.html" class="footer-family-dropup__link"
+		               target="_blank">서울특별시청</a>
+		            <a href="/" class="footer-family-dropup__link"
+		               target="_blank">50플러스포털</a>
+		            <a href="/swc" class="footer-family-dropup__link" target="_blank">서울시50플러스 서부캠퍼스</a>
+		            <a href="/scc" class="footer-family-dropup__link" target="_blank">서울시50플러스 중부캠퍼스</a>
+		            <a href="/ssc" class="footer-family-dropup__link" target="_blank">서울시50플러스 남부캠퍼스</a>
+		            <a href="/snc" class="footer-family-dropup__link" target="_blank">서울시50플러스 북부캠퍼스</a>
+		            <a href="/sec" class="footer-family-dropup__link" target="_blank">서울시50플러스 동부캠퍼스</a>
+		            <a href="/nwc" class="footer-family-dropup__link" target="_blank">노원50플러스센터</a>
+		            <a href="/dsc" class="footer-family-dropup__link" target="_blank">도심권50플러스센터</a>
+		            <a href="/djc" class="footer-family-dropup__link" target="_blank">동작50플러스센터</a>
+		            <a href="/ydp" class="footer-family-dropup__link" target="_blank">영등포50플러스센터</a>
+		            <a href="/sdm" class="footer-family-dropup__link" target="_blank">서대문50플러스센터</a>
+		            <a href="/sbc" class="footer-family-dropup__link" target="_blank">성북50플러스센터</a>
+		            <a href="/gch" class="footer-family-dropup__link" target="_blank">금천50플러스센터</a>
+		            <a href="/gsc" class="footer-family-dropup__link" target="_blank">강서50플러스센터</a>
+		            <a href="/sch" class="footer-family-dropup__link" target="_blank">서초50플러스센터</a>
+		            <a href="/gdc" class="footer-family-dropup__link" target="_blank">강동50플러스센터</a>
+		            <a href="/ycp" class="footer-family-dropup__link" target="_blank">양천50플러스센터</a>
+		            <a href="/sdc" class="footer-family-dropup__link" target="_blank">성동50플러스센터</a>
+		            <a href="/gbc" class="footer-family-dropup__link" target="_blank">강북50플러스센터</a>
+		            <a href="/gnc" class="footer-family-dropup__link" target="_blank">관악50플러스센터</a>
+		            <a href="/sjc" class="footer-family-dropup__link" target="_blank">시니어일자리지원센터</a>
+		            <a href="/s40" class="footer-family-dropup__link" target="_blank">40대직업캠프</a>
+		            <a href="/ddc" class="footer-family-dropup__link" target="_blank">동대문50플러스센터</a>
+		            <a href="/job" class="footer-family-dropup__link" target="_blank">서울시 시니어 일자리 박람회</a>
+		            <a href="https://113366.com/rian" class="footer-family-dropup__link" target="_blank">원격지원서비스</a>
+		          </div>
+		        </div>
+		      </div>
+		      <div class="logo-group">
+		        <address class="footer-address" style="display: inline-block;">
+			        <span class="footer-address-title">
+			          서울시 50플러스포털<br>(우04147)서울시 마포구 백범로31길 21, 서울복지타운 1층 사업자등록번호 : 219-82-61209<br>대표전화 : <a href="tel:［대표］☎02-460-5050/［아이디/패스워드문의］☎1661-5516" class="footer-link"><strong>［대표］☎02-460-5050/［아이디/패스워드문의］☎1661-5516</strong></a>
+			              	<br>이메일 : <a href="mailto:help@50plus.or.kr" class="footer-link"><strong>help@50plus.or.kr</strong></a>
+			              	<br><strong class="copyright">Copyright © 2017 <strong>Seoul 50 Plus Foundation</strong><br class="visible-xs"> All right reserved.</strong><br class="visible-xs">
+			           	 	</span>
+			      </address>
+		      </div>
+		      <div class="address-copyright" style="overflow:hidden; margin-top: 20px;">
+		      <a title="pdf 파일보기" href="/images/homepage/accessibility_20230313.pdf" target="_blank" style="float:right;"><img src="/images/homepage/accessibility-mark_20230313.png" width="87" height="62" alt="(사)한국장애인단체총연합회 한국웹접근성 평가원 웹 접근성 우수사이트 인증마크(WA인증마크)"></a>
+			      <a href='/' style="float:left; margin-top: 16px; width: 37%;"><img class='footer-logo-img' src='/images/homepage/50plus-footer-logo-new.png' alt='서울특별시 50플러스재단'></a>
+			      <a href='http://www.seoul.go.kr' style="float:left; margin-right: 20px; margin-top: 17px; width: 30%;"><img class='footer-logo-img' src='/images/homepage/seoul-city-footer-logo-new.png' alt='서울특별시 로고'></a> 
+		      </div>
+		    </div>
+		  </div>
+		</footer>
+	<script src="//weblog.eseoul.go.kr/wlo/js/install.js"></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-111997248-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-111997248-1');
+    </script>
+  <!-- END FOOTER -->
+
+<!-- BEGIN SCRIPT -->
+
+<!--[if lt IE 9]>
+<script src="../assets/global/plugins/respond.min.js"></script>
+<script src="../assets/global/plugins/excanvas.min.js"></script>
+<script src="../assets/global/plugins/ie8.fix.min.js"></script>
+<![endif]-->
+<script src="/js/modernizr-3.5.0.min.js"></script>
+<script src="/js/jquery.min.js"></script>
+<script src="/js/jquery-ui.min.js"></script>
+<script src="/js/bootstrap-custom.min.js"></script>
+<script src="/js/main.js"></script>
+<script src="/js/placeholders.jquery.min.js"></script>
+<script src="/js/cmm/fpmsCmmFunction.js"></script>
+<script src="/js/cmm/fpmsCmmScript.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jQuery-rwdImageMaps/1.6/jquery.rwdImageMaps.min.js"></script>
+<script>
+window.onload = function() {
+Yjs.Gnb.init('PS004', 'seoul-common-gnb');
+};
+$(document).ready(function() {
+  $('#favorite').on('click', function(e) {
+    var bookmarkURL = window.location.href;
+    var bookmarkTitle = document.title;
+    var triggerDefault = false;
+    if (window.sidebar && window.sidebar.addPanel) {
+      // Firefox version < 23
+      window.sidebar.addPanel(bookmarkTitle, bookmarkURL, '');
+    } else if ((window.sidebar && (navigator.userAgent.toLowerCase().indexOf('firefox') > -1)) || (window.opera && window.print)) {
+      // Firefox version >= 23 and Opera Hotlist
+      var $this = $(this); $this.attr('href', bookmarkURL);
+      $this.attr('title', bookmarkTitle);
+      $this.attr('rel', 'sidebar');
+      $this.off(e); triggerDefault = true;
+    } else if (window.external && ('AddFavorite' in window.external)) {
+      // IE Favorite
+      window.external.AddFavorite(bookmarkURL, bookmarkTitle);
+    } else {
+      // WebKit - Safari/Chrome
+      alert((navigator.userAgent.toLowerCase().indexOf('mac') != -1 ? 'Cmd' : 'Ctrl') + '+D 키를 눌러 즐겨찾기에 등록하실 수 있습니다.');
+    }
+    return triggerDefault;
+  });
+  
+  //재단 사전정보공개 게시판 검색추가
+  $('#shareInfoSearch').on('click', function() {
+	  var frm = document.shareInfoForm;
+  	  //$('#current').val(1);
+  	  var titleVal = encodeURIComponent(frm.title.value);
+  	  var catVal = encodeURIComponent(frm.catVal.value);
+  	  //var titleVal = frm.title.value;
+  	  //var catVal = frm.catVal.value;
+  	  if(titleVal != '') {
+  		if(catVal == '') {
+  	  	  window.location.href = '/org/open.do?title='+titleVal;
+  	  	}else{
+  	  	  window.location.href = '/org/open.do?cat='+catVal+'&title='+titleVal;
+  	  	}
+  	  }else{
+  	    window.location.href = '/org/open.do'
+  	  }
+  });
+});
+jQuery(window).on('resize', function () {
+  var browserWidth = jQuery(window).width();
+  jQuery('.quick-banner-wrapper-popword').css('right', ((browserWidth - 1500) / 2) - 100);
+  //fullSlideResize();
+});
+var quickscroll = function() {
+  if ($(window).width() > 767 ) {
+    if ( $(window).scrollTop() < 280) {
+      $('.quick-banner-wrapper-leftquick').css({top: (310 - $(window).scrollTop()) + 'px'});
+    } else {
+      $('.quick-banner-wrapper-leftquick').css({top: '30px'});
+    }
+  }
+  
+  if ($(window).width() > 767 ) {
+    if ( $(window).scrollTop() < 280) {
+      $('.quick-banner-wrapper-facebook').css({top: (310 - $(window).scrollTop()) + 'px'});
+    } else {
+      $('.quick-banner-wrapper-facebook').css({top: '30px'});
+    }
+  }
+  
+  if ($(window).width() > 767 ) {
+    if ( $(window).scrollTop() < 280) {
+      $('.quick-banner-wrapper-popword').css({top: (500 - $(window).scrollTop()) + 'px'});
+    } else {
+      $('.quick-banner-wrapper-popword').css({top: '200px'});
+    }
+  }
+};
+
+var navMenu = function() {
+  $(".main-menu-nav__hamberger, .main-menus--portal .main-menu-li__link, .main-menus--portal .main-menu-sub-li__link").focus(function() {
+    $(".main-menu-sub-wrapper").css("display", "block");
+    $(".main-menu-sub-wrapper__background").css("display", "block");
+    $(".main-menus--portal .main-menu-li > ul").css("left", "inherit");
+  });
+  $(".main-menu-nav__hamberger, .main-menus--portal .main-menu-li__link, .main-menus--portal .main-menu-sub-li__link").blur(function(){
+    $(".main-menu-sub-wrapper").css("display", "none");
+    $(".main-menu-sub-wrapper__background").css("display", "none");
+    $(".main-menus--portal .main-menu-li > ul").css("left", "-10000px");
+  });
+
+  $(".main-menus--portal .main-menu-li__link, .main-menus--portal, .main-menus--portal .main-menu-sub-li__link, .main-menus--portal .main-menu-sub-wrapper").hover(function() {
+    $(".main-menu-sub-wrapper").css("display", "block");
+    $(".main-menu-sub-wrapper__background").css("display", "block");
+    $(".main-menus--portal .main-menu-li > ul").css("left", "inherit");
+  }, function() {
+    $(".main-menu-sub-wrapper").css("display", "none");
+    $(".main-menu-sub-wrapper__background").css("display", "none");
+    $(".main-menus--portal .main-menu-li > ul").css("left", "-10000px");
+  });
+}
+$(document).ready(function() {
+  quickscroll();
+  navMenu();
+  //div2Resize();
+  $('img[usemap]').rwdImageMaps();
+});
+window.addEventListener('scroll', function() {
+  quickscroll();
+});
+
+function fn_fileDownShare(saveFile, realFile) {        	   
+	var vfrm = document.createElement("form");
+    vfrm.method = "post";
+    vfrm.target = "_self";
+    vfrm.id = "tempFileForm";
+
+    var vipinput1 = document.createElement("input");
+    vipinput1.setAttribute("type" , "hidden");
+    vipinput1.setAttribute("name" , "SAVE_FILE_NM");
+    vipinput1.setAttribute("value", saveFile);
+    vfrm.appendChild(vipinput1);
+    
+    var vipinput2 = document.createElement("input");
+    vipinput2.setAttribute("type" , "hidden");
+    vipinput2.setAttribute("name" , "REALFILENM");
+    vipinput2.setAttribute("value", realFile);
+    vfrm.appendChild(vipinput2);
+    
+    document.body.appendChild(vfrm);
+	
+    vfrm.target = "_self";
+    vfrm.action = "/getfileDown.do";
+    vfrm.submit();
+    
+	$("#tempFileForm").remove();
+}	
+
+function getModuleNextPage(url,max){
+	var nowPg = $("#moreCurrent").val();
+	var more = Number(nowPg) + 1;
+	if(nowPg == max){
+		alert("마지막페이지 입니다.");
+		return;
+	}
+	$("#moreCurrent").val(more);
+	url += "page=" + more + " #content";
+	/* url = url.replace("isPage=Y&",""); */
+	
+	var newDIV = document.createElement("div");
+	newDIV.setAttribute("id","newDiv"+Number(nowPg));
+	var res = document.getElementById("res");
+	res.appendChild(newDIV);
+	
+	$("#newDiv"+Number(nowPg)).load(url);
+	//$(".res").removeClass('res');
+}
+
+</script>
+<!-- END SCRIPT -->
+
+<!-- BEGIN SCRIPT -->
+<!-- END SCRIPT -->
+<!-- BEGIN LIKE SCRIPT -->
+<script>
+  MyLibrary.likeButton(1, 8405015, false);
+</script><!-- END LIKE SCRIPT -->
+</body>
+</html>
