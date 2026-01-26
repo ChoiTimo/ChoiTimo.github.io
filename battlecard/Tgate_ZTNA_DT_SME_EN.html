@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tgate ZTNA - Enterprise-Grade Security, SME-Ready Simplicity</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --primary: #1E3A5F;
+            --secondary: #3B82F6;
+            --accent: #F97316;
+            --success: #10B981;
+            --warning: #F59E0B;
+            --danger: #EF4444;
+            --text: #1F2937;
+            --text-light: #6B7280;
+            --bg-light: #F8FAFC;
+            --bg-blue: #EFF6FF;
+            --border: #E5E7EB;
+            --tgate-bg: #DBEAFE;
+            --competitor-bg: #F3F4F6;
+        }
+        
+        body {
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: var(--text);
+            line-height: 1.6;
+            background: #fff;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+        
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, #2D5A87 100%);
+            color: white;
+            padding: 60px 0;
+            text-align: center;
+        }
+        
+        header h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+        
+        header .subtitle {
+            font-size: 1.5rem;
+            color: #93C5FD;
+            margin-bottom: 12px;
+        }
+        
+        header .tagline {
+            font-size: 1.1rem;
+            color: #CBD5E1;
+            font-style: italic;
+        }
+        
+        /* Key Value Box */
+        .key-value-box {
+            background: var(--bg-blue);
+            border-left: 4px solid var(--secondary);
+            padding: 32px;
+            margin: 40px 0;
+            border-radius: 0 12px 12px 0;
+        }
+        
+        .key-value-box h3 {
+            color: var(--primary);
+            font-size: 1.4rem;
+            margin-bottom: 20px;
+        }
+        
+        .key-value-box ul {
+            list-style: none;
+        }
+        
+        .key-value-box li {
+            padding: 8px 0;
+            font-size: 1.05rem;
+        }
+        
+        .key-value-box li::before {
+            content: "✓";
+            color: var(--success);
+            font-weight: bold;
+            margin-right: 12px;
+        }
+        
+        /* Section */
+        section {
+            padding: 50px 0;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        section:last-child {
+            border-bottom: none;
+        }
+        
+        h2 {
+            color: var(--primary);
+            font-size: 2rem;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        h2 .section-num {
+            background: var(--secondary);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+        
+        h3 {
+            color: var(--secondary);
+            font-size: 1.3rem;
+            margin: 24px 0 16px;
+        }
+        
+        p {
+            margin-bottom: 16px;
+            color: var(--text);
+        }
+        
+        .highlight {
+            color: var(--secondary);
+            font-weight: 600;
+        }
+        
+        .danger {
+            color: var(--danger);
+            font-weight: 600;
+        }
+        
+        /* Two Column Layout */
+        .two-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin: 24px 0;
+        }
+        
+        .col-box {
+            padding: 24px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+        
+        .col-box.light {
+            background: var(--bg-light);
+        }
+        
+        .col-box h4 {
+            color: var(--primary);
+            margin-bottom: 16px;
+            font-size: 1.1rem;
+        }
+        
+        .col-box ul {
+            list-style: disc;
+            padding-left: 20px;
+        }
+        
+        .col-box li {
+            margin-bottom: 10px;
+            color: var(--text);
+        }
+        
+        .col-box .label {
+            color: var(--secondary);
+            font-weight: 600;
+            display: block;
+            margin-top: 16px;
+            margin-bottom: 4px;
+        }
+        
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 24px 0;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        th {
+            background: var(--primary);
+            color: white;
+            padding: 16px;
+            text-align: left;
+            font-weight: 600;
+        }
+        
+        th.tgate {
+            background: var(--secondary);
+        }
+        
+        th.competitor {
+            background: #64748B;
+        }
+        
+        td {
+            padding: 14px 16px;
+            border-bottom: 1px solid var(--border);
+            vertical-align: top;
+        }
+        
+        tr:nth-child(even) td {
+            background: var(--bg-light);
+        }
+        
+        tr:last-child td {
+            border-bottom: none;
+        }
+        
+        td.tgate-cell {
+            background: var(--tgate-bg) !important;
+        }
+        
+        td.competitor-cell {
+            background: var(--competitor-bg) !important;
+        }
+        
+        .cell-title {
+            font-weight: 600;
+            display: block;
+            margin-bottom: 4px;
+        }
+        
+        .cell-title.success { color: var(--success); }
+        .cell-title.warning { color: var(--warning); }
+        .cell-title.danger { color: var(--danger); }
+        
+        .cell-desc {
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+        
+        /* SME Benefit Box */
+        .benefit-box {
+            background: var(--bg-blue);
+            padding: 20px 24px;
+            border-radius: 8px;
+            margin: 24px 0;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+        
+        .benefit-box .icon {
+            font-size: 1.5rem;
+        }
+        
+        .benefit-box strong {
+            color: var(--primary);
+        }
+        
+        /* Checklist */
+        .checklist {
+            list-style: none;
+            margin: 16px 0;
+        }
+        
+        .checklist li {
+            padding: 10px 0;
+            padding-left: 32px;
+            position: relative;
+        }
+        
+        .checklist li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--success);
+            font-weight: bold;
+        }
+        
+        /* Benefits Table */
+        .benefits-table {
+            margin: 24px 0;
+        }
+        
+        .benefit-row {
+            display: flex;
+            border: 1px solid var(--border);
+            border-bottom: none;
+            border-radius: 0;
+        }
+        
+        .benefit-row:first-child {
+            border-radius: 12px 12px 0 0;
+        }
+        
+        .benefit-row:last-child {
+            border-bottom: 1px solid var(--border);
+            border-radius: 0 0 12px 12px;
+        }
+        
+        .benefit-num {
+            background: var(--secondary);
+            color: white;
+            width: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+        
+        .benefit-title {
+            background: var(--tgate-bg);
+            padding: 16px 20px;
+            width: 180px;
+            font-weight: 600;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+        }
+        
+        .benefit-desc {
+            padding: 16px 20px;
+            flex: 1;
+            background: white;
+        }
+        
+        /* Architecture Flow */
+        .arch-flow {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0;
+            margin: 40px 0;
+            flex-wrap: wrap;
+        }
+        
+        .arch-box {
+            padding: 24px 32px;
+            text-align: center;
+            border-radius: 12px;
+            min-width: 180px;
+        }
+        
+        .arch-box.user {
+            background: var(--bg-light);
+            border: 1px solid var(--border);
+        }
+        
+        .arch-box.smartwan {
+            background: var(--bg-blue);
+            border: 1px solid #BFDBFE;
+        }
+        
+        .arch-box.tgate {
+            background: var(--bg-blue);
+            border: 1px solid #BFDBFE;
+        }
+        
+        .arch-box.internal {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .arch-box .icon {
+            font-size: 2rem;
+            margin-bottom: 8px;
+        }
+        
+        .arch-box .title {
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+        
+        .arch-box.smartwan .title { color: var(--accent); }
+        .arch-box.tgate .title { color: var(--secondary); }
+        
+        .arch-box .desc {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            margin-top: 4px;
+        }
+        
+        .arch-box.internal .desc {
+            color: #CBD5E1;
+        }
+        
+        .arch-arrow {
+            font-size: 2rem;
+            color: var(--text-light);
+            padding: 0 16px;
+        }
+        
+        /* Summary Box */
+        .summary-box {
+            background: var(--bg-blue);
+            padding: 32px;
+            border-radius: 16px;
+            margin: 32px 0;
+        }
+        
+        .summary-box h3 {
+            color: var(--primary);
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+        }
+        
+        .summary-box li {
+            padding: 10px 0;
+        }
+        
+        .summary-box li strong {
+            color: var(--secondary);
+        }
+        
+        /* Footer */
+        footer {
+            background: var(--primary);
+            color: white;
+            text-align: center;
+            padding: 40px 0;
+            margin-top: 40px;
+        }
+        
+        footer h3 {
+            color: white;
+            font-size: 1.8rem;
+            margin-bottom: 12px;
+        }
+        
+        footer p {
+            color: #CBD5E1;
+            margin-bottom: 8px;
+        }
+        
+        footer .tagline {
+            font-style: italic;
+            font-size: 0.95rem;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 20px;
+            }
+            
+            header h1 {
+                font-size: 2.5rem;
+            }
+            
+            .two-col {
+                grid-template-columns: 1fr;
+            }
+            
+            .arch-flow {
+                flex-direction: column;
+            }
+            
+            .arch-arrow {
+                transform: rotate(90deg);
+                padding: 8px 0;
+            }
+            
+            .benefit-row {
+                flex-direction: column;
+            }
+            
+            .benefit-num, .benefit-title {
+                width: 100%;
+            }
+            
+            .benefit-num {
+                padding: 12px;
+            }
+        }
+        
+        @media print {
+            header {
+                background: var(--primary) !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            
+            .arch-box, th, .benefit-num, .summary-box {
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Tgate ZTNA</h1>
+            <p class="subtitle">Enterprise-Grade Security, SME-Ready Simplicity</p>
+            <p class="tagline">A Lightweight Yet Powerful ZTNA Solution for German Mittelstand</p>
+        </div>
+    </header>
+    
+    <main class="container">
+        <div class="key-value-box">
+            <h3>Why Tgate for SME?</h3>
+            <ul>
+                <li>Agent & Agentless modes with identical powerful features — no license restrictions</li>
+                <li>Minimal IT overhead — deploy in hours, not weeks</li>
+                <li>Seamless integration with SmartWAN and AppEx XDR</li>
+                <li>Battle-tested at Korea's largest financial institutions</li>
+            </ul>
+        </div>
+        
+        <!-- Section 1: Technical Overview -->
+        <section>
+            <h2><span class="section-num">1</span> Technical Overview</h2>
+            
+            <div class="two-col">
+                <div class="col-box light">
+                    <h4>Current Market Challenges</h4>
+                    <ul>
+                        <li>Global ZTNA solutions (Zscaler, Palo Alto) offer Agentless options, but with significant feature limitations</li>
+                        <li>Lack of granular audit for RDP/SSH sessions without expensive add-ons</li>
+                        <li>High TCO driven by user-based USD licensing and FX volatility</li>
+                        <li>Complex deployment requiring dedicated IT resources</li>
+                    </ul>
+                </div>
+                <div class="col-box">
+                    <h4>Tgate Hybrid Architecture</h4>
+                    <span class="label">Tgate ZTNA</span>
+                    <p>Identity/Device Auth, Granular Audit Logging, Session Recording — all included by default</p>
+                    <span class="label">SmartWAN Integration</span>
+                    <p>AI-driven Path Optimization for Global Latency Elimination</p>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Section 2: Agent & Agentless -->
+        <section>
+            <h2><span class="section-num">2</span> Flexible Deployment: Agent & Agentless</h2>
+            
+            <p>Unlike competitors who restrict features in Agentless mode, <span class="highlight">Tgate delivers identical, enterprise-grade capabilities in both modes</span> — with no license tier distinctions.</p>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>Feature</th>
+                        <th class="tgate">Tgate Agent</th>
+                        <th class="tgate">Tgate Agentless</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>RDP Session Recording</strong></td>
+                        <td class="tgate-cell"><span class="cell-title success">✓ Full Support</span></td>
+                        <td class="tgate-cell"><span class="cell-title success">✓ Full Support</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>SSH Command Logging</strong></td>
+                        <td class="tgate-cell"><span class="cell-title success">✓ Full Support</span></td>
+                        <td class="tgate-cell"><span class="cell-title success">✓ Full Support</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Web Access Audit</strong></td>
+                        <td class="tgate-cell"><span class="cell-title success">✓ Full Support</span></td>
+                        <td class="tgate-cell"><span class="cell-title success">✓ Full Support</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Identity-Based Access</strong></td>
+                        <td class="tgate-cell"><span class="cell-title success">✓ Full Support</span></td>
+                        <td class="tgate-cell"><span class="cell-title success">✓ Full Support</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Deployment Time</strong></td>
+                        <td class="tgate-cell"><span class="cell-title success">&lt; 1 Day</span></td>
+                        <td class="tgate-cell"><span class="cell-title success">&lt; 1 Hour (Browser only)</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>License Tier</strong></td>
+                        <td class="tgate-cell"><span class="cell-title" style="color: var(--secondary);">Same License</span></td>
+                        <td class="tgate-cell"><span class="cell-title" style="color: var(--secondary);">Same License</span></td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <div class="benefit-box">
+                <span class="icon">💡</span>
+                <p><strong>SME Benefit:</strong> Choose Agent for managed corporate devices, Agentless for BYOD/contractors — with zero feature compromise.</p>
+            </div>
+        </section>
+        
+        <!-- Section 3: Competitive Comparison -->
+        <section>
+            <h2><span class="section-num">3</span> Competitive Comparison</h2>
+            
+            <p>While Zscaler and Palo Alto offer Agentless options, they come with <span class="danger">significant limitations and additional costs</span>. Tgate provides full functionality regardless of deployment mode.</p>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>Criteria</th>
+                        <th class="tgate">Tgate ZTNA</th>
+                        <th class="competitor">Zscaler (ZPA)</th>
+                        <th class="competitor">Palo Alto (Prisma)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Global Performance</strong></td>
+                        <td class="tgate-cell">
+                            <span class="cell-title success">Optimal (AI)</span>
+                            <span class="cell-desc">SmartWAN AI path optimization for guaranteed speed</span>
+                        </td>
+                        <td class="competitor-cell">
+                            <span class="cell-title">High</span>
+                            <span class="cell-desc">Proprietary cloud, potential bottlenecks during surges</span>
+                        </td>
+                        <td class="competitor-cell">
+                            <span class="cell-title">High</span>
+                            <span class="cell-desc">Dependent on Public Cloud backbone</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>Access Method</strong></td>
+                        <td class="tgate-cell">
+                            <span class="cell-title success">Agent + Agentless</span>
+                            <span class="cell-desc">Identical features in both modes, no restrictions</span>
+                        </td>
+                        <td class="competitor-cell">
+                            <span class="cell-title warning">Agent + Agentless*</span>
+                            <span class="cell-desc" style="color: var(--danger);">*Agentless has limited protocol support</span>
+                        </td>
+                        <td class="competitor-cell">
+                            <span class="cell-title warning">Agent + Agentless*</span>
+                            <span class="cell-desc" style="color: var(--danger);">*Requires GlobalProtect for full features</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>RDP/SSH Recording</strong></td>
+                        <td class="tgate-cell">
+                            <span class="cell-title success">Included</span>
+                            <span class="cell-desc">Full session recording & keystroke logging — standard</span>
+                        </td>
+                        <td class="competitor-cell">
+                            <span class="cell-title danger">Add-on Required</span>
+                            <span class="cell-desc">Requires separate PAM solution</span>
+                        </td>
+                        <td class="competitor-cell">
+                            <span class="cell-title danger">Add-on Required</span>
+                            <span class="cell-desc">Needs additional logging infrastructure</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>Cost Efficiency</strong></td>
+                        <td class="tgate-cell">
+                            <span class="cell-title success">Flexible</span>
+                            <span class="cell-desc">Modular licensing, FX-neutral pricing</span>
+                        </td>
+                        <td class="competitor-cell">
+                            <span class="cell-title danger">High</span>
+                            <span class="cell-desc">USD billing, high add-on costs</span>
+                        </td>
+                        <td class="competitor-cell">
+                            <span class="cell-title danger">Very High</span>
+                            <span class="cell-desc">Premium pricing, complex tiers</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>XDR Integration</strong></td>
+                        <td class="tgate-cell">
+                            <span class="cell-title success">Native</span>
+                            <span class="cell-desc">Pre-integrated with AppEx XDR</span>
+                        </td>
+                        <td class="competitor-cell">
+                            <span class="cell-title warning">Partial</span>
+                            <span class="cell-desc">Zscaler ecosystem only</span>
+                        </td>
+                        <td class="competitor-cell">
+                            <span class="cell-title warning">Partial</span>
+                            <span class="cell-desc">Cortex XDR ecosystem only</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+        
+        <!-- Section 4: Ecosystem Integration -->
+        <section>
+            <h2><span class="section-num">4</span> Ecosystem Integration</h2>
+            
+            <h3>SmartWAN Compatibility</h3>
+            <p>Tgate ZTNA is <span class="highlight">fully validated and optimized for SmartWAN</span> (Deutsche Telekom's network acceleration service). This ensures:</p>
+            <ul class="checklist">
+                <li>Zero-touch deployment on existing SmartWAN infrastructure</li>
+                <li>AI-optimized traffic routing for global workforce access</li>
+                <li>Unified management through existing DT portal</li>
+            </ul>
+            
+            <h3>AppEx XDR Integration</h3>
+            <p><span class="highlight">AppEx XDR</span> <em style="color: var(--text-light);">(jointly developed with SKT)</em> provides seamless threat detection and response:</p>
+            <ul class="checklist">
+                <li>Real-time correlation of Tgate access logs with endpoint telemetry</li>
+                <li>Automated incident response workflows</li>
+                <li>Single-pane visibility across network, endpoint, and access layers</li>
+            </ul>
+        </section>
+        
+        <!-- Section 5: Why Tgate for SME -->
+        <section>
+            <h2><span class="section-num">5</span> Why Tgate for German Mittelstand</h2>
+            
+            <p>German SMEs need <strong>robust security without enterprise complexity</strong>. Tgate delivers exactly that:</p>
+            
+            <div class="benefits-table">
+                <div class="benefit-row">
+                    <div class="benefit-num">01</div>
+                    <div class="benefit-title">Minimal IT Overhead</div>
+                    <div class="benefit-desc">Deploy in hours, not weeks. No dedicated security team required. IT admins can manage via intuitive web console.</div>
+                </div>
+                <div class="benefit-row">
+                    <div class="benefit-num">02</div>
+                    <div class="benefit-title">No Feature Trade-offs</div>
+                    <div class="benefit-desc">Agent or Agentless — same powerful features. No hidden costs for session recording or audit logs.</div>
+                </div>
+                <div class="benefit-row">
+                    <div class="benefit-num">03</div>
+                    <div class="benefit-title">Predictable Costs</div>
+                    <div class="benefit-desc">EUR-friendly licensing with no surprise add-on fees. Budget with confidence.</div>
+                </div>
+                <div class="benefit-row">
+                    <div class="benefit-num">04</div>
+                    <div class="benefit-title">Future-Proof Security</div>
+                    <div class="benefit-desc">Pre-integrated with SmartWAN + AppEx XDR. Grow your security stack without rip-and-replace.</div>
+                </div>
+                <div class="benefit-row">
+                    <div class="benefit-num">05</div>
+                    <div class="benefit-title">Proven at Scale</div>
+                    <div class="benefit-desc">Battle-tested at Korea's largest financial institutions with tens of thousands of active sessions — enterprise-grade, SME-ready.</div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Section 6: Architecture -->
+        <section>
+            <h2><span class="section-num">6</span> Architecture & Traffic Flow</h2>
+            
+            <p style="text-align: center; color: var(--secondary); font-weight: 600; margin-bottom: 24px;">[ The Fast & Secure Path ]</p>
+            
+            <div class="arch-flow">
+                <div class="arch-box user">
+                    <div class="icon">👤</div>
+                    <div class="title">User</div>
+                    <div class="desc">Remote / Branch</div>
+                </div>
+                <div class="arch-arrow">→</div>
+                <div class="arch-box smartwan">
+                    <div class="icon">⚡</div>
+                    <div class="title">SmartWAN</div>
+                    <div class="desc">Global Acceleration</div>
+                </div>
+                <div class="arch-arrow">→</div>
+                <div class="arch-box tgate">
+                    <div class="icon">🛡️</div>
+                    <div class="title">Tgate ZTNA</div>
+                    <div class="desc">Compliance & Audit</div>
+                </div>
+                <div class="arch-arrow">→</div>
+                <div class="arch-box internal">
+                    <div class="icon">🏢</div>
+                    <div class="title">Internal System</div>
+                    <div class="desc">Private Cloud / Legacy</div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Section 7: Summary -->
+        <section>
+            <h2><span class="section-num">7</span> Summary</h2>
+            
+            <div class="summary-box">
+                <h3>Tgate ZTNA delivers what German Mittelstand truly needs:</h3>
+                <ul class="checklist">
+                    <li><strong>Enterprise-grade security</strong> proven at scale in highly regulated environments</li>
+                    <li><strong>SME-ready simplicity</strong> that doesn't burden lean IT teams</li>
+                    <li><strong>Flexible deployment</strong> with Agent & Agentless modes — identical powerful features</li>
+                    <li><strong>Seamless integration</strong> with SmartWAN and AppEx XDR ecosystem</li>
+                    <li><strong>Cost-effective licensing</strong> without hidden fees or complex tiers</li>
+                </ul>
+            </div>
+        </section>
+    </main>
+    
+    <footer>
+        <div class="container">
+            <h3>MLSoft Co., Ltd.</h3>
+            <p>www.mlsoft.com | tgatesdp.com</p>
+            <p class="tagline">Established 1995 | Korea's Leading Security Solution Provider</p>
+        </div>
+    </footer>
+</body>
+</html>
