@@ -274,14 +274,9 @@ textarea:focus{outline:none;border-color:var(--border2)}
     <div id="notesList"></div>
   </div>
 
-  <!-- NOTION SAVE -->
+  <!-- AUTO-SAVE STATUS -->
   <div class="card" style="margin-bottom:12px">
-    <div style="font-size:12px;color:var(--text2);margin-bottom:10px">평가 결과를 Notion DB에 저장하세요. 저장 후 수정이 필요하면 다시 평가를 완료하고 저장하면 덮어쓰기됩니다.</div>
-    <div class="save-status" id="saveStatus"></div>
-    <button class="btn-notion" id="btnSaveNotion" onclick="saveToNotion()">
-      <div class="notion-icon">N</div>
-      Notion에 저장
-    </button>
+    <div class="save-status saving" id="saveStatus" style="display:block">Notion에 자동 저장 중…</div>
     <button class="btn-secondary" style="width:100%;font-size:12px" onclick="copyOneSummary()">텍스트 복사</button>
   </div>
 
@@ -299,11 +294,7 @@ textarea:focus{outline:none;border-color:var(--border2)}
   </div>
   <div class="card">
     <div style="font-size:13px;font-weight:500;margin-bottom:10px">전체 결과 내보내기</div>
-    <div class="save-status" id="saveStatusFinal"></div>
-    <button class="btn-notion" id="btnSaveAll" onclick="saveAllToNotion()">
-      <div class="notion-icon">N</div>
-      미저장 항목 전체 Notion 저장
-    </button>
+    <div class="save-status saved" id="saveStatusFinal" style="display:block">✓ 평가 완료 시 자동으로 Notion에 저장됩니다.</div>
     <button class="btn-primary" onclick="copyResult()" style="margin-bottom:8px">텍스트 복사</button>
     <div class="copy-area" id="copyArea"></div>
   </div>
@@ -393,7 +384,7 @@ function renderQ(){
 function setScore(s){const ev=data[CANDIDATES[curCandIdx].id];ev.scores[curQ]=s;document.querySelectorAll('.star').forEach((b,i)=>b.classList.toggle('on',i+1===s));document.getElementById('ratingDesc').textContent=RATING_LABELS[s];}
 function toggleFlag(){const ev=data[CANDIDATES[curCandIdx].id];ev.flags[curQ]=!ev.flags[curQ];document.getElementById('flagChk').checked=ev.flags[curQ];document.getElementById('flagRow').className='flag-row'+(ev.flags[curQ]?' on':'');}
 function saveQ(){data[CANDIDATES[curCandIdx].id].notes[curQ]=document.getElementById('notesInput').value;}
-function navQ(dir){saveQ();if(dir===1&&curQ===11){data[CANDIDATES[curCandIdx].id]._done=true;showSummary();return;}curQ=Math.max(0,Math.min(11,curQ+dir));renderQ();}
+function navQ(dir){saveQ();if(dir===1&&curQ===11){data[CANDIDATES[curCandIdx].id]._done=true;showSummary();return;}curQ=Math.max(0,Math.min(11,curQ+dir));renderQ();if(dir===1){autoSaveNotion();}}
 
 function buildNotionProps(candId){
   const cand=CANDIDATES.find(c=>c.id===candId);
@@ -467,6 +458,14 @@ async function saveAllToNotion(){
   btn.disabled=false;buildCandGrid();
 }
 
+async function autoSaveNotion(){
+  const cand=CANDIDATES[curCandIdx];if(!cand)return;
+  try{
+    const props=buildNotionProps(cand.id);
+    await callNotionSave(props);
+    data[cand.id]._saved=true;buildCandGrid();
+  }catch(e){console.warn('Auto-save failed:',e.message);}
+}
 function showSummary(){
   const cand=CANDIDATES[curCandIdx];const ev=data[cand.id];
   document.getElementById('sumName').textContent=cand.name;
@@ -484,12 +483,17 @@ function showSummary(){
   const noteItems=QUESTIONS.map((q,i)=>({q,note:ev.notes[i],i})).filter(x=>x.note.trim());
   const nsEl=document.getElementById('notesSummaryEl');
   if(noteItems.length){nsEl.style.display='block';document.getElementById('notesList').innerHTML=noteItems.map(x=>`<div class="nq">Q${x.i+1} · ${x.q.domainName}</div><div class="na">${x.note}</div>`).join('');}else{nsEl.style.display='none';}
-  // Reset save status
-  const ss=document.getElementById('saveStatus');ss.style.display='none';ss.className='save-status';
-  document.getElementById('btnSaveNotion').textContent='';
-  document.getElementById('btnSaveNotion').innerHTML='<div class="notion-icon">N</div>Notion에 저장';
-  document.getElementById('btnSaveNotion').disabled=false;
+  // Reset save status for auto-save
+  const ss=document.getElementById('saveStatus');ss.className='save-status saving';ss.textContent='Notion에 자동 저장 중…';ss.style.display='block';
   buildCandGrid();showScreen('s4');
+  // Auto-save to Notion on completion
+  autoSaveNotion().then(()=>{
+    const ss=document.getElementById('saveStatus');
+    ss.className='save-status saved';ss.textContent='✓ Notion에 자동 저장되었습니다.';ss.style.display='block';
+  }).catch(()=>{
+    const ss=document.getElementById('saveStatus');
+    ss.className='save-status error';ss.textContent='자동 저장 실패 — 텍스트 복사를 이용해주세요.';ss.style.display='block';
+  });
 }
 
 function copyOneSummary(){
@@ -512,7 +516,7 @@ function showFinal(){
   let txt=`[면접 평가 결과]\n정산 및 전표 처리 담당자 | 04/13(월)\n평가자: ${evalor}\n${'─'.repeat(40)}\n`;
   results.forEach(r=>{const ev=data[r.id];txt+=`\n◆ ${r.name} (${r.id}) · ${r.time}\n   종합: ${r.avg.toFixed(1)} / 5.0\n`;DOMAINS.forEach((d,di)=>{const s1=ev.scores[di*2]||0,s2=ev.scores[di*2+1]||0;txt+=`   ${d.name}: ${((s1+s2)/2).toFixed(1)}\n`;});const flags=QUESTIONS.filter((_,i)=>ev.flags[i]);if(flags.length)txt+=`   ⚠ Red Flag: ${flags.map(q=>q.domainName).join(', ')}\n`;const notes=QUESTIONS.map((q,i)=>({n:ev.notes[i],d:q.domainName})).filter(x=>x.n.trim());if(notes.length){txt+=`   메모:\n`;notes.forEach(n=>txt+=`     · [${n.d}] ${n.n}\n`);}txt+=`   → ${r.avg>=4?'추천 (Pass)':r.avg>=2.5?'보류 (Hold)':'탈락 (Fail)'}\n`;});
   document.getElementById('copyArea').textContent=txt;
-  document.getElementById('saveStatusFinal').style.display='none';
+  // saveStatusFinal now always visible
   showScreen('s5');
 }
 function copyResult(){const txt=document.getElementById('copyArea').textContent;navigator.clipboard.writeText(txt).then(()=>{const btn=event.target;const o=btn.textContent;btn.textContent='복사됨!';setTimeout(()=>btn.textContent=o,2000);});}
