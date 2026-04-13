@@ -399,9 +399,9 @@ function buildNotionProps(candId){
   const cand=CANDIDATES.find(c=>c.id===candId);
   const ev=data[candId];
   const avg=ev.scores.reduce((a,b)=>a+b,0)/12;
-  const rec=avg>=4?'추천':avg>=2.5?'보류':'탈락';h
+  const rec=avg>=4?'추천':avg>=2.5?'보류':'탈락';
   const domAvgs=DOMAINS.map((_,di)=>((ev.scores[di*2]||0)+(ev.scores[di*2+1]||0))/2);
-  const flaggedDomains=QUESTIONS.filter((_,i)=>ev.flags[i]).map(qhh=>q.domainName);
+  const flaggedDomains=QUESTIONS.filter((_,i)=>ev.flags[i]).map(q=>q.domainName);
   const allNotes=QUESTIONS.map((q,i)=>ev.notes[i]?`[${q.domainName}] ${ev.notes[i]}`:'').filter(Boolean).join('\n');
   return{
     '후보자명':cand.name,
