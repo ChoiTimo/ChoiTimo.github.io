@@ -41,8 +41,6 @@ body{font-family:var(--font);background:var(--bg2);color:var(--text);font-size:1
 .save-status.saving{display:block;background:var(--blue-bg);color:var(--blue)}
 .save-status.saved{display:block;background:var(--green-bg);color:var(--green);font-weight:500}
 .save-status.error{display:block;background:var(--red-bg);color:var(--red)}
-
-/* GUIDE */
 .guide-intro{margin-bottom:16px}
 .guide-intro h1{font-size:20px;font-weight:500;margin-bottom:4px}
 .guide-intro p{font-size:13px;color:var(--text2);margin-bottom:10px}
@@ -62,8 +60,6 @@ body{font-family:var(--font);background:var(--bg2);color:var(--text);font-size:1
 .sci-box{background:var(--bg3);border-radius:var(--r-md);padding:10px 12px;margin-top:12px}
 .sci-box-title{font-size:10px;color:var(--text3);font-weight:500;text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px}
 .sci-box p{font-size:11px;color:var(--text2);line-height:1.6}
-
-/* AUTH */
 .auth-card{background:var(--bg);border:0.5px solid var(--border);border-radius:var(--r-lg);padding:28px 24px}
 .auth-card h1{font-size:20px;font-weight:500;margin-bottom:4px}
 .auth-card .sub{font-size:13px;color:var(--text2);margin-bottom:20px}
@@ -71,8 +67,6 @@ body{font-family:var(--font);background:var(--bg2);color:var(--text);font-size:1
 .auth-input{width:100%;padding:11px 14px;border:0.5px solid var(--border2);border-radius:var(--r-md);background:var(--bg);font-family:var(--font);font-size:14px;color:var(--text);margin-bottom:14px}
 .auth-input:focus{outline:none;border-color:var(--blue)}
 .auth-input::placeholder{color:var(--text3)}
-
-/* CANDIDATES */
 .cand-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
 .cand-card{background:var(--bg);border:0.5px solid var(--border);border-radius:var(--r-lg);padding:14px;cursor:pointer;transition:all .15s;position:relative}
 .cand-card:hover:not(.done){border-color:var(--border2);background:var(--bg2)}
@@ -85,8 +79,6 @@ body{font-family:var(--font);background:var(--bg2);color:var(--text);font-size:1
 .cand-card.done.notion-ok .notion-saved{color:var(--green)}
 .done-check{position:absolute;top:10px;right:10px;width:18px;height:18px;background:var(--green);border-radius:50%;display:flex;align-items:center;justify-content:center}
 .done-check::after{content:'';width:4px;height:8px;border:2px solid #fff;border-top:none;border-left:none;transform:rotate(45deg);margin-top:-2px}
-
-/* EVAL */
 .progress-wrap{background:var(--bg3);border-radius:4px;height:4px;margin-bottom:16px;overflow:hidden}
 .progress-fill{background:var(--text);height:4px;border-radius:4px;transition:width .3s ease}
 .eval-meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
@@ -112,8 +104,6 @@ body{font-family:var(--font);background:var(--bg2);color:var(--text);font-size:1
 .notes-lbl{font-size:11px;color:var(--text2);margin-bottom:6px}
 textarea{width:100%;min-height:72px;padding:9px 12px;border:0.5px solid var(--border);border-radius:var(--r-md);background:var(--bg);font-family:var(--font);font-size:13px;color:var(--text);resize:none;line-height:1.6}
 textarea:focus{outline:none;border-color:var(--border2)}
-
-/* SUMMARY */
 .sum-header{background:var(--bg);border:0.5px solid var(--border);border-radius:var(--r-lg);padding:20px;margin-bottom:12px}
 .sum-name-row{display:flex;align-items:baseline;gap:8px;margin-bottom:2px}
 .sum-name{font-size:20px;font-weight:500}.sum-time{font-size:12px;color:var(--text2)}
@@ -140,7 +130,6 @@ textarea:focus{outline:none;border-color:var(--border2)}
 </head>
 <body>
 <div class="app">
-
 <div class="topbar">
   <div>
     <h2>정산 및 전표 처리 담당자</h2>
@@ -151,8 +140,6 @@ textarea:focus{outline:none;border-color:var(--border2)}
     <button class="change-btn" onclick="changeEvaluator()">변경</button>
   </div>
 </div>
-
-<!-- S0: GUIDE -->
 <div class="screen active" id="s0">
   <div class="guide-intro">
     <div class="badge badge-blue" style="margin-bottom:10px">면접 질문 가이드</div>
@@ -161,50 +148,31 @@ textarea:focus{outline:none;border-color:var(--border2)}
     <div class="sci-pills">
       <span class="sci-pill">Structured Behavioral Interview (Schmidt &amp; Hunter, 2016)</span>
       <span class="sci-pill">Big Five — Conscientiousness (Barrick &amp; Mount)</span>
-      <span class="sci-pill">Dual Process Theory (Kahneman)</span>
-      <span class="sci-pill">Active Inference — Friston</span>
+      <span class="sci-pill">Realistic Job Preview (Wanous, 1992)</span>
     </div>
   </div>
   <div class="domain-block">
-    <div class="domain-header"><div class="domain-title">Domain 1 · 오류 감지 &amp; 처리</div><div class="badge badge-blue">Q1 – Q2</div></div>
+    <div class="domain-header"><div class="domain-title">Q1 · 오류 감지 &amp; 정확성</div><div class="badge badge-blue">핵심</div></div>
     <div class="q-item"><div class="q-num">Q1</div><div class="q-body">이전 업무 중 본인이 만든 문서나 데이터를 스스로 확인했을 때 오류를 발견한 경험이 있으신가요? 당시 어떻게 처리하셨는지 구체적으로 말씀해 주세요.</div><div class="q-hints"><div class="q-hint g"><div class="dot"></div><span>오류 발견 → 즉시 관련자 공유 → 원인 분석까지 한 경험</span></div><div class="q-hint r"><div class="dot"></div><span>"큰 오류는 없었어요" 또는 발견 경험 자체가 없다고 함</span></div></div></div>
-    <div class="q-item"><div class="q-num">Q2</div><div class="q-body">마감 직전에 숫자가 맞지 않는다는 걸 알았는데, 확인하려면 시간이 더 필요한 상황이었다면 어떻게 하시겠어요?</div><div class="q-hints"><div class="q-hint g"><div class="dot"></div><span>"담당자에게 먼저 알리고 제출 여부를 협의한다"</span></div><div class="q-hint r"><div class="dot"></div><span>"일단 제출하고 나중에 수정하겠다" — 재무 문서에서 치명적</span></div></div></div>
-    <div class="sci-box"><div class="sci-box-title">측정 원리</div><p>전전두엽 ACC는 오류 감지와 동시에 '보고할 것인가'를 결정한다. 오류 처리 방식이 인지적 정직성과 Integrity를 동시에 측정하는 이유다.</p></div>
+    <div class="sci-box"><div class="sci-box-title">측정 원리</div><p>전전두엽 ACC의 오류 감지와 보고 의사결정. 인지적 정직성과 Integrity를 동시에 측정한다.</p></div>
   </div>
   <div class="domain-block">
-    <div class="domain-header"><div class="domain-title">Domain 2 · 반복 업무 주의력</div><div class="badge badge-blue">Q3 – Q4</div></div>
-    <div class="q-item"><div class="q-num">Q3</div><div class="q-body">하루 중 비슷한 형태의 데이터나 문서를 다량으로 처리했던 경험을 말씀해 주세요. 집중력을 유지하기 위해 본인만의 방법이 있었나요?</div><div class="q-hints"><div class="q-hint g"><div class="dot"></div><span>체크리스트, 구간별 검토, 자기 검증 단계를 스스로 만든 경험</span></div><div class="q-hint r"><div class="dot"></div><span>특별한 방법 없음 / "그냥 열심히 했어요" — 의지에만 의존</span></div></div></div>
-    <div class="q-item"><div class="q-num">Q4</div><div class="q-body">업무 중 루틴이 갑자기 바뀌었을 때 — 양식이나 프로세스가 변경됐을 때 — 가장 힘들었던 순간을 말씀해 주세요.</div><div class="q-hints"><div class="q-hint g"><div class="dot"></div><span>불편함을 인정하면서도 새 프로세스를 익히기 위한 구체적 행동이 있음</span></div><div class="q-hint r"><div class="dot"></div><span>변화 자체를 매우 불편하게 느끼고 적응에 오래 걸렸다고 함</span></div></div></div>
-    <div class="sci-box"><div class="sci-box-title">측정 원리</div><p>스스로 구조를 만드는 사람이 실제 오류율이 낮다(Duckworth et al., 2019). Big Five Conscientiousness의 핵심 측정 포인트.</p></div>
+    <div class="domain-header"><div class="domain-title">Q2 · 반복 업무 집중력 &amp; 변화 대응</div><div class="badge badge-blue">통합</div></div>
+    <div class="q-item"><div class="q-num">Q2</div><div class="q-body">하루에 비슷한 형태의 문서나 데이터를 다량으로 처리하셨던 경험을 말씀해 주세요. 집중력을 유지하기 위한 본인만의 방법이 있었나요? 그리고 중간에 양식이나 프로세스가 바뀌었을 때는 어떻게 대응하셨어요?</div><div class="q-hints"><div class="q-hint g"><div class="dot"></div><span>체크리스트·구간별 검토 등 자기 검증 구조를 만든 경험 + 변화에 구체적 행동으로 대응</span></div><div class="q-hint r"><div class="dot"></div><span>특별한 방법 없음 / 변화에 감정적 불편만 표현</span></div></div></div>
+    <div class="sci-box"><div class="sci-box-title">측정 원리</div><p>Conscientiousness(Duckworth et al., 2019) — 스스로 구조를 만드는 사람이 실제 오류율이 낮다. 변화 적응력은 인지적 유연성의 직접 지표.</p></div>
   </div>
   <div class="domain-block">
-    <div class="domain-header"><div class="domain-title">Domain 3 · 규정 준수 vs 상황 판단</div><div class="badge badge-blue">Q5 – Q6</div></div>
-    <div class="q-item"><div class="q-num">Q5</div><div class="q-body">업무를 하다 보면 규정대로 처리하는 게 맞는데, 현장 상황이 조금 다를 때가 있죠. 그런 경험이 있으셨나요? 어떻게 결정하셨어요?</div><div class="q-hints"><div class="q-hint g"><div class="dot"></div><span>"먼저 상급자나 담당 부서에 확인하고 판단했다" → escalation 감각</span></div><div class="q-hint r"><div class="dot"></div><span>무조건 규정대로(유연성 0) 또는 알아서 처리(경계 없음) — 양 극단 모두 위험</span></div></div></div>
-    <div class="q-item"><div class="q-num">Q6</div><div class="q-body">본인이 담당하지 않는 항목인데 명백히 잘못된 것을 발견했을 때, 어떻게 하시겠어요?</div><div class="q-hints"><div class="q-hint g"><div class="dot"></div><span>"해당 담당자에게 정중히 알린다" — 경계 인식 + 조직 기여 균형</span></div><div class="q-hint r"><div class="dot"></div><span>"제 담당이 아니라 말 안 함" 또는 "직접 고치겠다" — 둘 다 위험</span></div></div></div>
-    <div class="sci-box"><div class="sci-box-title">측정 원리</div><p>SJT 기반. 규정과 현실의 간극에서 어떤 의사결정 경로를 택하는지가 직무수행 예측의 핵심 변수(McDaniel et al., 2001).</p></div>
+    <div class="domain-header"><div class="domain-title">Q3 · 마감 압박 &amp; 스트레스 관리</div><div class="badge badge-blue">통합</div></div>
+    <div class="q-item"><div class="q-num">Q3</div><div class="q-body">마감이 촉박한 상황에서 여러 건을 동시에 처리해야 했던 경험을 말씀해 주세요. 특히 다른 부서의 자료 지연이나 시스템 문제처럼 본인이 통제할 수 없는 요인이 겹쳤을 때, 어떤 순서로 일을 정리하셨나요?</div><div class="q-hints"><div class="q-hint g"><div class="dot"></div><span>우선순위 기준이 명확하고, 외부 변수에 대안을 먼저 찾는 행동</span></div><div class="q-hint r"><div class="dot"></div><span>순서 기준 없음 / 타인 탓에 집중 / 감정적 묘사가 강함</span></div></div></div>
+    <div class="sci-box"><div class="sci-box-title">측정 원리</div><p>HPA axis 코르티솔 조절과 작업기억 과부하 상태의 우선순위 결정(Baddeley, 2012). Grit·회복탄력성·과제지속력의 통합 측정.</p></div>
   </div>
   <div class="domain-block">
-    <div class="domain-header"><div class="domain-title">Domain 4 · 스트레스 내성 &amp; 마감</div><div class="badge badge-blue">Q7 – Q8</div></div>
-    <div class="q-item"><div class="q-num">Q7</div><div class="q-body">마감이 촉박한 상황에서 여러 건을 동시에 처리해야 했던 경험을 말씀해 주세요. 그때 어떤 순서로 일을 정리하셨나요?</div><div class="q-hints"><div class="q-hint g"><div class="dot"></div><span>우선순위 기준(마감일, 영향도)이 있고, 필요 시 관련자에게 먼저 소통</span></div><div class="q-hint r"><div class="dot"></div><span>순서 기준 없음 / 감정적으로 먼저 눈에 띄는 것부터 처리</span></div></div></div>
-    <div class="q-item"><div class="q-num">Q8</div><div class="q-body">업무 중 통제할 수 없는 요인 — 다른 부서의 늦은 자료, 시스템 오류 — 때문에 본인 일이 지연된 경험이 있나요? 어떻게 대응하셨어요?</div><div class="q-hints"><div class="q-hint g"><div class="dot"></div><span>상황을 인정하고 대안을 먼저 찾은 행동 묘사</span></div><div class="q-hint r"><div class="dot"></div><span>타인 탓에 집중, 감정적 묘사가 강함</span></div></div></div>
-    <div class="sci-box"><div class="sci-box-title">측정 원리</div><p>HPA axis 코르티솔 조절 = 회복탄력성의 신경생물학적 기반. 작업기억 과부하 상태의 우선순위 결정은 전전두엽 기능의 직접 지표(Baddeley, 2012). Grit·회복탄력성·과제지속력이 하나의 회로에서 표현되는 지점.</p></div>
-  </div>
-  <div class="domain-block">
-    <div class="domain-header"><div class="domain-title">Domain 5 · 대인관계 &amp; 소통</div><div class="badge badge-blue">Q9 – Q10</div></div>
-    <div class="q-item"><div class="q-num">Q9</div><div class="q-body">본인이 처리한 내용에 대해 다른 부서로부터 이의나 확인 요청이 들어온 경험이 있으신가요? 어떻게 대응하셨어요?</div><div class="q-hints"><div class="q-hint g"><div class="dot"></div><span>상대방 관점을 먼저 확인 후 근거를 들어 설명 또는 수정</span></div><div class="q-hint r"><div class="dot"></div><span>방어적 반응 / "제가 맞다고 설명했어요"에서 끝</span></div></div></div>
-    <div class="q-item"><div class="q-num">Q10</div><div class="q-body">업무를 인수인계 받거나 줄 때, 본인이 특별히 신경 쓰는 부분이 있나요?</div><div class="q-hints"><div class="q-hint g"><div class="dot"></div><span>예외 케이스, 주의 사항, 자주 발생하는 오류 패턴까지 전달한 경험</span></div><div class="q-hint r"><div class="dot"></div><span>"받은 대로 전달한다" / 구체적인 게 없음</span></div></div></div>
-    <div class="sci-box"><div class="sci-box-title">측정 원리</div><p>Friston Active Inference — 사회적 관계는 예측 오류를 줄이는 Prior로 작동. 신뢰 기반 동료 관계가 Grit의 외부 배터리 역할을 한다.</p></div>
-  </div>
-  <div class="domain-block">
-    <div class="domain-header"><div class="domain-title">Domain 6 · 직무 동기 &amp; 계약직 인식</div><div class="badge badge-blue">Q11 – Q12</div></div>
-    <div class="q-item"><div class="q-num">Q11</div><div class="q-body">이 포지션을 지원하시면서 본인이 특히 잘 기여할 수 있다고 생각하신 부분이 뭔가요?</div><div class="q-hints"><div class="q-hint g"><div class="dot"></div><span>정산·전표 관련 구체적 경험 또는 숫자 다루는 업무에 대한 진정성 있는 언급</span></div><div class="q-hint r"><div class="dot"></div><span>매우 일반적인 답변 / 직무와 연관이 없음</span></div></div></div>
-    <div class="q-item"><div class="q-num">Q12</div><div class="q-body">2년 계약 기간 동안 어떤 방식으로 업무에 임하실 계획인가요? 계약 기간이라는 게 본인에게 어떤 의미인지도 함께 말씀해 주세요.</div><div class="q-hints"><div class="q-hint g"><div class="dot"></div><span>기간 안에 어떤 기여를 할 것인지 명확한 관점이 있음</span></div><div class="q-hint r"><div class="dot"></div><span>"정규직 전환 목표"만 반복 또는 계약 특성 자체를 고민 안 함</span></div></div></div>
-    <div class="sci-box"><div class="sci-box-title">측정 원리</div><p>Realistic Job Preview(Wanous, 1992) — 계약 특성을 명확히 인지한 지원자가 입사 후 이탈률이 낮다. 동기의 진정성은 직무 구체성과의 매칭도로 간접 측정한다.</p></div>
+    <div class="domain-header"><div class="domain-title">Q4 · 직무 동기 &amp; 계약 인식</div><div class="badge badge-blue">적합성</div></div>
+    <div class="q-item"><div class="q-num">Q4</div><div class="q-body">2년 계약 기간 동안 어떤 방식으로 업무에 임하실 계획인가요? 계약 기간이라는 게 본인에게 어떤 의미인지도 함께 말씀해 주세요.</div><div class="q-hints"><div class="q-hint g"><div class="dot"></div><span>기간 안에 어떤 기여를 할 것인지 명확한 관점이 있음</span></div><div class="q-hint r"><div class="dot"></div><span>"정규직 전환 목표"만 반복 또는 계약 특성 자체를 고민 안 함</span></div></div></div>
+    <div class="sci-box"><div class="sci-box-title">측정 원리</div><p>Realistic Job Preview(Wanous, 1992) — 계약 특성을 명확히 인지한 지원자가 입사 후 이탈률이 낮다.</p></div>
   </div>
   <div style="margin-top:20px"><button class="btn-primary" onclick="showScreen('s1')">평가 시작하기 →</button></div>
 </div>
-
-<!-- S1: AUTH -->
 <div class="screen" id="s1">
   <div class="auth-card">
     <div class="badge badge-blue" style="margin-bottom:12px">면접위원 인증</div>
@@ -215,8 +183,6 @@ textarea:focus{outline:none;border-color:var(--border2)}
     <button class="btn-primary" id="btnEnter" disabled onclick="doAuth()">접속하기</button>
   </div>
 </div>
-
-<!-- S2: CANDIDATES -->
 <div class="screen" id="s2">
   <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
     <div class="badge badge-blue" id="doneCountBadge">오늘 면접 후보자</div>
@@ -226,8 +192,6 @@ textarea:focus{outline:none;border-color:var(--border2)}
   <div id="allDoneMsg" style="display:none;text-align:center;padding:12px;font-size:13px;color:var(--green);font-weight:500">전체 후보자 평가 완료</div>
   <button class="btn-primary" id="btnViewFinal" onclick="showFinal()" style="display:none;margin-top:4px">전체 결과 보기 →</button>
 </div>
-
-<!-- S3: EVAL -->
 <div class="screen" id="s3">
   <div class="progress-wrap"><div class="progress-fill" id="progressBar"></div></div>
   <div class="eval-meta">
@@ -256,8 +220,6 @@ textarea:focus{outline:none;border-color:var(--border2)}
     <button class="btn-success" id="btnNext" onclick="navQ(1)">다음 →</button>
   </div>
 </div>
-
-<!-- S4: SUMMARY -->
 <div class="screen" id="s4">
   <div class="sum-header">
     <div class="sum-name-row"><div class="sum-name" id="sumName"></div><div class="sum-time" id="sumTime"></div></div>
@@ -273,20 +235,15 @@ textarea:focus{outline:none;border-color:var(--border2)}
     <div style="font-size:10px;font-weight:500;color:var(--text3);margin-bottom:10px;text-transform:uppercase;letter-spacing:.04em">면접 메모 요약</div>
     <div id="notesList"></div>
   </div>
-
-  <!-- AUTO-SAVE STATUS -->
   <div class="card" style="margin-bottom:12px">
     <div class="save-status saving" id="saveStatus" style="display:block">Notion에 자동 저장 중…</div>
     <button class="btn-secondary" style="width:100%;font-size:12px" onclick="copyOneSummary()">텍스트 복사</button>
   </div>
-
   <div class="nav-row">
     <button class="btn-secondary" onclick="goBack()">← 목록으로</button>
     <button class="btn-primary" style="flex:1" onclick="goBack()">완료</button>
   </div>
 </div>
-
-<!-- S5: FINAL -->
 <div class="screen" id="s5">
   <div class="card">
     <div style="font-size:13px;font-weight:500;margin-bottom:12px">후보자 비교 (점수순)</div>
@@ -300,35 +257,20 @@ textarea:focus{outline:none;border-color:var(--border2)}
   </div>
   <div class="nav-row"><button class="btn-secondary" onclick="goBack()">← 후보자 목록</button></div>
 </div>
-
 </div>
 <script>
-const NOTION_DS_ID='83334ab3-a3dd-4430-9e45-5492ac661a2e';
-const NOTION_MCP_URL='https://mcp.notion.com/mcp';
 const RATING_LABELS=['','매우 미흡','미흡','보통','우수','탁월'];
 const DOMAINS=[
-  {name:'오류 감지 & 처리',questions:[
+  {name:'오류 감지 & 정확성',questions:[
     {q:'이전 업무 중 본인이 만든 문서나 데이터를 스스로 확인했을 때 오류를 발견한 경험이 있으신가요? 당시 어떻게 처리하셨는지 구체적으로 말씀해 주세요.',green:'오류 발견 → 즉시 관련자 공유 → 원인 분석까지 한 경험',red:'"큰 오류는 없었어요" 또는 발견 경험 자체가 없다고 함'},
-    {q:'마감 직전에 숫자가 맞지 않는다는 걸 알았는데, 확인하려면 시간이 더 필요한 상황이었다면 어떻게 하시겠어요?',green:'"담당자에게 먼저 알리고 제출 여부를 협의한다"',red:'"일단 제출하고 나중에 수정하겠다" — 재무 문서에서 치명적'},
   ]},
-  {name:'반복 업무 주의력',questions:[
-    {q:'하루 중 비슷한 형태의 데이터나 문서를 다량으로 처리했던 경험을 말씀해 주세요. 집중력을 유지하기 위해 본인만의 방법이 있었나요?',green:'체크리스트, 구간별 검토, 자기 검증 단계를 스스로 만든 경험',red:'특별한 방법 없음 / "그냥 열심히 했어요" — 의지에만 의존'},
-    {q:'업무 중 루틴이 갑자기 바뀌었을 때 — 양식이나 프로세스가 변경됐을 때 — 가장 힘들었던 순간을 말씀해 주세요.',green:'불편함을 인정하면서도 새 프로세스를 익히기 위한 구체적 행동이 있음',red:'변화 자체를 매우 불편하게 느끼고 적응에 오래 걸렸다고 함'},
+  {name:'반복 업무 집중력 & 변화 대응',questions:[
+    {q:'하루에 비슷한 형태의 문서나 데이터를 다량으로 처리하셨던 경험을 말씀해 주세요. 집중력을 유지하기 위한 본인만의 방법이 있었나요? 그리고 중간에 양식이나 프로세스가 바뀌었을 때는 어떻게 대응하셨어요?',green:'체크리스트·구간별 검토 등 자기 검증 구조를 만든 경험 + 변화에 구체적 행동으로 대응',red:'특별한 방법 없음 / 변화에 감정적 불편만 표현'},
   ]},
-  {name:'규정 준수 vs 상황 판단',questions:[
-    {q:'업무를 하다 보면 규정대로 처리하는 게 맞는데, 현장 상황이 조금 다를 때가 있죠. 그런 경험이 있으셨나요? 어떻게 결정하셨어요?',green:'"먼저 상급자나 담당 부서에 확인하고 판단했다" → escalation 감각',red:'무조건 규정대로(유연성 0) 또는 알아서 처리(경계 없음) — 양 극단 모두 위험'},
-    {q:'본인이 담당하지 않는 항목인데 명백히 잘못된 것을 발견했을 때, 어떻게 하시겠어요?',green:'"해당 담당자에게 정중히 알린다" — 경계 인식 + 조직 기여 균형',red:'"제 담당이 아니라 말 안 함" 또는 "직접 고치겠다" — 둘 다 위험'},
+  {name:'마감 압박 & 스트레스 관리',questions:[
+    {q:'마감이 촉박한 상황에서 여러 건을 동시에 처리해야 했던 경험을 말씀해 주세요. 특히 다른 부서의 자료 지연이나 시스템 문제처럼 본인이 통제할 수 없는 요인이 겹쳤을 때, 어떤 순서로 일을 정리하셨나요?',green:'우선순위 기준이 명확하고, 외부 변수에 대안을 먼저 찾는 행동',red:'순서 기준 없음 / 타인 탓에 집중 / 감정적 묘사가 강함'},
   ]},
-  {name:'스트레스 내성 & 마감',questions:[
-    {q:'마감이 촉박한 상황에서 여러 건을 동시에 처리해야 했던 경험을 말씀해 주세요. 그때 어떤 순서로 일을 정리하셨나요?',green:'우선순위 기준(마감일, 영향도)이 있고, 필요 시 관련자에게 먼저 소통',red:'순서 기준 없음 / 감정적으로 먼저 눈에 띄는 것부터 처리'},
-    {q:'업무 중 통제할 수 없는 요인 — 다른 부서의 늦은 자료, 시스템 오류 — 때문에 본인 일이 지연된 경험이 있나요? 어떻게 대응하셨어요?',green:'상황을 인정하고 대안을 먼저 찾은 행동 묘사',red:'타인 탓에 집중, 감정적 묘사가 강함'},
-  ]},
-  {name:'대인관계 & 소통',questions:[
-    {q:'본인이 처리한 내용에 대해 다른 부서로부터 이의나 확인 요청이 들어온 경험이 있으신가요? 어떻게 대응하셨어요?',green:'상대방 관점을 먼저 확인 후 근거를 들어 설명 또는 수정',red:'방어적 반응 / "제가 맞다고 설명했어요"에서 끝'},
-    {q:'업무를 인수인계 받거나 줄 때, 본인이 특별히 신경 쓰는 부분이 있나요?',green:'예외 케이스, 주의 사항, 자주 발생하는 오류 패턴까지 전달한 경험',red:'"받은 대로 전달한다" / 구체적인 게 없음'},
-  ]},
-  {name:'직무 동기 & 계약직 인식',questions:[
-    {q:'이 포지션을 지원하시면서 본인이 특히 잘 기여할 수 있다고 생각하신 부분이 뭔가요?',green:'정산·전표 관련 구체적 경험 또는 숫자 다루는 업무에 대한 진정성 있는 언급',red:'매우 일반적인 답변 / 직무와 연관이 없음'},
+  {name:'직무 동기 & 계약 인식',questions:[
     {q:'2년 계약 기간 동안 어떤 방식으로 업무에 임하실 계획인가요? 계약 기간이라는 게 본인에게 어떤 의미인지도 함께 말씀해 주세요.',green:'기간 안에 어떤 기여를 할 것인지 명확한 관점이 있음',red:'"정규직 전환 목표"만 반복 또는 계약 특성 자체를 고민 안 함'},
   ]},
 ];
@@ -341,11 +283,10 @@ const CANDIDATES=[
   {id:'A260722-5',name:'엄수진',time:'15:30'},
 ];
 let evalor=null,curCandIdx=null,curQ=0,data={};
-function initCand(id){if(!data[id])data[id]={scores:Array(12).fill(0),notes:Array(12).fill(''),flags:Array(12).fill(false),_done:false,_saved:false};}
+function initCand(id){if(!data[id])data[id]={scores:Array(4).fill(0),notes:Array(4).fill(''),flags:Array(4).fill(false),_done:false,_saved:false};}
 function checkAuth(){document.getElementById('btnEnter').disabled=document.getElementById('nameInput').value.trim().length<1;}
 function doAuth(){const v=document.getElementById('nameInput').value.trim();if(!v)return;evalor=v;document.getElementById('evalChip').textContent=v;document.getElementById('chipWrap').style.display='flex';buildCandGrid();showScreen('s2');}
 function changeEvaluator(){document.getElementById('nameInput').value=evalor||'';document.getElementById('btnEnter').disabled=false;showScreen('s1');}
-
 function buildCandGrid(){
   const g=document.getElementById('candGrid');g.innerHTML='';let done=0;
   CANDIDATES.forEach((c,i)=>{
@@ -362,14 +303,12 @@ function buildCandGrid(){
   document.getElementById('allDoneMsg').style.display=all?'block':'none';
   document.getElementById('btnViewFinal').style.display=all?'block':'none';
 }
-
 function startEval(idx){curCandIdx=idx;curQ=0;initCand(CANDIDATES[idx].id);renderQ();showScreen('s3');}
-
 function renderQ(){
   const ev=data[CANDIDATES[curCandIdx].id];const q=QUESTIONS[curQ];
-  document.getElementById('progressBar').style.width=((curQ/12)*100)+'%';
+  document.getElementById('progressBar').style.width=((curQ/4)*100)+'%';
   document.getElementById('domainTag').textContent=q.domainName;
-  document.getElementById('qCounter').textContent='Q'+(curQ+1)+' / 12';
+  document.getElementById('qCounter').textContent='Q'+(curQ+1)+' / 4';
   document.getElementById('qText').textContent=q.q;
   document.getElementById('hintGreen').textContent=q.green;
   document.getElementById('hintRed').textContent=q.red;
@@ -379,85 +318,37 @@ function renderQ(){
   document.getElementById('flagChk').checked=ev.flags[curQ];
   document.getElementById('flagRow').className='flag-row'+(ev.flags[curQ]?' on':'');
   document.getElementById('notesInput').value=ev.notes[curQ];
-  document.getElementById('btnNext').textContent=curQ===11?'완료 →':'다음 →';
+  document.getElementById('btnNext').textContent=curQ===3?'완료 →':'다음 →';
 }
 function setScore(s){const ev=data[CANDIDATES[curCandIdx].id];ev.scores[curQ]=s;document.querySelectorAll('.star').forEach((b,i)=>b.classList.toggle('on',i+1===s));document.getElementById('ratingDesc').textContent=RATING_LABELS[s];}
 function toggleFlag(){const ev=data[CANDIDATES[curCandIdx].id];ev.flags[curQ]=!ev.flags[curQ];document.getElementById('flagChk').checked=ev.flags[curQ];document.getElementById('flagRow').className='flag-row'+(ev.flags[curQ]?' on':'');}
 function saveQ(){data[CANDIDATES[curCandIdx].id].notes[curQ]=document.getElementById('notesInput').value;}
-function navQ(dir){saveQ();if(dir===1&&curQ===11){data[CANDIDATES[curCandIdx].id]._done=true;showSummary();return;}curQ=Math.max(0,Math.min(11,curQ+dir));renderQ();if(dir===1){autoSaveNotion();}}
-
+function navQ(dir){saveQ();if(dir===1&&curQ===3){data[CANDIDATES[curCandIdx].id]._done=true;showSummary();return;}curQ=Math.max(0,Math.min(3,curQ+dir));renderQ();if(dir===1){autoSaveNotion();}}
 function buildNotionProps(candId){
   const cand=CANDIDATES.find(c=>c.id===candId);
   const ev=data[candId];
-  const avg=ev.scores.reduce((a,b)=>a+b,0)/12;
+  const avg=ev.scores.reduce((a,b)=>a+b,0)/4;
   const rec=avg>=4?'추천':avg>=2.5?'보류':'탈락';
-  const domAvgs=DOMAINS.map((_,di)=>((ev.scores[di*2]||0)+(ev.scores[di*2+1]||0))/2);
+  const domAvgs=DOMAINS.map((_,di)=>(ev.scores[di]||0));
   const flaggedDomains=QUESTIONS.filter((_,i)=>ev.flags[i]).map(q=>q.domainName);
   const allNotes=QUESTIONS.map((q,i)=>ev.notes[i]?`[${q.domainName}] ${ev.notes[i]}`:'').filter(Boolean).join('\n');
   return{
-    '후보자명':cand.name,
-    '지원자번호':cand.id,
-    '면접시간':cand.time,
-    '평가자':evalor,
-    '면접일':'2026-04-13',
-    '종합점수':Math.round(avg*10)/10,
-    '추천여부':rec,
-    '오류감지_처리':Math.round(domAvgs[0]*10)/10,
-    '반복업무_주의력':Math.round(domAvgs[1]*10)/10,
-    '규정준수_판단력':Math.round(domAvgs[2]*10)/10,
-    '스트레스_마감관리':Math.round(domAvgs[3]*10)/10,
-    '대인관계_소통':Math.round(domAvgs[4]*10)/10,
-    '직무동기_계약인식':Math.round(domAvgs[5]*10)/10,
-    'RedFlag여부':flaggedDomains.length>0,
-    'RedFlag항목':flaggedDomains.join(', '),
-    '면접메모':allNotes,
+    '후보자명':cand.name,'지원자번호':cand.id,'면접시간':cand.time,'평가자':evalor,'면접일':'2026-04-13',
+    '종합점수':Math.round(avg*10)/10,'추천여부':rec,
+    '오류감지_정확성':Math.round(domAvgs[0]*10)/10,
+    '반복업무_변화대응':Math.round(domAvgs[1]*10)/10,
+    '마감압박_스트레스':Math.round(domAvgs[2]*10)/10,
+    '직무동기_계약인식':Math.round(domAvgs[3]*10)/10,
+    'RedFlag여부':flaggedDomains.length>0,'RedFlag항목':flaggedDomains.join(', '),'면접메모':allNotes,
   };
 }
-
 async function callNotionSave(props){
   const response=await fetch('https://old-tree-5d49.unsized.workers.dev',{
-    method:'POST',
-    headers:{'Content-Type':'application/json'},
-    body:JSON.stringify(props)
+    method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(props)
   });
   if(!response.ok){const err=await response.text();throw new Error(err);}
   return await response.json();
 }
-
-async function saveToNotion(){
-  const cand=CANDIDATES[curCandIdx];
-  const statusEl=document.getElementById('saveStatus');
-  const btn=document.getElementById('btnSaveNotion');
-  statusEl.className='save-status saving';statusEl.textContent='Notion에 저장 중…';statusEl.style.display='block';
-  btn.disabled=true;
-  try{
-    const props=buildNotionProps(cand.id);
-    await callNotionSave(props);
-    data[cand.id]._saved=true;
-    statusEl.className='save-status saved';statusEl.textContent='✓ Notion에 저장 완료됩니다. 반영까지 수 초가 걸릴 수 있어요.';
-    btn.textContent='다시 저장 (덮어쓰기)';
-  }catch(e){
-    statusEl.className='save-status error';statusEl.textContent='저장 실패 — 텍스트 복사 후 Notion에 수동 입력해주세요. ('+e.message+')';
-  }
-  btn.disabled=false;buildCandGrid();
-}
-
-async function saveAllToNotion(){
-  const btn=document.getElementById('btnSaveAll');
-  const statusEl=document.getElementById('saveStatusFinal');
-  const unsaved=CANDIDATES.filter(c=>data[c.id]&&data[c.id]._done&&!data[c.id]._saved);
-  if(!unsaved.length){statusEl.className='save-status saved';statusEl.textContent='모두 이미 저장됨';statusEl.style.display='block';return;}
-  btn.disabled=true;statusEl.className='save-status saving';statusEl.textContent=`저장 중… (0/${unsaved.length})`;statusEl.style.display='block';
-  let saved=0;
-  for(const c of unsaved){
-    try{await callNotionSave(buildNotionProps(c.id));data[c.id]._saved=true;saved++;}catch(e){}
-    statusEl.textContent=`저장 중… (${saved}/${unsaved.length})`;
-  }
-  statusEl.className=saved===unsaved.length?'save-status saved':'save-status error';
-  statusEl.textContent=saved===unsaved.length?`✓ ${saved}건 저장 완료`:`${saved}/${unsaved.length}건 저장됨 — 나머지는 텍스트 복사 사용`;
-  btn.disabled=false;buildCandGrid();
-}
-
 async function autoSaveNotion(){
   const cand=CANDIDATES[curCandIdx];if(!cand)return;
   try{
@@ -471,22 +362,20 @@ function showSummary(){
   document.getElementById('sumName').textContent=cand.name;
   document.getElementById('sumTime').textContent=cand.time+' 면접';
   document.getElementById('sumId').textContent=cand.id;
-  const avg=ev.scores.reduce((a,b)=>a+b,0)/12;
+  const avg=ev.scores.reduce((a,b)=>a+b,0)/4;
   document.getElementById('sumScore').textContent=avg.toFixed(1);
   let rec,rc;if(avg>=4){rec='추천 (Pass)';rc='rec-pass';}else if(avg>=2.5){rec='보류 (Hold)';rc='rec-hold';}else{rec='탈락 (Fail)';rc='rec-fail';}
   document.getElementById('sumRec').innerHTML='<div class="rec-badge '+rc+'">'+rec+'</div>';
   const dbEl=document.getElementById('domainBarsEl');dbEl.innerHTML='';
-  DOMAINS.forEach((d,di)=>{const s1=ev.scores[di*2]||0,s2=ev.scores[di*2+1]||0;const davg=(s1+s2)/2;dbEl.innerHTML+=`<div class="domain-bar"><div class="db-meta"><span class="dn">${d.name}</span><span class="ds">${davg.toFixed(1)}</span></div><div class="bar-track"><div class="bar-fill" style="width:${(davg/5)*100}%"></div></div></div>`;});
+  DOMAINS.forEach((d,di)=>{const davg=ev.scores[di]||0;dbEl.innerHTML+=`<div class="domain-bar"><div class="db-meta"><span class="dn">${d.name}</span><span class="ds">${davg}</span></div><div class="bar-track"><div class="bar-fill" style="width:${(davg/5)*100}%"></div></div></div>`;});
   const flagged=QUESTIONS.filter((_,i)=>ev.flags[i]);
   const fsEl=document.getElementById('flagsSection');
   if(flagged.length){fsEl.style.display='block';document.getElementById('flagsList').innerHTML=flagged.map(q=>`<div class="flag-item">${q.domainName} — Q${QUESTIONS.indexOf(q)+1}</div>`).join('');}else{fsEl.style.display='none';}
   const noteItems=QUESTIONS.map((q,i)=>({q,note:ev.notes[i],i})).filter(x=>x.note.trim());
   const nsEl=document.getElementById('notesSummaryEl');
   if(noteItems.length){nsEl.style.display='block';document.getElementById('notesList').innerHTML=noteItems.map(x=>`<div class="nq">Q${x.i+1} · ${x.q.domainName}</div><div class="na">${x.note}</div>`).join('');}else{nsEl.style.display='none';}
-  // Reset save status for auto-save
   const ss=document.getElementById('saveStatus');ss.className='save-status saving';ss.textContent='Notion에 자동 저장 중…';ss.style.display='block';
   buildCandGrid();showScreen('s4');
-  // Auto-save to Notion on completion
   autoSaveNotion().then(()=>{
     const ss=document.getElementById('saveStatus');
     ss.className='save-status saved';ss.textContent='✓ Notion에 자동 저장되었습니다.';ss.style.display='block';
@@ -495,28 +384,24 @@ function showSummary(){
     ss.className='save-status error';ss.textContent='자동 저장 실패 — 텍스트 복사를 이용해주세요.';ss.style.display='block';
   });
 }
-
 function copyOneSummary(){
   const cand=CANDIDATES[curCandIdx];const ev=data[cand.id];
-  const avg=ev.scores.reduce((a,b)=>a+b,0)/12;
+  const avg=ev.scores.reduce((a,b)=>a+b,0)/4;
   let txt=`[면접 평가]\n${cand.name} (${cand.id}) · ${cand.time}\n평가자: ${evalor}\n종합: ${avg.toFixed(1)} / 5.0\n→ ${avg>=4?'추천':avg>=2.5?'보류':'탈락'}\n\n도메인별:\n`;
-  DOMAINS.forEach((d,di)=>{const s1=ev.scores[di*2]||0,s2=ev.scores[di*2+1]||0;txt+=`  ${d.name}: ${((s1+s2)/2).toFixed(1)}\n`;});
+  DOMAINS.forEach((d,di)=>{txt+=`  ${d.name}: ${ev.scores[di]||0}\n`;});
   navigator.clipboard.writeText(txt).then(()=>{const btn=event.target;const o=btn.textContent;btn.textContent='복사됨!';setTimeout(()=>btn.textContent=o,2000);});
 }
-
 function goBack(){buildCandGrid();showScreen('s2');}
-
 function showFinal(){
-  const results=CANDIDATES.filter(c=>data[c.id]&&data[c.id]._done).map(c=>({...c,avg:data[c.id].scores.reduce((a,b)=>a+b,0)/12})).sort((a,b)=>b.avg-a.avg);
+  const results=CANDIDATES.filter(c=>data[c.id]&&data[c.id]._done).map(c=>({...c,avg:data[c.id].scores.reduce((a,b)=>a+b,0)/4})).sort((a,b)=>b.avg-a.avg);
   document.getElementById('compareList').innerHTML=results.map((r,rank)=>{
     let badge='';if(r.avg>=4)badge='<span style="font-size:10px;color:var(--green);margin-left:6px">추천</span>';else if(r.avg<2.5)badge='<span style="font-size:10px;color:var(--red);margin-left:6px">탈락</span>';else badge='<span style="font-size:10px;color:var(--amber);margin-left:6px">보류</span>';
     const saved=data[r.id]&&data[r.id]._saved;
     return`<div class="compare-row"><div style="font-size:11px;color:var(--text3);min-width:18px">${rank+1}</div><div style="font-size:13px;font-weight:500;min-width:70px">${r.name}${badge}</div><div style="flex:1"><div class="bar-track"><div class="bar-fill" style="width:${(r.avg/5)*100}%"></div></div></div><div style="font-size:11px;min-width:34px;text-align:right;color:var(--text2)">${r.avg.toFixed(1)}</div><div style="font-size:10px;color:${saved?'var(--green)':'var(--text3)'};min-width:40px;text-align:right">${saved?'저장됨':'미저장'}</div></div>`;
   }).join('');
   let txt=`[면접 평가 결과]\n정산 및 전표 처리 담당자 | 04/13(월)\n평가자: ${evalor}\n${'─'.repeat(40)}\n`;
-  results.forEach(r=>{const ev=data[r.id];txt+=`\n◆ ${r.name} (${r.id}) · ${r.time}\n   종합: ${r.avg.toFixed(1)} / 5.0\n`;DOMAINS.forEach((d,di)=>{const s1=ev.scores[di*2]||0,s2=ev.scores[di*2+1]||0;txt+=`   ${d.name}: ${((s1+s2)/2).toFixed(1)}\n`;});const flags=QUESTIONS.filter((_,i)=>ev.flags[i]);if(flags.length)txt+=`   ⚠ Red Flag: ${flags.map(q=>q.domainName).join(', ')}\n`;const notes=QUESTIONS.map((q,i)=>({n:ev.notes[i],d:q.domainName})).filter(x=>x.n.trim());if(notes.length){txt+=`   메모:\n`;notes.forEach(n=>txt+=`     · [${n.d}] ${n.n}\n`);}txt+=`   → ${r.avg>=4?'추천 (Pass)':r.avg>=2.5?'보류 (Hold)':'탈락 (Fail)'}\n`;});
+  results.forEach(r=>{const ev=data[r.id];txt+=`\n◆ ${r.name} (${r.id}) · ${r.time}\n   종합: ${r.avg.toFixed(1)} / 5.0\n`;DOMAINS.forEach((d,di)=>{txt+=`   ${d.name}: ${ev.scores[di]||0}\n`;});const flags=QUESTIONS.filter((_,i)=>ev.flags[i]);if(flags.length)txt+=`   ⚠ Red Flag: ${flags.map(q=>q.domainName).join(', ')}\n`;const notes=QUESTIONS.map((q,i)=>({n:ev.notes[i],d:q.domainName})).filter(x=>x.n.trim());if(notes.length){txt+=`   메모:\n`;notes.forEach(n=>txt+=`     · [${n.d}] ${n.n}\n`);}txt+=`   → ${r.avg>=4?'추천 (Pass)':r.avg>=2.5?'보류 (Hold)':'탈락 (Fail)'}\n`;});
   document.getElementById('copyArea').textContent=txt;
-  // saveStatusFinal now always visible
   showScreen('s5');
 }
 function copyResult(){const txt=document.getElementById('copyArea').textContent;navigator.clipboard.writeText(txt).then(()=>{const btn=event.target;const o=btn.textContent;btn.textContent='복사됨!';setTimeout(()=>btn.textContent=o,2000);});}
